@@ -1,0 +1,87 @@
+{
+  "profile": "default",
+  "profiles": {
+    "default": {
+      "locations": {
+        "explorer": "C:\\Code\\Repos",
+        "powershell": "C:\\Code\\Repos"
+      },
+      "commands": [
+        {
+          "name": "Open-Profile",
+          "alias": "op",
+          "description": "Open the PowerShell profile in the default editor.",
+          "params": [],
+          "icon": "📜"
+        },
+        {
+          "name": "Load-Profile",
+          "alias": "lp",
+          "description": "Reload the PowerShell profile.",
+          "params": [],
+          "icon": "🔄"
+        },
+        {
+          "name": "Format-Json",
+          "alias": "",
+          "description": "Format JSON strings with standard indentation.",
+          "params": ["json"],
+          "icon": "🪄"
+        },
+        {
+          "name": "Save-Json",
+          "alias": "",
+          "description": "Save JSON to a file with proper formatting.",
+          "params": ["json", "path"],
+          "icon": "💾"
+        },
+        {
+          "name": "Set-ExplorerLocation",
+          "alias": "ce",
+          "description": "Change the current Explorer location.",
+          "params": ["path"],
+          "icon": "🚀"
+        },
+        {
+          "name": "Reset-ExplorerLocation",
+          "alias": "re",
+          "description": "Reset the Explorer location to the default.",
+          "params": [],
+          "icon": "🧑‍🚀"
+        },
+        {
+          "name": "Open-UserSetupJson",
+          "alias": "ou",
+          "description": "Open the User Setup JSON file.",
+          "params": [],
+          "icon": "📝"
+        }
+      ],
+      "installs": {
+        "vsCode": {
+          "install": "Microsoft.VisualStudioCode",
+          "extensions": [
+            "yzhang.markdown-all-in-one"
+          ],
+          "settings.json": {
+            "file": "$($env:APPDATA)\\Code\\User\\settings.json",
+            "content": {
+              "security.workspace.trust.untrustedFiles": "open",
+    
+              "editor.rulers": [
+                {
+                  "column": 80,
+                  "color": "#00ff6a50"
+                },
+                {
+                  "column": 85,
+                  "color": "#ff000050"
+                }
+              ]
+            }
+          }
+        }
+      }
+    }  
+  }
+}
