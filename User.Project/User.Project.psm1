@@ -147,14 +147,32 @@ class ProjectSettings {
 }
 
 function Add-ProjectModule {
-    param(
-        [Parameter(Mandatory)][string]$MethodName,
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory)]
+        [string]$Name,
+
         [string]$Verb = "Invoke"
     )
 
-    $content = Get-ModuleContent -MethodName $MethodName -Verb $Verb
-    $modulePath = $paths.CreateModuleFile($MethodName, $content)
-    Write-Host "[✅] Method module created: $modulePath"
+    $projectRoot = Get-Location
+    $paths = [ProjectPaths]::new($projectRoot)
+
+    $folderName = $Name
+
+    $moduleContent = @"
+function $Verb-$Name {
+    Write-Host "[$Verb] $Name module running"
+}
+"@
+
+    try {
+        $fullPath = $paths.CreateModuleFile($folderName, $moduleContent)
+        Write-Host "[✅] Method module created: $fullPath"
+    }
+    catch {
+        Write-Error "❌ Failed to create module: $_"
+    }
 }
 
 function Get-ModuleContent {
