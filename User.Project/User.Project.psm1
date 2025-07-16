@@ -160,11 +160,7 @@ function Add-ProjectModule {
 
     $folderName = $Name
 
-    $moduleContent = @"
-function $Verb-$Name {
-    Write-Host "[$Verb] $Name module running"
-}
-"@
+    $moduleContent = Get-ModuleContent $Name $Verb
 
     try {
         $fullPath = $paths.CreateModuleFile($folderName, $moduleContent)
@@ -183,7 +179,16 @@ function Get-ModuleContent {
 
     return @"
 function $Verb-$MethodName {
-    Write-Host \"$Verb-$MethodName running!\"
+    `$Log.Start(`"$Verb-$MethodName`")
+    `$Log.Error(`"NOT IMPLEMENTED`")
+    Step-OneMethod
+}
+
+function Step-OneMethod {
+    `$Log.Enter(`"Step-OneMethod`")
+    `$Log.Error(`"NOT IMPLEMENTED`")
+    `$Log.Note(`"This is a note...`")
+    `$Log.Leave()
 }
 
 Export-ModuleMember -Function $Verb-$MethodName
@@ -197,7 +202,7 @@ function Import-ProjectModules {
 
     Get-ChildItem -Path $modulesPath -Recurse -Filter "*.psm1" | ForEach-Object {
         Write-Host "[📦] Importing module: $($_.FullName)"
-        Import-Module $_.FullName -Force -ErrorAction Stop
+        Import-Module $_.FullName -Force -ErrorAction Stop -Global
     }
 }
 

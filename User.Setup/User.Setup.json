@@ -3,10 +3,12 @@
     "default": {
       "installs": {
         "vsCode": {
+          "extensions": [
+            "yzhang.markdown-all-in-one"
+          ],
           "install": "Microsoft.VisualStudioCode",
           "settings.json": {
             "content": {
-              "security.workspace.trust.untrustedFiles": "open",
               "editor.rulers": [
                 {
                   "color": "#00ff6a50",
@@ -16,71 +18,69 @@
                   "color": "#ff000050",
                   "column": 85
                 }
-              ]
+              ],
+              "security.workspace.trust.untrustedFiles": "open"
             },
             "file": "C:\\Users\\mark.davich\\AppData\\Roaming\\Code\\User\\settings.json"
-          },
-          "extensions": [
-            "yzhang.markdown-all-in-one"
-          ]
+          }
         }
       },
       "commands": [
         {
-          "icon": "📜",
-          "name": "Open-Profile",
-          "description": "Open the PowerShell profile in the default editor.",
           "alias": "op",
-          "params": []
+          "description": "Open the PowerShell profile in the default editor.",
+          "name": "Open-Profile",
+          "params": [],
+          "icon": "📜"
         },
         {
-          "icon": "🔄",
-          "name": "Load-Profile",
-          "description": "Reload the PowerShell profile.",
           "alias": "lp",
-          "params": []
+          "description": "Reload the PowerShell profile.",
+          "name": "Load-Profile",
+          "params": [],
+          "icon": "🔄"
         },
         {
-          "icon": "🪄",
-          "name": "Format-Json",
-          "description": "Format JSON strings with standard indentation.",
           "alias": "",
+          "description": "Format JSON strings with standard indentation.",
+          "name": "Format-Json",
           "params": [
             "json"
-          ]
+          ],
+          "icon": "🪄"
         },
         {
-          "icon": "💾",
-          "name": "Save-Json",
-          "description": "Save JSON to a file with proper formatting.",
           "alias": "",
+          "description": "Save JSON to a file with proper formatting.",
+          "name": "Save-Json",
           "params": [
             "json",
             "path"
-          ]
+          ],
+          "icon": "💾"
         },
         {
-          "icon": "🚀",
-          "name": "Set-ExplorerLocation",
-          "description": "Change the current Explorer location.",
           "alias": "se",
+          "description": "Change the current Explorer location.",
+          "name": "Set-ExplorerLocation",
           "params": [
             "path"
-          ]
+          ],
+          "icon": "🚀"
         },
         {
-          "icon": "🧑‍🚀",
-          "name": "Reset-ExplorerLocation",
-          "description": "Reset the Explorer location to the default.",
           "alias": "re",
-          "params": []
+          "description": "Reset the Explorer location to the default.",
+          "name": "Reset-ExplorerLocation",
+          "params": [],
+          "icon": "🧑‍🚀"
         },
         {
-          "icon": "📝",
-          "name": "Open-UserSetupJson",
-          "description": "Open the User Setup JSON file.",
           "alias": "ou",
-          "params": []
+          "description": "Open the User Setup JSON file.",
+          "name": "Open-UserSetupJson",
+          "params": [],
+          "icon": "📝"
         }
       ],
       "locations": {
