@@ -1,46 +1,54 @@
+using namespace System
+
 class Logger {
+    [ConsoleColor] $StartColor = [ConsoleColor]::Green
+    [ConsoleColor] $EnterColor = [ConsoleColor]::Cyan
+    [ConsoleColor] $NoteColor = [ConsoleColor]::Blue
+    [ConsoleColor] $ErrorColor = [ConsoleColor]::Red
+    [ConsoleColor] $WarningColor = [ConsoleColor]::Yellow
+
     hidden [Int64] $IndentCount = 0
-    hidden [string]$IndentString = "   "
+    hidden [string]$IndentString = '   '
 
     [void] Start([string] $Message) {
-        $this.Start($Message, [System.ConsoleColor]::Green)
+        $this.Start($Message, $this.StartColor)
     }
 
-    [void] Start([string] $Message, [System.ConsoleColor] $Color) {
+    [void] Start([string] $Message, [ConsoleColor] $Color) {
         $this.IndentCount = 0
         Write-Host "🧿 $Message" -ForegroundColor $Color
     }
 
     [void] Enter([string] $Message) {
-        $this.Enter($Message, [System.ConsoleColor]::Cyan)
+        $this.Enter($Message, $this.EnterColor)
     }
 
-    [void] Enter([string] $Message, [System.ConsoleColor] $Color) {
+    [void] Enter([string] $Message, [ConsoleColor] $Color) {
         $this.IndentCount++
         Write-Host "$($this.Indent())$Message" -ForegroundColor $Color
     }
 
     [void] Note([string] $Message) {
-        $this.Note($Message, [System.ConsoleColor]::Blue)
+        $this.Note($Message, $this.NoteColor)
     }
 
-    [void] Note([string] $Message, [System.ConsoleColor] $Color) {
+    [void] Note([string] $Message, [ConsoleColor] $Color) {
         $this.WriteInternal($Message, $Color)
     }
 
     [void] Error([string] $Message) {
-        $this.Error($Message, [System.ConsoleColor]::Red)
+        $this.Error($Message, $this.ErrorColor)
     }
 
-    [void] Error([string] $Message, [System.ConsoleColor] $Color) {
+    [void] Error([string] $Message, [ConsoleColor] $Color) {
         $this.WriteInternal($Message, $Color)
     }
 
     [void] Warning([string] $Message) {
-        $this.Warning($Message, [System.ConsoleColor]::Yellow)
+        $this.Warning($Message, $this.WarningColor)
     }
 
-    [void] Warning([string] $Message, [System.ConsoleColor] $Color) {
+    [void] Warning([string] $Message, [ConsoleColor] $Color) {
         $this.WriteInternal($Message, $Color)
     }
 
@@ -48,19 +56,19 @@ class Logger {
         Write-Host
     }
 
-    [void] BeginLine([string] $Message, [System.ConsoleColor] $Color) {
+    [void] BeginLine([string] $Message, [ConsoleColor] $Color) {
         $this.Add("$($this.InternalIndent())$Message", $Color)
     }
 
-    [void] Add([string] $Message, [System.ConsoleColor] $Color) {
+    [void] Add([string] $Message, [ConsoleColor] $Color) {
         Write-Host $Message -ForegroundColor $Color -NoNewline
     }
 
-    [void] EndLine([string] $Message, [System.ConsoleColor] $Color) {
+    [void] EndLine([string] $Message, [ConsoleColor] $Color) {
         Write-Host $Message -ForegroundColor $Color
     }
 
-    hidden [void] WriteInternal([string] $Message, [System.ConsoleColor] $Color) {
+    hidden [void] WriteInternal([string] $Message, [ConsoleColor] $Color) {
         Write-Host "$($this.InternalIndent())$Message" -ForegroundColor $Color
     }
 
