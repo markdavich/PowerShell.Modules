@@ -11,62 +11,26 @@ class AbstractTracker {
     AbstractTracker([Type]$Type, [array]$ToDos) {
         $this._itemType = $Type
 
-        # The PowerShell equivalent of the C# type, Tracker<T>, is Tracker`1
-        $TrackerClassDefinition = @'
-using System.Linq;
-using System.Collections.Generic;
+        $dllPath = Join-Path $PSScriptRoot "Cs.Type.dll"
 
-public class Tracker<T> {
-    private int _initialCount;
-    private IEnumerable<T> _items;
-    private HashSet<T> _todo;
-    private HashSet<T> _done;
+        Write-Host ([DateTime]::Now)
+        Write-Host $dllPath
+        Write-Host "asdf"
 
-    public Tracker(T[] toDos) {
-        _todo = new HashSet<T>(toDos);
-        _done = new HashSet<T>();
-    }
+        $assembly = [System.Reflection.Assembly]::LoadFrom($dllPath)
 
-    public void Complete(T item) {
-        _todo.Remove(item);
-        _done.Add(item);
-    }
+        # Use the loaded assembly to resolve the type directly:
+        $trackerOpenType = $assembly.GetType("Cs.Type.Tracker``1", $true)
 
-    public void Start(IEnumerable<T> items) {
-        _items = items;
-        _initialCount = _done.Count;
-    }
-
-    public bool IsFinished() => (_done.Count - _initialCount) == _items.Count();
-
-    public HashSet<T> GetIncomplete() =>
-        _items.Where(item => !_done.Contains(item)).ToHashSet();
-
-    public HashSet<T> Done() => _done;
-
-    public HashSet<T> ToDo() => _todo;
-}
-'@
-
-
-        Add-Type -TypeDefinition $TrackerClassDefinition -Language CSharp
-
-        $trackerOpenType = [AppDomain]::CurrentDomain.GetAssemblies() |
-            ForEach-Object { $_.GetType("Tracker``1", $false) } |
-            Where-Object { $_ -ne $null } |
-            Select-Object -First 1
-
-        # The PowerShell equivalent of the C# type, Tracker<T>, is Tracker`1
-        $this._trackerType = $trackerOpenType.MakeGenericType($this._itemType)
+        # Construct closed generic type (Tracker[$Type])
+        $closedTrackerType = $trackerOpenType.MakeGenericType(@($Type))
 
         # Build a correctly typed array for Tracker<T>
         $typedArray = $this.GetTypedArray($ToDos)
 
-        $this._tracker = ([System.Activator]::CreateInstance(
-                $this._trackerType, 
-                @(, $typedArray))
-        )
-        
+        # Instantiate: equivalent to `new Tracker<TItem>(ToDos)`
+        $this._tracker = [Activator]::CreateInstance($closedTrackerType, @(, $typedArray))
+
         $this._setType = [HashSet``1].MakeGenericType($this._itemType)
     }
 
