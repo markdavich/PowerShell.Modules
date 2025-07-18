@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": ".cs"
+		},
+		{
+			"path": "."
+		},
+		{
+			"path": "../User.Implementations.Tracker.FileSystemInfo"
+		}
+	],
+	"settings": {}
+}
