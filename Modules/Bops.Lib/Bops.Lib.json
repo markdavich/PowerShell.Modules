@@ -1,0 +1,18 @@
+{
+    "SymbolicLinkFolder": "C:\\",
+    "InstallFolder": "C:\\Code\\Repos",
+    "Name": ".bops",
+    "Suffix": ".lib!",
+    "ProfileName": ".profile.ps1",
+    "SomeObject": {
+        "SomeString": "this is a string!",
+        "SomeInt": 23,
+        "NestedObject": {
+            "SomeStringArray": [
+                "one",
+                "two",
+                "three"
+            ]
+        }
+    }
+}

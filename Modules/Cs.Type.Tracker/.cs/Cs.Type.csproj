@@ -1,0 +1,47 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <!--====================================================================
+        Build this project from the command line at the project root using:
+        
+            PowerShell
+            ╭──────────────────────────────────────────╮
+            │ PS C:\.cs> dotnet build .\Cs.Type.csproj │
+            ╰──────────────────────────────────────────╯
+
+        <Configuration> (Flags):
+            -c <configuration> build flag, when omitted, the build will be in release
+        
+        <Assembly Name> "Cs.Type"
+            Same name as the .csproj "Cs.Type" ==> Cs.Type.dll
+
+        <Root Namespace> "Cs.Type"
+            Same as the .csproj name and assembly name, used to reference the
+            imported .dll class via: [Cs.Type.Tracker]::new() 
+
+        <Output Path> - "..\"
+            The output will be one directory up, which is the root of the
+            PowerShell module (...\Modules\Module.Name\Module.Name.psm1)
+
+        <Debug Type> - "none"
+            When building with 'dotnet build' it will omit the following
+            files from the output
+
+                ● Cs.Type.deps.json
+                ● Cs.Type.pdb
+
+            This keeps the module folder clean
+        =====================================================================-->
+        <!--<Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>-->
+        <AssemblyName>Cs.Type</AssemblyName>
+        <RootNamespace>Cs.Type</RootNamespace>
+        <OutputType>Library</OutputType>
+        <DebugType>none</DebugType>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>disable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+      
+        <OutputPath>..\</OutputPath>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    </PropertyGroup>
+</Project>

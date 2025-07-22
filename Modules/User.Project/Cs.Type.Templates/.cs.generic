@@ -1,0 +1,7 @@
+namespace Cs.Type;
+
+public class ClassName<T> {
+    public ClassName() {
+        
+    }
+}

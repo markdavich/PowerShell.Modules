@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "tIdXZib7zSg=",
+  "success": true,
+  "projectFilePath": "C:\\Code\\Repos\\.bops.lib!\\Modules\\Cs.Type.Tracker\\.cs\\Cs.Type.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\mark.davich\\.nuget\\packages\\microsoft.net.sdk.compilers.toolset\\9.0.205\\microsoft.net.sdk.compilers.toolset.9.0.205.nupkg.sha512"
+  ],
+  "logs": []
+}

@@ -1,0 +1,9 @@
+C:\Code\Repos\.bops.lib!\Modules\Cs.Type.Tracker\.cs\obj\Debug\Cs.Type.GeneratedMSBuildEditorConfig.editorconfig
+C:\Code\Repos\.bops.lib!\Modules\Cs.Type.Tracker\.cs\obj\Debug\Cs.Type.AssemblyInfoInputs.cache
+C:\Code\Repos\.bops.lib!\Modules\Cs.Type.Tracker\.cs\obj\Debug\Cs.Type.AssemblyInfo.cs
+C:\Code\Repos\.bops.lib!\Modules\Cs.Type.Tracker\.cs\obj\Debug\Cs.Type.csproj.CoreCompileInputs.cache
+C:\Code\Repos\.bops.lib!\Modules\Cs.Type.Tracker\.cs\obj\Debug\Cs.Type.dll
+C:\Code\Repos\.bops.lib!\Modules\Cs.Type.Tracker\.cs\obj\Debug\refint\Cs.Type.dll
+C:\Code\Repos\.bops.lib!\Modules\Cs.Type.Tracker\Cs.Type.deps.json
+C:\Code\Repos\.bops.lib!\Modules\Cs.Type.Tracker\Cs.Type.dll
+C:\Code\Repos\.bops.lib!\Modules\Cs.Type.Tracker\.cs\obj\Debug\ref\Cs.Type.dll

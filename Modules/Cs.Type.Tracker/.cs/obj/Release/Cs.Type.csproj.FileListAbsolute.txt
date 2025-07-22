@@ -1,0 +1,18 @@
+C:\Users\mark.davich\OneDrive - State of Idaho\Documents\PowerShell\Modules\Cs.Type.Tracker\.cs\obj\Release\Cs.Type.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\mark.davich\OneDrive - State of Idaho\Documents\PowerShell\Modules\Cs.Type.Tracker\.cs\obj\Release\Cs.Type.AssemblyInfoInputs.cache
+C:\Users\mark.davich\OneDrive - State of Idaho\Documents\PowerShell\Modules\Cs.Type.Tracker\.cs\obj\Release\Cs.Type.AssemblyInfo.cs
+C:\Users\mark.davich\OneDrive - State of Idaho\Documents\PowerShell\Modules\Cs.Type.Tracker\.cs\obj\Release\Cs.Type.csproj.CoreCompileInputs.cache
+C:\Users\mark.davich\OneDrive - State of Idaho\Documents\PowerShell\Modules\Cs.Type.Tracker\.cs\obj\Release\Cs.Type.dll
+C:\Users\mark.davich\OneDrive - State of Idaho\Documents\PowerShell\Modules\Cs.Type.Tracker\.cs\obj\Release\refint\Cs.Type.dll
+C:\Users\mark.davich\OneDrive - State of Idaho\Documents\PowerShell\Modules\Cs.Type.Tracker\Cs.Type.deps.json
+C:\Users\mark.davich\OneDrive - State of Idaho\Documents\PowerShell\Modules\Cs.Type.Tracker\Cs.Type.dll
+C:\Users\mark.davich\OneDrive - State of Idaho\Documents\PowerShell\Modules\Cs.Type.Tracker\.cs\obj\Release\ref\Cs.Type.dll
+C:\Code\Repos\.bops.lib!\Modules\Cs.Type.Tracker\.cs\obj\Release\Cs.Type.GeneratedMSBuildEditorConfig.editorconfig
+C:\Code\Repos\.bops.lib!\Modules\Cs.Type.Tracker\.cs\obj\Release\Cs.Type.AssemblyInfoInputs.cache
+C:\Code\Repos\.bops.lib!\Modules\Cs.Type.Tracker\.cs\obj\Release\Cs.Type.AssemblyInfo.cs
+C:\Code\Repos\.bops.lib!\Modules\Cs.Type.Tracker\.cs\obj\Release\Cs.Type.csproj.CoreCompileInputs.cache
+C:\Code\Repos\.bops.lib!\Modules\Cs.Type.Tracker\.cs\obj\Release\Cs.Type.dll
+C:\Code\Repos\.bops.lib!\Modules\Cs.Type.Tracker\.cs\obj\Release\refint\Cs.Type.dll
+C:\Code\Repos\.bops.lib!\Modules\Cs.Type.Tracker\Cs.Type.deps.json
+C:\Code\Repos\.bops.lib!\Modules\Cs.Type.Tracker\Cs.Type.dll
+C:\Code\Repos\.bops.lib!\Modules\Cs.Type.Tracker\.cs\obj\Release\ref\Cs.Type.dll
