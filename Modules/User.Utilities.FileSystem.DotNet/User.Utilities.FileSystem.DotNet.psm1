@@ -1,3 +1,5 @@
+using namespace System.IO
+
 function Copy-CodeBehindWithMatchingName {
     param (
         [Parameter(Mandatory)]
@@ -9,8 +11,6 @@ function Copy-CodeBehindWithMatchingName {
         [Parameter(Mandatory)]
         [string]$OutputFolder
     )
-
-    Write-Host "********** Copy-CodeBehindWithMatchingName **********"
 
     # Step 1: Extract components
     $baseName = $View.BaseName # e.g., PF_Login
@@ -24,7 +24,7 @@ function Copy-CodeBehindWithMatchingName {
     $destinationPath = Join-Path $OutputFolder $newFileName
     Copy-Item -Path $CodeBehind.FullName -Destination $destinationPath -Force
 
-    return $destinationPath
+    return [FileSystemInfo](Get-Item $destinationPath)
 }
 
 Export-ModuleMember -Function "Copy-CodeBehindWithMatchingName"

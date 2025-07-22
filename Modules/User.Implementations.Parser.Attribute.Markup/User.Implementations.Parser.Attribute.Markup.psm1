@@ -13,13 +13,19 @@ class MarkupAttributeParser : AbstractAttributeParser {
         return " "
     }
 
-    [AbstractAttribute] CreateAttribute([string]$text) {
-        # Write-Host "*** " -ForegroundColor Green -NoNewLine; Write-Host "MarkupAttributeParser.CreateAttribute($text) - OVERLOAD 1" -ForegroundColor Magenta
+    hidden [AbstractAttribute] CreateAttribute([string]$text) {
+        # Write-Host "*** " -ForegroundColor Green -NoNewLine;
+        # Write-Host "MarkupAttributeParser.CreateAttribute($text) - OVERLOAD 1" `
+        #   -ForegroundColor Magenta
+
         return [MarkupAttribute]::new($text)
     }
     
-    [AbstractAttribute] CreateAttribute([string]$key, [string]$value) {
-        # Write-Host "*** " -ForegroundColor Green -NoNewLine; Write-Host "MarkupAttributeParser.CreateAttribute($key, $value) - OVERLOAD 2" -ForegroundColor Magenta
+    hidden [AbstractAttribute] CreateAttribute([string]$key, [string]$value) {
+        # Write-Host "*** " -ForegroundColor Green -NoNewLine;
+        # Write-Host "MarkupAttributeParser.CreateAttribute($key, $value) - OVERLOAD 2" `
+        #   -ForegroundColor Magenta
+        
         return [MarkupAttribute]::new($key, $value)
     }
 }

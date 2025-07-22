@@ -12,6 +12,10 @@ class Logger {
     [ConsoleColor] $KeyValueSeparatorColor = [ConsoleColor]::Magenta
     [ConsoleColor] $ValueColor = [ConsoleColor]::Cyan
 
+    [string] $BulletSymbol = "●"
+    [ConsoleColor] $BulletColor = [ConsoleColor]::Gray
+    [ConsoleColor] $BulletTextColor = [ConsoleColor]::DarkYellow
+
     hidden [Int64] $IndentCount = 0
     hidden [string]$IndentString = '   '
 
@@ -106,5 +110,12 @@ class Logger {
         $this.BeginLine($Key, $this.KeyColor)
         $this.Add("$($this.KeyValueSeparator) ", $this.KeyValueSeparatorColor)
         $this.EndLine($Value, $this.ValueColor)
+    }
+
+    [void] Bullet([string]$Value) {
+        $this.IncreaseIndent()
+        $this.BeginLine("$($this.BulletSymbol) ", $this.BulletColor)
+        $this.EndLine($Value, $this.BulletTextColor)
+        $this.DecreaseIndent()
     }
 }

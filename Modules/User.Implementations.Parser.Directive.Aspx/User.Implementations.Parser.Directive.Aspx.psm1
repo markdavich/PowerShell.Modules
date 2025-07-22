@@ -13,9 +13,10 @@ class AspxDirectiveParser : AbstractParser {
     }
 
     [PSCustomObject]$AttributeNames = @{
-        Inherits        = "inherits"
-        AutoEventWireup = "autoeventwireup"
-        Language        = "language"
+        Inherits        = "Inherits"
+        AutoEventWireup = "AutoEventWireup"
+        Language        = "Language"
+        CodeFile        = "CodeFile"
     }
 
     [string]$DirectiveType
@@ -71,6 +72,11 @@ class AspxDirectiveParser : AbstractParser {
         $this._content = $this._content -replace [regex]::Escape($this._match), $new
     }
 
+    [void] SaveToFile([string]$Path) {
+        $this.Save()  # ensure Content is up to date
+        Set-Content -Path $Path -Value $this._content -Encoding UTF8
+    }
+    
     [string] ToString() {
         return "<%@ $($this.DirectiveType) $($this.Attributes.ToString()) %>"
     }
