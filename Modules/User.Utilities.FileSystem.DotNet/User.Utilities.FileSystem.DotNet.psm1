@@ -13,7 +13,7 @@ function Copy-CodeBehindWithMatchingName {
     Write-Host "********** Copy-CodeBehindWithMatchingName **********"
 
     # Step 1: Extract components
-    $baseName = $View.BaseName       # e.g., PF_Login
+    $baseName = $View.BaseName # e.g., PF_Login
     $viewExt = $View.Extension.TrimStart('.')  # e.g., aspx
     $codeExt = $CodeBehind.Extension.TrimStart('.')  # e.g., cs
 
