@@ -14,11 +14,11 @@ class AbstractAttributeParser : AbstractParser {
         }
     }
 
-    [void] Add([AbstractAttribute]$Attribute) {
+    [void] SetAttribute([AbstractAttribute]$Attribute) {
         $this._pairs[$Attribute.Key] = $Attribute
     }
 
-    [void] Add([string]$Key, [string]$Value) {
+    [void] SetAttribute([string]$Key, [string]$Value) {
         # Write-Host "Add key=$Key, value=$Value"
 
         $attr = $this.CreateAttribute($Key, $Value)
@@ -41,15 +41,21 @@ class AbstractAttributeParser : AbstractParser {
     }
 
     [string] GetSeparator() {
-        throw [System.NotImplementedException]::new("GetSeparator must be overridden")
+        throw [System.NotImplementedException]::new(
+            "GetSeparator must be overridden"
+        )
     }
 
-    [AbstractAttribute] CreateAttribute([string]$text) {
-        throw [System.NotImplementedException]::new("CreateAttribute(text) must be overridden")
+    hidden [AbstractAttribute] CreateAttribute([string]$text) {
+        throw [System.NotImplementedException]::new(
+            "CreateAttribute(text) must be overridden"
+        )
     }
 
-    [AbstractAttribute] CreateAttribute([string]$key, [string]$value) {
-        throw [System.NotImplementedException]::new("CreateAttribute(key, value) must be overridden")
+    hidden [AbstractAttribute] CreateAttribute([string]$key, [string]$value) {
+        throw [System.NotImplementedException]::new(
+            "CreateAttribute(key, value) must be overridden"
+        )
     }
 
     [bool] HasKey([string]$Key) {
