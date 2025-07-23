@@ -46,7 +46,7 @@ function Get-AmPm {
     return $result.ToString().Replace("""", "")
 }
 
-function Draw-Helper {
+function Show-Helper {
     Write-Host '¯' -ForegroundColor Green      -BackgroundColor Black -NoNewline;
     Write-Host '\' -ForegroundColor Cyan       -BackgroundColor Black -NoNewline;
     Write-Host '_' -ForegroundColor Yellow     -BackgroundColor Black -NoNewline;
@@ -101,7 +101,7 @@ function Get-PaddedArray(
     return $result
 }
 
-function Ask-Question ([string[]]$question, [string[]]$commands) {
+function Pop-Question ([string[]]$question, [string[]]$commands) {
     # [int] $qLength = Get-MaxLength($question)
     # [int] $cLength = Get-MaxLength($commands)
 
@@ -129,7 +129,7 @@ function Ask-Question ([string[]]$question, [string[]]$commands) {
         Start-Sleep -Milliseconds 75 
     }
 
-    Draw-Helper
+    Show-Helper
 }
 
 function Think([int]$seconds, [string]$prefix = "") {

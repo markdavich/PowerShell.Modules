@@ -1,5 +1,7 @@
 using namespace System
 
+using module Bop.u.Strings
+
 class Logger {
     [ConsoleColor] $StartColor = [ConsoleColor]::Green
     [ConsoleColor] $EnterColor = [ConsoleColor]::Cyan
@@ -48,6 +50,47 @@ class Logger {
 
     [void] Error([string] $Message) {
         $this.Error($Message, $this.ErrorColor)
+    }
+
+    [void] Error([string] $Message, [System.Management.Automation.ErrorRecord]$E) {
+        $this.Error($Message, $this.ErrorColor)
+        $this.WriteErrorDetails("EXCEPTION", $E)
+    }
+
+    hidden [void] WriteErrorDetails([string]$Tag, [System.Management.Automation.ErrorRecord]$E) {
+        $this.Error("☎️  $Tag", [ConsoleColor]::Magenta)
+        $this.IncreaseIndent()
+        $this.KeyColor = [ConsoleColor]::DarkRed
+        $this.ValueColor = [ConsoleColor]::DarkYellow
+        $this.KeyValue("Message ──────────► ", $E.Exception.Message)
+        $this.KeyValue("Exception Type ───► ", $E.Exception.GetType().FullName)
+        $this.KeyValue("Script Name ──────► ", $E.InvocationInfo.ScriptName)
+        $this.KeyValue("Line Number ──────► ", $E.InvocationInfo.ScriptLineNumber)
+        $this.KeyValue("Code ─────────────► ", $E.InvocationInfo.Line.Trim())
+        $this.KeyValue("Position Message ─► ", $this.FormatArray(16, $E.InvocationInfo.PositionMessage))
+        $this.KeyValue("Stack Trace ──────► ", $this.FormatArray(16, $E.Exception.StackTrace))
+
+        if ($null -ne $E.Exception.InnerException) {
+            $this.WriteErrorDetails("INNER EXCEPTION", $E.Exception.InnerException.ErrorRecord)
+            $this.DecreaseIndent()
+        }
+
+        $this.DecreaseIndent()
+    }
+
+    hidden [string] FormatArray([int]$PrefixLength, [string]$String) {
+        $array = $String.Split("`n")
+        $indent = "         $($this.Indent())$(" " * $PrefixLength)"
+
+        $array[0] = $array[0].Trim()
+
+        for ($i = 1; $i -lt $array.Count; $i++) {
+            $array[$i] = "$indent$($array[$i].Trim())"
+        }
+
+        $result = $array -join "`n"
+
+        return $result
     }
 
     [void] Error([string] $Message, [ConsoleColor] $Color) {
