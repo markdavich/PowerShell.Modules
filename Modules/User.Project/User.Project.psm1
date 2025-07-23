@@ -1,3 +1,6 @@
+using module User.Logger
+using module Cs.Type.Tracker
+
 class ProjectPaths {
     [string]$Root
 
@@ -146,7 +149,7 @@ class ProjectSettings {
     }
 }
 
-function Add-ProjectModule {
+function New-ProjectModule {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory)]
@@ -165,6 +168,55 @@ function Add-ProjectModule {
     try {
         $fullPath = $paths.CreateModuleFile($folderName, $moduleContent)
         Write-Host "[✅] Method module created: $fullPath"
+    }
+    catch {
+        Write-Error "❌ Failed to create module: $_"
+    }
+}
+
+function New-ProjectClass {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory)]
+        [string]$Name,
+
+        [Parameter()]
+        [string]$ModulePrefix = ""
+    )
+
+    $projectRoot = Get-Location
+    $paths = [ProjectPaths]::new($projectRoot)
+
+    $prefix = $ModulePrefix.Trim() -eq "" ? "" : "$ModulePrefix."
+
+    $folderName = "$($prefix)Class.$Name"
+
+    $classContent = @"
+<#
+.SYNOPSIS
+    A BRIEF description of the class
+.DESCRIPTION
+    A DETAILED description of the class
+.PARAMETER <Parameter-Name>
+    Describe each constructor parameter in it's own .PARAMETER tag
+.EXAMPLE
+    Example usage
+.OUTPUTS
+    Public properties and methods
+.NOTES
+    This function is a wrapper around Get-Process.
+#>
+class $Name {
+    $Name() {
+
+    }
+}
+"@
+
+    try {
+        $fullPath = $paths.CreateModuleFile($folderName, $classContent)
+        code "$fullPath"
+        Write-Host "[✅] Class module created: $fullPath"
     }
     catch {
         Write-Error "❌ Failed to create module: $_"
@@ -200,9 +252,55 @@ function Import-ProjectModules {
     $paths = [ProjectPaths]::new($projectRoot)
     $modulesPath = $paths.GetModulesPath()
 
-    Get-ChildItem -Path $modulesPath -Recurse -Filter '*.psm1' | ForEach-Object {
-        Write-Host "[📦] Importing module: $($_.FullName)"
-        Import-Module $_.FullName -Force -ErrorAction Stop -Global
+
+    $modules = Get-ChildItem -Path $modulesPath -Recurse -Filter '*.psm1'
+
+    [Tracker[System.IO.FileSystemInfo]]$tracker = `
+        [Tracker[System.IO.FileSystemInfo]]::new($modules)
+
+    [Logger]$log = [Logger]::new()
+
+    $log.Start("Importing Modules for Project '$(Split-Path $projectRoot -Leaf)'")
+    $log.KeyValue("Modules Path", $modulesPath)
+
+    ImportModules $tracker $log
+
+    # Get-ChildItem -Path $modulesPath -Recurse -Filter '*.psm1' | ForEach-Object {
+    #     Write-Host "[📦] Importing module: $($_.FullName)"
+    #     Import-Module $_.FullName -Force -ErrorAction Stop -Global
+    # }
+}
+
+function ImportModules {
+    param (
+        [Tracker[System.IO.FileSystemInfo]]$Tracker,
+        [Logger]$Log
+    )
+
+    foreach ($module in @( $Tracker.ToDo )) {
+        try {
+            Import-Module $module -Force -Global -ErrorAction Stop
+            $Log.IncreaseIndent()
+            $Log.KeyValue("[📦] Imported module", $($module.FullName))
+            $Tracker.Complete($module)
+            $Log.DecreaseIndent()
+        }
+        catch {
+            $Log.Blank()
+            $Log.KeyValue("❌ Failed to import module", $($module.FullName))
+            $Log.Blank()
+        }
+    }
+
+    if (-not $Tracker.IsFinished) {
+        $Log.Blank()
+        $Log.IncreaseIndent()
+        $Log.Note("Retry Module Imports on $($Tracker.Incomplete.Count) Module(s)")
+        foreach ($module in $Tracker.ToDo) {
+            $Log.BUllet($module.Name)
+        }
+        $Log.DecreaseIndent()
+        ImportModules $Tracker $Log
     }
 }
 
@@ -400,4 +498,9 @@ function New-CsTypeModule {
 }
 
 
-Export-ModuleMember -Function Add-ProjectModule, Import-ProjectModules, New-PowerShellProject, New-CsTypeModule
+Export-ModuleMember -Function `
+    New-ProjectModule, `
+    Import-ProjectModules, `
+    New-PowerShellProject, `
+    New-CsTypeModule, `
+    New-ProjectClass

@@ -12,7 +12,7 @@ class AspxDirectiveParser : AbstractParser {
         Html    = 'Html'
     }
 
-    [PSCustomObject]$AttributeNames = @{
+    static [PSCustomObject]$AttributeNames = @{
         Inherits        = "Inherits"
         AutoEventWireup = "AutoEventWireup"
         Language        = "Language"
