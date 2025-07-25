@@ -1,12 +1,15 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Cs.Type;
 
-/// <summary>
-/// Represents the direction of an item movement within a list.
-/// </summary>
+// Navarion
+// BEGIN Architecture Specification -------------------------------------------
 public enum ListDirection
 {
     None,
@@ -24,6 +27,157 @@ public enum ItemAction
     MoveToTop = 8,
     Complete = 16,
 }
+
+public interface IListAction<TItem, TReceipt>
+{
+    public TReceipt? DoAction(TItem item);
+}
+
+public interface IOrderedSet<TItem>
+{
+    HashSet<TItem> Set { get; }
+
+    List<TItem> Items { get; }
+
+    public TReceipt DoIfExits<TReceipt>(TItem item, IListAction<TItem, TReceipt> action) where TReceipt : new();
+}
+
+public class OrderedSet<TItem> : IOrderedSet<TItem>
+{
+    public HashSet<TItem> Set { get; } = [];
+    public List<TItem> Items { get; } = [];
+
+    public XOrderedSet(TItem[] items)
+    {
+        for (int i = 0; i < items.Length; i++)
+        {
+            _ = Add(items[i]);
+        }
+    }
+
+    /// <summary>
+    /// Adds a unique item to the end of the list.
+    /// </summary>
+    public TItem Add(TItem item)
+    {
+        if (Set.Add(item))
+        {
+            if (Set.TryGetValue(item, out TItem? reference))
+            {
+                Items.Add(reference);
+                return reference;
+            }
+        }
+
+        return item;
+    }
+
+    public TReceipt DoIfExits<TReceipt>(
+        TItem item, 
+        IListAction<TItem, TReceipt> action
+    ) where TReceipt : new() => Set.TryGetValue(
+        item, 
+        out TItem? reference
+    ) ? action.DoAction(reference)! : new();
+}
+
+public abstract class MoveItemBase<TItem>(List<TItem> items) : IListAction<TItem, ItemMoveInfo>
+{
+    protected readonly List<TItem> Items = items;
+
+    public ItemMoveInfo DoAction(TItem item)
+    {
+        // The object doing the moving should be in charge of creating the "receipt" right?
+        ItemMoveInfo result = new ()
+        {
+            Action = Action
+        };
+
+        int current = Items.IndexOf(item);
+
+        result.Action = Action;
+
+        if (current < 0)
+        {
+            return result;
+        }
+
+        result.OriginalIndex = current;
+        result.Index = CalculateTargetIndex(current);
+
+        Move(item, current, result.Index.Value);
+
+        result.Direction = Direction;
+
+        return result;
+    }
+
+    private ListDirection Direction => Action switch
+    {
+        ItemAction.MoveUp or ItemAction.MoveToTop => ListDirection.Up,
+        ItemAction.MoveDown or ItemAction.MoveToEnd => ListDirection.Down,
+        _ => ListDirection.None
+    };
+
+    protected abstract ItemAction Action { get; }
+
+    protected abstract int CalculateTargetIndex(int current);
+
+    private void Move(TItem item, int from, int to)
+    {
+        if (from == to)
+        {
+            return;
+        }
+
+        Items.RemoveAt(from);
+
+        // Adjust target index if moving "up"
+        if (to > from)
+        {
+            to--;
+        }
+
+        Items.Insert(to, item);
+    }
+}
+
+public class MoveItemDown<TItem>(List<TItem> items) : MoveItemBase<TItem>(items)
+{
+    protected override ItemAction Action => ItemAction.MoveDown;
+
+    protected override int CalculateTargetIndex(int current)
+        => Math.Clamp(current + 1, current, Items.Count);
+}
+
+public class MoveItemToEnd<TItem>(List<TItem> items) : MoveItemBase<TItem>(items)
+{
+    protected override ItemAction Action => ItemAction.MoveToEnd;
+
+    protected override int CalculateTargetIndex(int current)
+        => Items.Count;
+}
+
+public class MoveItemUp<TItem>(List<TItem> items) : MoveItemBase<TItem>(items)
+{
+    protected override ItemAction Action => ItemAction.MoveUp;
+
+    protected override int CalculateTargetIndex(int current)
+        => Math.Clamp(current - 1, 0, current);
+}
+
+public class MoveItemToTop<TItem>(List<TItem> items) : MoveItemBase<TItem>(items)
+{
+    protected override ItemAction Action => ItemAction.MoveToTop;
+
+    protected override int CalculateTargetIndex(int current)
+        => 0;
+}
+
+// END Architecture Specification ---------------------------------------------
+
+// BEGIN Implementation -------------------------------------------------------
+// These need to be refactored to use the Architecture Specification
 
 public class ItemActions
 {
@@ -223,7 +377,7 @@ public class OrderedSet<TItem> where TItem : class
     private ItemMoveInfo MoveItem(TItem item, ItemAction action)
     {
         ItemMoveInfo result = new()
-        { 
+        {
             Action = action
         };
 
@@ -295,7 +449,7 @@ public class OrderedSet<TItem> where TItem : class
 /// Provides a filtered and controlled view of an OrderedSet for safe access by consumers.
 /// </summary>
 public class TrackerListView<TItem>(
-    OrderedSet<TItem> backing, 
+    OrderedSet<TItem> backing,
     Func<ItemMoveInfo, ItemMoveInfo>? recorder = null
 ) where TItem : class
 {
@@ -385,3 +539,4 @@ public class Tracker<TItem> where TItem : class
         _actions.GetActions(item).Register(item.Action); // this will throw
     }
 }
+// END Implementation ---------------------------------------------------------

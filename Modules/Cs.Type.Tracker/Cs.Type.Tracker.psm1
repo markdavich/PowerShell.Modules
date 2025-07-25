@@ -1,19 +1,7 @@
-Clear-Host
-
 $dllPath = Join-Path $PSScriptRoot 'Cs.Type.dll'
 
 Write-Host ([DateTime]::Now)
 Write-Host $dllPath
-Write-Host 'Yellow'
-
-# $assembly = [System.Reflection.Assembly]::LoadFrom($dllPath)
-
-# # Use the loaded assembly to resolve the type directly:
-# $trackerOpenType = $assembly.GetType("Cs.Type.Tracker``1", $true)
-
-# # Construct closed generic type (Tracker[$Type])
-# $closedTrackerType = $trackerOpenType.MakeGenericType(@($Type))
-
 Write-Host
 Write-Host '1. Load Cs.Type.dll'
 
@@ -36,4 +24,8 @@ Write-Host '3. Register the Type Accelerator'
 # │ Generic │
 # ╰─────────╯
 # --------------------------------------------------------
+$TypeAccelerator::Add('ListDirection', [Cs.Type.ListDirection])
+$TypeAccelerator::Add('ItemMoveInfo', [Cs.Type.ItemMoveInfo])
+$TypeAccelerator::Add('OrderedSet', [Cs.Type.OrderedSet``1])
+$TypeAccelerator::Add('TrackerListView', [Cs.Type.TrackerListView``1])
 $TypeAccelerator::Add('Tracker', [Cs.Type.Tracker``1])

@@ -2,6 +2,9 @@
 	"folders": [
 		{
 			"path": "."
+		},
+		{
+			"path": "../IDL/Idl.PrivateFire.Rebuild"
 		}
 	],
 	"settings": {}

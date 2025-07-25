@@ -1,20 +1,11 @@
 ﻿{
   "profiles": {
     "default": {
-      "locations": {
-        "powershell": "C:\\Code\\Repos",
-        "explorer": "C:\\Code\\Repos"
-      },
       "installs": {
         "vsCode": {
           "install": "Microsoft.VisualStudioCode",
-          "extensions": [
-            "yzhang.markdown-all-in-one"
-          ],
           "settings.json": {
-            "file": "C:\\Users\\mark.davich\\AppData\\Roaming\\Code\\User\\settings.json",
             "content": {
-              "security.workspace.trust.untrustedFiles": "open",
               "editor.rulers": [
                 {
                   "column": 80,
@@ -24,67 +15,76 @@
                   "column": 85,
                   "color": "#ff000050"
                 }
-              ]
-            }
-          }
+              ],
+              "security.workspace.trust.untrustedFiles": "open"
+            },
+            "file": "C:\\Users\\mark.davich\\AppData\\Roaming\\Code\\User\\settings.json"
+          },
+          "extensions": [
+            "yzhang.markdown-all-in-one"
+          ]
         }
+      },
+      "locations": {
+        "explorer": "C:\\Code\\Repos",
+        "powershell": "C:\\Code\\Repos"
       },
       "commands": [
         {
-          "description": "Open the PowerShell profile in the default editor.",
-          "params": [],
-          "alias": "op",
           "icon": "📜",
-          "name": "Open-Profile"
-        },
-        {
-          "description": "Reload the PowerShell profile.",
           "params": [],
-          "alias": "lp",
-          "icon": "🔄",
-          "name": "Load-Profile"
+          "description": "Open the PowerShell profile in the default editor.",
+          "name": "Open-Profile",
+          "alias": "op"
         },
         {
-          "description": "Format JSON strings with standard indentation.",
+          "icon": "🔄",
+          "params": [],
+          "description": "Reload the PowerShell profile.",
+          "name": "Load-Profile",
+          "alias": "lp"
+        },
+        {
+          "icon": "🪄",
           "params": [
             "json"
           ],
-          "alias": "",
-          "icon": "🪄",
-          "name": "Format-Json"
+          "description": "Format JSON strings with standard indentation.",
+          "name": "Format-Json",
+          "alias": ""
         },
         {
-          "description": "Save JSON to a file with proper formatting.",
+          "icon": "💾",
           "params": [
             "json",
             "path"
           ],
-          "alias": "",
-          "icon": "💾",
-          "name": "Save-Json"
+          "description": "Save JSON to a file with proper formatting.",
+          "name": "Save-Json",
+          "alias": ""
         },
         {
-          "description": "Change the current Explorer location.",
+          "icon": "🚀",
           "params": [
             "path"
           ],
-          "alias": "se",
-          "icon": "🚀",
-          "name": "Set-ExplorerLocation"
+          "description": "Change the current Explorer location.",
+          "name": "Set-ExplorerLocation",
+          "alias": "se"
         },
         {
-          "description": "Reset the Explorer location to the default.",
-          "params": [],
-          "alias": "re",
           "icon": "🧑‍🚀",
-          "name": "Reset-ExplorerLocation"
+          "params": [],
+          "description": "Reset the Explorer location to the default.",
+          "name": "Reset-ExplorerLocation",
+          "alias": "re"
         },
         {
-          "description": "Open the User Setup JSON file.",
-          "params": [],
-          "alias": "ou",
           "icon": "📝",
-          "name": "Open-UserSetupJson"
+          "params": [],
+          "description": "Open the User Setup JSON file.",
+          "name": "Open-UserSetupJson",
+          "alias": "ou"
         }
       ]
     },

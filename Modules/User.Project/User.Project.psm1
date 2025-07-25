@@ -252,13 +252,17 @@ function Import-ProjectModules {
     $paths = [ProjectPaths]::new($projectRoot)
     $modulesPath = $paths.GetModulesPath()
 
-
     $modules = Get-ChildItem -Path $modulesPath -Recurse -Filter '*.psm1'
 
-    [Tracker[System.IO.FileSystemInfo]]$tracker = `
-        [Tracker[System.IO.FileSystemInfo]]::new($modules)
-
     [Logger]$log = [Logger]::new()
+
+    try {
+        [Tracker[System.IO.FileSystemInfo]]$tracker = `
+            [Tracker[System.IO.FileSystemInfo]]::new($modules)
+    }
+    catch {
+        <$log.Error("Could not instantiate logger", $_)
+    }
 
     $log.Start("Importing Modules for Project '$(Split-Path $projectRoot -Leaf)'")
     $log.KeyValue("Modules Path", $modulesPath)
@@ -277,15 +281,23 @@ function ImportModules {
         [Logger]$Log
     )
 
-    foreach ($module in @( $Tracker.ToDo )) {
+    $t = $Tracker
+    $td = $t.ToDo
+    $tdi = $td.Items
+    $tdia = @( $tdi )
+
+    # $modules = @( $Tracker.ToDo.Items )
+
+    foreach ($module in @( $Tracker.ToDo.Items )) {
         try {
-            Import-Module $module -Force -Global -ErrorAction Stop
+            Import-Module $module -Force -Global -PassThru -ErrorAction Stop
             $Log.IncreaseIndent()
             $Log.KeyValue("[📦] Imported module", $($module.FullName))
             $Tracker.Complete($module)
             $Log.DecreaseIndent()
         }
         catch {
+            $Tracker.ToDo.MoveToEnd($module)
             $Log.Blank()
             $Log.KeyValue("❌ Failed to import module", $($module.FullName))
             $Log.Blank()
@@ -296,8 +308,8 @@ function ImportModules {
         $Log.Blank()
         $Log.IncreaseIndent()
         $Log.Note("Retry Module Imports on $($Tracker.Incomplete.Count) Module(s)")
-        foreach ($module in $Tracker.ToDo) {
-            $Log.BUllet($module.Name)
+        foreach ($unImportedModule in $Tracker.ToDo.Items) {
+            $Log.Bullet($unImportedModule.Name)
         }
         $Log.DecreaseIndent()
         ImportModules $Tracker $Log

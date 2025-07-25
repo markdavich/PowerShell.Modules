@@ -44,4 +44,7 @@
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
         <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
     </PropertyGroup>
+    <ItemGroup>
+      <Compile Include="Class1.cs" />
+    </ItemGroup>
 </Project>

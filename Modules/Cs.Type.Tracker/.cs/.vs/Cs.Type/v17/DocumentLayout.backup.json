@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Code\\Repos\\.bops.lib!\\Modules\\Cs.Type.Tracker\\.cs\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{F949A17D-7C27-4038-BF9B-136DEFAE63DD}|Cs.Type.csproj|c:\\code\\repos\\.bops.lib!\\modules\\cs.type.tracker\\.cs\\class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F949A17D-7C27-4038-BF9B-136DEFAE63DD}|Cs.Type.csproj|solutionrelative:class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{F949A17D-7C27-4038-BF9B-136DEFAE63DD}|Cs.Type.csproj|c:\\code\\repos\\.bops.lib!\\modules\\cs.type.tracker\\.cs\\tracker.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F949A17D-7C27-4038-BF9B-136DEFAE63DD}|Cs.Type.csproj|solutionrelative:tracker.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
@@ -39,12 +43,25 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "Class1.cs",
+              "DocumentMoniker": "C:\\Code\\Repos\\.bops.lib!\\Modules\\Cs.Type.Tracker\\.cs\\Class1.cs",
+              "RelativeDocumentMoniker": "Class1.cs",
+              "ToolTip": "C:\\Code\\Repos\\.bops.lib!\\Modules\\Cs.Type.Tracker\\.cs\\Class1.cs",
+              "RelativeToolTip": "Class1.cs",
+              "ViewState": "AgIAACMAAAAAAAAAAAAAwDoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-25T13:19:45.34Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "Tracker.cs",
               "DocumentMoniker": "C:\\Code\\Repos\\.bops.lib!\\Modules\\Cs.Type.Tracker\\.cs\\Tracker.cs",
               "RelativeDocumentMoniker": "Tracker.cs",
               "ToolTip": "C:\\Code\\Repos\\.bops.lib!\\Modules\\Cs.Type.Tracker\\.cs\\Tracker.cs",
               "RelativeToolTip": "Tracker.cs",
-              "ViewState": "AgIAACAAAAAAAAAAAAAAACQAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAJwAAAAAAAAAAAAqwKcAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-21T16:49:03.095Z",
               "EditorCaption": ""
