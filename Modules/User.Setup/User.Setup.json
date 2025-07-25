@@ -1,92 +1,92 @@
 ﻿{
   "profiles": {
     "default": {
-      "installs": {
-        "vsCode": {
-          "install": "Microsoft.VisualStudioCode",
-          "settings.json": {
-            "content": {
-              "editor.rulers": [
-                {
-                  "column": 80,
-                  "color": "#00ff6a50"
-                },
-                {
-                  "column": 85,
-                  "color": "#ff000050"
-                }
-              ],
-              "security.workspace.trust.untrustedFiles": "open"
-            },
-            "file": "C:\\Users\\mark.davich\\AppData\\Roaming\\Code\\User\\settings.json"
-          },
-          "extensions": [
-            "yzhang.markdown-all-in-one"
-          ]
-        }
-      },
       "locations": {
-        "explorer": "C:\\Code\\Repos",
-        "powershell": "C:\\Code\\Repos"
+        "powershell": "C:\\Code\\Repos",
+        "explorer": "C:\\Code\\Repos"
       },
       "commands": [
         {
           "icon": "📜",
-          "params": [],
-          "description": "Open the PowerShell profile in the default editor.",
           "name": "Open-Profile",
-          "alias": "op"
+          "alias": "op",
+          "description": "Open the PowerShell profile in the default editor.",
+          "params": []
         },
         {
           "icon": "🔄",
-          "params": [],
-          "description": "Reload the PowerShell profile.",
           "name": "Load-Profile",
-          "alias": "lp"
+          "alias": "lp",
+          "description": "Reload the PowerShell profile.",
+          "params": []
         },
         {
           "icon": "🪄",
+          "name": "Format-Json",
+          "alias": "",
+          "description": "Format JSON strings with standard indentation.",
           "params": [
             "json"
-          ],
-          "description": "Format JSON strings with standard indentation.",
-          "name": "Format-Json",
-          "alias": ""
+          ]
         },
         {
           "icon": "💾",
+          "name": "Save-Json",
+          "alias": "",
+          "description": "Save JSON to a file with proper formatting.",
           "params": [
             "json",
             "path"
-          ],
-          "description": "Save JSON to a file with proper formatting.",
-          "name": "Save-Json",
-          "alias": ""
+          ]
         },
         {
           "icon": "🚀",
+          "name": "Set-ExplorerLocation",
+          "alias": "se",
+          "description": "Change the current Explorer location.",
           "params": [
             "path"
-          ],
-          "description": "Change the current Explorer location.",
-          "name": "Set-ExplorerLocation",
-          "alias": "se"
+          ]
         },
         {
           "icon": "🧑‍🚀",
-          "params": [],
-          "description": "Reset the Explorer location to the default.",
           "name": "Reset-ExplorerLocation",
-          "alias": "re"
+          "alias": "re",
+          "description": "Reset the Explorer location to the default.",
+          "params": []
         },
         {
           "icon": "📝",
-          "params": [],
-          "description": "Open the User Setup JSON file.",
           "name": "Open-UserSetupJson",
-          "alias": "ou"
+          "alias": "ou",
+          "description": "Open the User Setup JSON file.",
+          "params": []
         }
-      ]
+      ],
+      "installs": {
+        "vsCode": {
+          "install": "Microsoft.VisualStudioCode",
+          "extensions": [
+            "yzhang.markdown-all-in-one"
+          ],
+          "settings.json": {
+            "file": "C:\\Users\\mark.davich\\AppData\\Roaming\\Code\\User\\settings.json",
+            "content": {
+              "editor.rulers": [
+                {
+                  "color": "#00ff6a50",
+                  "column": 80
+                },
+                {
+                  "color": "#ff000050",
+                  "column": 85
+                }
+              ],
+              "security.workspace.trust.untrustedFiles": "open"
+            }
+          }
+        }
+      }
     },
     "Mark.Davich": {
       "commands": [
