@@ -112,7 +112,7 @@ function Get-AllProjectFileMap {
 
 
 Export-ModuleMember -Function `
-    Copy-CodeBehindWithMatchingName `
-    Get-ClassDefinitionMap `
-    Get-CsFilesInProject `
+    Copy-CodeBehindWithMatchingName, `
+    Get-ClassDefinitionMap, `
+    Get-CsFilesInProject, `
     Get-AllProjectFileMap

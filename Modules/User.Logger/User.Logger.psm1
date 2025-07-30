@@ -8,6 +8,7 @@ class Logger {
     [ConsoleColor] $NoteColor = [ConsoleColor]::Blue
     [ConsoleColor] $ErrorColor = [ConsoleColor]::Red
     [ConsoleColor] $WarningColor = [ConsoleColor]::Yellow
+    [ConsoleColor] $LineColor = [ConsoleColor]::White
 
     [string] $KeyValueSeparator = ':'
     [ConsoleColor] $KeyColor = [ConsoleColor]::Yellow
@@ -109,12 +110,24 @@ class Logger {
         Write-Host
     }
 
+    [void] BeginLine([string] $Message) {
+        $this.BeginLine($Message, $this.LineColor)
+    }
+
     [void] BeginLine([string] $Message, [ConsoleColor] $Color) {
         $this.Add("$($this.InternalIndent())$Message", $Color)
     }
 
+    [void] Add([string] $Message) {
+        $this.Add($Message, $this.LineColor)
+    }
+
     [void] Add([string] $Message, [ConsoleColor] $Color) {
         Write-Host $Message -ForegroundColor $Color -NoNewline
+    }
+
+    [void] EndLine([string] $Message) {
+        $this.EndLine($Message, $this.LineColor)
     }
 
     [void] EndLine([string] $Message, [ConsoleColor] $Color) {

@@ -3,12 +3,16 @@
   "WorkspaceRootPath": "C:\\Code\\Repos\\.bops.lib!\\Modules\\Cs.Type.Tracker\\.cs\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{F949A17D-7C27-4038-BF9B-136DEFAE63DD}|Cs.Type.csproj|c:\\code\\repos\\.bops.lib!\\modules\\cs.type.tracker\\.cs\\class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F949A17D-7C27-4038-BF9B-136DEFAE63DD}|Cs.Type.csproj|solutionrelative:class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{F949A17D-7C27-4038-BF9B-136DEFAE63DD}|Cs.Type.csproj|c:\\code\\repos\\.bops.lib!\\modules\\cs.type.tracker\\.cs\\tracker.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F949A17D-7C27-4038-BF9B-136DEFAE63DD}|Cs.Type.csproj|solutionrelative:tracker.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F949A17D-7C27-4038-BF9B-136DEFAE63DD}|Cs.Type.csproj|c:\\code\\repos\\.bops.lib!\\modules\\cs.type.tracker\\.cs\\implementations\\itemactionslist.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F949A17D-7C27-4038-BF9B-136DEFAE63DD}|Cs.Type.csproj|solutionrelative:implementations\\itemactionslist.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F949A17D-7C27-4038-BF9B-136DEFAE63DD}|Cs.Type.csproj|c:\\code\\repos\\.bops.lib!\\modules\\cs.type.tracker\\.cs\\implementations\\itemactions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F949A17D-7C27-4038-BF9B-136DEFAE63DD}|Cs.Type.csproj|solutionrelative:implementations\\itemactions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,7 +22,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 7,
           "Children": [
             {
               "$type": "Bookmark",
@@ -42,28 +46,39 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Class1.cs",
-              "DocumentMoniker": "C:\\Code\\Repos\\.bops.lib!\\Modules\\Cs.Type.Tracker\\.cs\\Class1.cs",
-              "RelativeDocumentMoniker": "Class1.cs",
-              "ToolTip": "C:\\Code\\Repos\\.bops.lib!\\Modules\\Cs.Type.Tracker\\.cs\\Class1.cs",
-              "RelativeToolTip": "Class1.cs",
-              "ViewState": "AgIAABoAAAAAAAAAAAAUwCsAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 2,
+              "Title": "ItemActions.cs",
+              "DocumentMoniker": "C:\\Code\\Repos\\.bops.lib!\\Modules\\Cs.Type.Tracker\\.cs\\Implementations\\ItemActions.cs",
+              "RelativeDocumentMoniker": "Implementations\\ItemActions.cs",
+              "ToolTip": "C:\\Code\\Repos\\.bops.lib!\\Modules\\Cs.Type.Tracker\\.cs\\Implementations\\ItemActions.cs",
+              "RelativeToolTip": "Implementations\\ItemActions.cs",
+              "ViewState": "AgIAAAcAAAAAAAAAAAAqwA8AAAAnAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-25T13:19:45.34Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-30T02:41:16.018Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "ItemActionsList.cs",
+              "DocumentMoniker": "C:\\Code\\Repos\\.bops.lib!\\Modules\\Cs.Type.Tracker\\.cs\\Implementations\\ItemActionsList.cs",
+              "RelativeDocumentMoniker": "Implementations\\ItemActionsList.cs",
+              "ToolTip": "C:\\Code\\Repos\\.bops.lib!\\Modules\\Cs.Type.Tracker\\.cs\\Implementations\\ItemActionsList.cs",
+              "RelativeToolTip": "Implementations\\ItemActionsList.cs",
+              "ViewState": "AgIAABMAAAAAAAAAAAAqwCMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-30T02:39:39.709Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
               "Title": "Tracker.cs",
               "DocumentMoniker": "C:\\Code\\Repos\\.bops.lib!\\Modules\\Cs.Type.Tracker\\.cs\\Tracker.cs",
               "RelativeDocumentMoniker": "Tracker.cs",
               "ToolTip": "C:\\Code\\Repos\\.bops.lib!\\Modules\\Cs.Type.Tracker\\.cs\\Tracker.cs",
               "RelativeToolTip": "Tracker.cs",
-              "ViewState": "AgIAAHwBAAAAAAAAAAAqwIIBAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAEAAAAAAAAAAAAAAAEIAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-21T16:49:03.095Z",
+              "WhenOpened": "2025-07-29T19:08:48.92Z",
               "EditorCaption": ""
             }
           ]

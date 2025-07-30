@@ -24,8 +24,9 @@ Write-Host '3. Register the Type Accelerator'
 # │ Generic │
 # ╰─────────╯
 # --------------------------------------------------------
-$TypeAccelerator::Add('ListDirection', [Cs.Type.ListDirection])
-$TypeAccelerator::Add('ItemMoveInfo', [Cs.Type.ItemMoveInfo])
-$TypeAccelerator::Add('OrderedSet', [Cs.Type.OrderedSet``1])
-$TypeAccelerator::Add('TrackerListView', [Cs.Type.TrackerListView``1])
+$TypeAccelerator::Add('ListDirection', [Cs.Type.Enumerations.ListDirection])
+$TypeAccelerator::Add('ListDirection', [Cs.Type.Enumerations.ItemAction])
+$TypeAccelerator::Add('ItemMoveInfo', [Cs.Type.Implementations.ItemMoveInfo])
+$TypeAccelerator::Add('OrderedSet', [Cs.Type.Implementations.OrderedSet``1])
+$TypeAccelerator::Add('TrackerListView', [Cs.Type.Implementations.TrackerListView``1])
 $TypeAccelerator::Add('Tracker', [Cs.Type.Tracker``1])
