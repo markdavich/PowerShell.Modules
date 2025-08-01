@@ -1,8 +1,8 @@
-﻿# using module User.Setup
-using module User.Json
+# using module Bops.Lib.Setup
+using module Bop.U.Json
 using module User.Common
-using module User.Setup.Classes.Command
-using module User.Setup
+using module Bops.Lib.Setup.Classes.Command
+using module Bops.Lib.Setup
 
 Write-Host
 Write-Host "╭──────────────────────────────╮" -ForegroundColor Blue
@@ -198,4 +198,6 @@ function main {
 }
 
 main
+
+
 

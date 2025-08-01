@@ -31,5 +31,20 @@ function Split-StringAtWordBoundary {
     return $result
 }
 
+function ConvertTo-PascalCase {
+    param (
+        [string]$Text
+    )
+
+    if (-not $Text) { return "" }
+
+    return ($Text -split '[^a-zA-Z0-9]+' | ForEach-Object {
+            if ($_ -ne '') {
+                $_.Substring(0, 1).ToUpper() + $_.Substring(1).ToLower()
+            }
+        }) -join ''
+}
+
 Export-ModuleMember -Function `
-    Split-StringAtWordBoundary
+    'Split-StringAtWordBoundary', `
+    'ConvertTo-PascalCase'
