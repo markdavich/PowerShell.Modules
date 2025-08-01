@@ -1,0 +1,3 @@
+[submodule "Projects/Idl.PrivateFire.Rebuild"]
+	path = Projects/Idl.PrivateFire.Rebuild
+	url = git@github.com:markdavich/Idl.PrivateFire.Rebuild.git
