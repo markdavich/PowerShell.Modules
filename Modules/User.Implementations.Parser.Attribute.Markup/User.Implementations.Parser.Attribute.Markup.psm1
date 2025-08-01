@@ -1,6 +1,6 @@
 using module User.Abstracts.Parser.Attribute
 using module User.Abstracts.Attribute
-using module User.Implementations.Attribute.Markup
+using module Bop.i.Attribute.Markup
 
 class MarkupAttributeParser : AbstractAttributeParser {
     MarkupAttributeParser([string]$content) : base($content) {}

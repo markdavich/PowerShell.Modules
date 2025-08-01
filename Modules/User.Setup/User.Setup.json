@@ -1,72 +1,9 @@
 ﻿{
   "profiles": {
     "default": {
-      "locations": {
-        "explorer": "C:\\Code\\Repos",
-        "powershell": "C:\\Code\\Repos"
-      },
-      "commands": [
-        {
-          "alias": "op",
-          "params": [],
-          "icon": "📜",
-          "description": "Open the PowerShell profile in the default editor.",
-          "name": "Open-Profile"
-        },
-        {
-          "alias": "lp",
-          "params": [],
-          "icon": "🔄",
-          "description": "Reload the PowerShell profile.",
-          "name": "Load-Profile"
-        },
-        {
-          "alias": "",
-          "params": [
-            "json"
-          ],
-          "icon": "🪄",
-          "description": "Format JSON strings with standard indentation.",
-          "name": "Format-Json"
-        },
-        {
-          "alias": "",
-          "params": [
-            "json",
-            "path"
-          ],
-          "icon": "💾",
-          "description": "Save JSON to a file with proper formatting.",
-          "name": "Save-Json"
-        },
-        {
-          "alias": "se",
-          "params": [
-            "path"
-          ],
-          "icon": "🚀",
-          "description": "Change the current Explorer location.",
-          "name": "Set-ExplorerLocation"
-        },
-        {
-          "alias": "re",
-          "params": [],
-          "icon": "🧑‍🚀",
-          "description": "Reset the Explorer location to the default.",
-          "name": "Reset-ExplorerLocation"
-        },
-        {
-          "alias": "ou",
-          "params": [],
-          "icon": "📝",
-          "description": "Open the User Setup JSON file.",
-          "name": "Open-UserSetupJson"
-        }
-      ],
       "installs": {
         "vsCode": {
           "settings.json": {
-            "file": "C:\\Users\\mark.davich\\AppData\\Roaming\\Code\\User\\settings.json",
             "content": {
               "security.workspace.trust.untrustedFiles": "open",
               "editor.rulers": [
@@ -79,14 +16,77 @@
                   "color": "#ff000050"
                 }
               ]
-            }
+            },
+            "file": "C:\\Users\\mark.davich\\AppData\\Roaming\\Code\\User\\settings.json"
           },
           "install": "Microsoft.VisualStudioCode",
           "extensions": [
             "yzhang.markdown-all-in-one"
           ]
         }
-      }
+      },
+      "locations": {
+        "explorer": "C:\\Code\\Repos",
+        "powershell": "C:\\Code\\Repos"
+      },
+      "commands": [
+        {
+          "params": [],
+          "alias": "op",
+          "description": "Open the PowerShell profile in the default editor.",
+          "icon": "📜",
+          "name": "Open-Profile"
+        },
+        {
+          "params": [],
+          "alias": "lp",
+          "description": "Reload the PowerShell profile.",
+          "icon": "🔄",
+          "name": "Load-Profile"
+        },
+        {
+          "params": [
+            "json"
+          ],
+          "alias": "",
+          "description": "Format JSON strings with standard indentation.",
+          "icon": "🪄",
+          "name": "Format-Json"
+        },
+        {
+          "params": [
+            "json",
+            "path"
+          ],
+          "alias": "",
+          "description": "Save JSON to a file with proper formatting.",
+          "icon": "💾",
+          "name": "Save-Json"
+        },
+        {
+          "params": [
+            "path"
+          ],
+          "alias": "se",
+          "description": "Change the current Explorer location.",
+          "icon": "🚀",
+          "name": "Set-ExplorerLocation"
+        },
+        {
+          "params": [],
+          "alias": "re",
+          "description": "Reset the Explorer location to the default.",
+          "icon": "🧑‍🚀",
+          "name": "Reset-ExplorerLocation"
+        },
+        {
+          "params": [],
+          "alias": "ou",
+          "description": "Open the User Setup JSON file.",
+          "icon": "📝",
+          "name": "Open-UserSetupJson"
+        }
+      ]
     },
     "Mark.Davich": {
       "commands": [

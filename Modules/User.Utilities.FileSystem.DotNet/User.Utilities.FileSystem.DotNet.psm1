@@ -1,4 +1,6 @@
 using namespace System.IO
+using module User.Implementations.Parser.Directive.Aspx
+using module User.Implementations.Parser.Attribute.Markup
 
 function Copy-CodeBehindWithMatchingName {
     param (
@@ -110,9 +112,129 @@ function Get-AllProjectFileMap {
     return $map
 }
 
+function Get-ViewMapForAllViews {
+    param (
+        [FileSystemInfo] $FolderPath,
+        [switch] $Recurse = $false
+    )
+
+    [PSCustomObject] $result = @{ }
+
+    [FileSystemInfo[]] $views = Get-ViewFileList -Folder $FolderPath -Recurse:$Recurse
+
+    foreach ($view in $views) {
+        $result[$view.Name] = Get-ViewMapForSingleView $view
+    }
+
+    return $result
+}
+
+function Get-ViewMapForSingleView {
+    param (
+        [FileSystemInfo] $View
+    )
+
+    [string] $inheritsKey = [AspxDirectiveParser]::AttributeNames.Inherits
+    [string] $codeFileKey = [AspxDirectiveParser]::AttributeNames.CodeFile
+
+    $class = Get-AttributeValue $View $inheritsKey
+    $codeBehind = Get-AttributeValue $View $codeFileKey
+
+    [PSCustomObject] $result = [PSCustomObject]@{
+        Path  = $View
+        Class = [PSCustomObject]@{
+            Name     = $class
+            FileName = $codeBehind
+            Path     = Get-CodeBehindPath $View $codeBehind
+        }
+    }
+    
+    return $result
+}
+
+function Get-AttributeValue {
+    param (
+        [FileSystemInfo] $View,
+        [string] $Key
+    )
+
+    [AspxDirectiveParser] $parser = [AspxDirectiveParser]::new($View)
+    [MarkupAttributeParser] $attributes = $parser.Attributes
+
+    $result = $attributes.HasKey($Key) `
+        ? [string]::IsNullOrEmpty($attributes.Value($Key)) `
+        ? $null `
+        : $attributes.Value($Key) `
+        : $null
+
+    return $result
+}
+
+function Get-CodeBehindPath {
+    param(
+        [FileSystemInfo] $View,
+        [string] $CodeBehindFileName
+    )
+
+    if (Test-CodeBehindExists $View $CodeBehindFileName) {
+        return Get-UntestedCodeBehindPath $View $CodeBehindFileName
+    }
+
+    return $null
+}
+
+function Test-CodeBehindExists {
+    param(
+        [FileSystemInfo] $View,
+        [string] $CodeBehindFileName
+    )
+
+    if ([string]::IsNullOrEmpty($CodeBehindFileName)) {
+        return $false
+    }
+
+    $file = Get-UntestedCodeBehindPath $View $CodeBehindFileName
+
+    return (Test-Path -Path $file)
+}
+
+function Get-UntestedCodeBehindPath {
+    param(
+        [FileSystemInfo] $View,
+        [string] $CodeBehindFileName
+    )
+
+    $folder = Split-Path -Path $View -Parent
+    $result = Join-Path -Path $folder -ChildPath $CodeBehindFileName
+
+    return $result
+}
+
+function Get-ViewFileList {
+    param (
+        [FileSystemInfo] $Folder,
+        [switch] $Recurse = $false
+    )
+
+    [FileSystemInfo[]] $result = Get-ChildItem -Path $Folder -Recurse:$Recurse -Filter "*.as*x"
+
+    return $result
+}
+
+
+
+
 
 Export-ModuleMember -Function `
-    Copy-CodeBehindWithMatchingName, `
-    Get-ClassDefinitionMap, `
-    Get-CsFilesInProject, `
-    Get-AllProjectFileMap
+    'Copy-CodeBehindWithMatchingName', `
+    'Get-ClassDefinitionMap', `
+    'Get-CsFilesInProject', `
+    'Get-AllProjectFileMap', `
+    'Get-ViewMapForAllViews', `
+    'Get-ViewMapForSingleView', `
+    'Get-AttributeValue', `
+    'Get-CodeBehindPath', `
+    'Test-CodeBehindExists', `
+    'Get-UntestedCodeBehindPath', `
+    'Get-ViewFileList'
+

@@ -170,7 +170,7 @@ class Logger {
 
     [void] Bullet([string]$Value) {
         $this.IncreaseIndent()
-        $this.BeginLine("$($this.BulletSymbol) ", $this.BulletColor)
+        $this.BeginLine($this.BulletSymbol.PadRight($this.IndentString.Length), $this.BulletColor)
         $this.EndLine($Value, $this.BulletTextColor)
         $this.DecreaseIndent()
     }

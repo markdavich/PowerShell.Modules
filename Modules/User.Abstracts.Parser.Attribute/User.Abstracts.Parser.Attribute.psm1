@@ -15,13 +15,14 @@ class AbstractAttributeParser : AbstractParser {
     }
 
     [void] SetAttribute([AbstractAttribute]$Attribute) {
-        $this._pairs[$Attribute.Key] = $Attribute
+        $this.SetAttribute($Attribute.Key, $Attribute.Value)
+        # $this._pairs[$Attribute.Key] = $Attribute
     }
 
     [void] SetAttribute([string]$Key, [string]$Value) {
         # Write-Host "Add key=$Key, value=$Value"
 
-        $attr = $this.CreateAttribute($Key, $Value)
+        $attr = $this.CreateAttribute($Key.Trim(), $Value.Trim())
 
         # Write-Host "Resulting attribute: $($attr.ToString())"
         
@@ -33,7 +34,7 @@ class AbstractAttributeParser : AbstractParser {
     }
 
     [string] Value([string]$Key) {
-        return $this._pairs[$Key].Value
+        return $this._pairs[$Key].Value.Trim()
     }
 
     [string] ToString() {
