@@ -4,6 +4,12 @@ using module Bop.A.Parser
 using module Bop.C.Parser.Attribute.Markup
 using module Bop.C.Tag.Asp
 
+Write-Host "<[" -ForegroundColor Green -NoNewline
+Write-Host "Bops.Lib! " -ForegroundColor Yellow -NoNewline
+Write-Host "[M] " -ForegroundColor Magenta -NoNewline
+Write-Host $MyInvocation.MyCommand.Path -ForegroundColor Cyan -NoNewline
+Write-Host "]" -ForegroundColor Green
+
 class AspTagParser : AbstractParser {
     [PSCustomObject[]] $Tags = @()
 

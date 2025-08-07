@@ -1,3 +1,9 @@
+Write-Host "<[" -ForegroundColor Green -NoNewline
+Write-Host "Bops.Lib! " -ForegroundColor Yellow -NoNewline
+Write-Host "[M] " -ForegroundColor Magenta -NoNewline
+Write-Host $MyInvocation.MyCommand.Path -ForegroundColor Cyan -NoNewline
+Write-Host "]" -ForegroundColor Green
+
 # 1. Load the Cs.Type.dll from the root of this module
 Add-Type -Path (Join-Path $PSScriptRoot 'Cs.Type.dll')
 

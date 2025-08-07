@@ -2,6 +2,12 @@ using namespace System.IO
 using module Bop.C.Parser.Directive.Aspx
 using module Bop.C.Parser.Attribute.Markup
 
+Write-Host "<[" -ForegroundColor Green -NoNewline
+Write-Host "Bops.Lib! " -ForegroundColor Yellow -NoNewline
+Write-Host "[M] " -ForegroundColor Magenta -NoNewline
+Write-Host $MyInvocation.MyCommand.Path -ForegroundColor Cyan -NoNewline
+Write-Host "]" -ForegroundColor Green
+
 function Copy-CodeBehindWithMatchingName {
     param (
         [Parameter(Mandatory)]

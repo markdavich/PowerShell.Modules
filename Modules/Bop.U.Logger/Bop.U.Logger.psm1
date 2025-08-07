@@ -2,6 +2,12 @@ using namespace System
 
 using module Bop.U.Strings
 
+Write-Host "<[" -ForegroundColor Green -NoNewline
+Write-Host "Bops.Lib! " -ForegroundColor Yellow -NoNewline
+Write-Host "[M] " -ForegroundColor Magenta -NoNewline
+Write-Host $MyInvocation.MyCommand.Path -ForegroundColor Cyan -NoNewline
+Write-Host "]" -ForegroundColor Green
+
 class Logger {
     [ConsoleColor] $StartColor = [ConsoleColor]::Green
     [ConsoleColor] $EnterColor = [ConsoleColor]::Cyan

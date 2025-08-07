@@ -1,5 +1,11 @@
 using module Bop.A.Attribute
 
+Write-Host "<[" -ForegroundColor Green -NoNewline
+Write-Host "Bops.Lib! " -ForegroundColor Yellow -NoNewline
+Write-Host "[M] " -ForegroundColor Magenta -NoNewline
+Write-Host $MyInvocation.MyCommand.Path -ForegroundColor Cyan -NoNewline
+Write-Host "]" -ForegroundColor Green
+
 class MarkupAttribute : AbstractAttribute {
     MarkupAttribute([string]$text) : base($text) {
         # Write-Host "*** " -ForegroundColor Green -NoNewLine; Write-Host "MarkupAttribute($text) - OVERLOAD 1" -ForegroundColor Magenta

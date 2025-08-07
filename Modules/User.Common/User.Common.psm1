@@ -1,4 +1,10 @@
-﻿function Update-Modules {
+﻿Write-Host "<[" -ForegroundColor Green -NoNewline
+Write-Host "Bops.Lib! " -ForegroundColor Yellow -NoNewline
+Write-Host "[M] " -ForegroundColor Magenta -NoNewline
+Write-Host $MyInvocation.MyCommand.Path -ForegroundColor Cyan -NoNewline
+Write-Host "]" -ForegroundColor Green
+
+function Update-Modules {
     $coreModules = @(
         'Microsoft.PowerShell.Management', 'Microsoft.PowerShell.Utility', 'Microsoft.PowerShell.Security',
         'Microsoft.PowerShell.Host', 'Microsoft.PowerShell.Core', 'PSReadLine'

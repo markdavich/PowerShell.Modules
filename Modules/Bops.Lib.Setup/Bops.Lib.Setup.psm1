@@ -1,11 +1,19 @@
 using module Bop.U.Json
 
+Write-Host "<[" -ForegroundColor Green -NoNewline
+Write-Host "Bops.Lib! " -ForegroundColor Yellow -NoNewline
+Write-Host "[M] " -ForegroundColor Magenta -NoNewline
+Write-Host $MyInvocation.MyCommand.Path -ForegroundColor Cyan -NoNewline
+Write-Host "]" -ForegroundColor Green
+
 $modulePath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $jsonPath = Join-Path $modulePath 'Bops.Lib.Setup.json'
 $vbsPath = Join-Path $modulePath 'launch.location.vbs'
 $regPath = Join-Path $modulePath 'launch.location.reg'
 $defaultLocation = "C:\"
 
+
+Import-Module -Path "$PSScriptRoot\Bops.Lib.Setup.Settings.psm1"
 
 function Get-ExplorerLocation {
     # Write-Host "Bops.Lib.Setup: Get-ExplorerLocation" -ForegroundColor Green -BackgroundColor Yellow -NoNewline; Write-Host "" -ForegroundColor White -BackgroundColor Black
@@ -20,15 +28,49 @@ function Get-ExplorerLocation {
     return $result
 }
 
-function Set-ExplorerLocation($location) {
+function Set-ExplorerLocation {
+    param (
+        [string] $Location
+    )
+
+    Write-Host
+    Write-Host "Set-ExplorerLocation(Location: '$Location')"
+
     $settings = Get-UserSettings
-    $settings.profiles[$env:USERNAME].locations.explorer = $location
+
+    Write-Host "    `$settings = $settings"
+
+    $settings.profiles[$env:USERNAME].locations.explorer = $Location
+
+    Write-Host "    Calling: 'Save-UserSettings'"
+
+    # This line FAILS with:
+    #   Save-UserSettings: The term 'Save-UserSettings' is not recognized as a name of a
+    #   cmdlet, function, script file, or executable program. Check the spelling of the  
+    #   name, or if a path was included, verify that the path is correct and try again."
     Save-UserSettings $settings $env:USERNAME
 }
 
-function Update-VbsLocation($location) {
-    $vbsContent = "WScript.CreateObject(`"Wscript.Shell`").Run `"$location`""
-    Set-Content -Path $vbsPath -Value $vbsContent -Encoding ASCII
+function Update-VbsLocation {
+    param (
+        [string] $Location
+    )
+
+    $fallback = 'C:\'
+    $content = @"
+Dim fso, shell, path, defaultPath
+Set fso = CreateObject(`"Scripting.FileSystemObject`")
+Set shell = CreateObject(`"Wscript.Shell`")
+
+If fso.FolderExists(`"$Location`") Then
+    shell.Run `"$Location`"
+Else
+    ' fallback location if missing
+    shell.Run `"$fallback`"
+End If
+"@
+
+    Set-Content -Path $vbsPath -Value $content -Encoding ASCII
 }
 
 function Initialize-Explorer {
@@ -44,9 +86,11 @@ function Initialize-Explorer {
 
     # Add or update registry entry
     $regKey = "HKCU:\SOFTWARE\Classes\CLSID\{52205fd8-5dfb-447d-801a-d0b52f2e83e1}\shell\opennewwindow\command"
+
     if (-not (Test-Path $regKey)) {
         New-Item -Path $regKey -Force | Out-Null
     }
+
     Set-ItemProperty -Path $regKey -Name '(default)' -Value "wscript.exe `"$vbsPath`""
     Set-ItemProperty -Path $regKey -Name 'DelegateExecute' -Value ""
     Write-Host "Explorer launch location initialized."

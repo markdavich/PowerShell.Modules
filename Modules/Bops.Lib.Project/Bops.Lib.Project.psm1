@@ -1,73 +1,445 @@
+using namespace System.IO
+
 using module Bop.U.Logger
 using module Cs.Type.Tracker
 
+Write-Host "<[" -ForegroundColor Green -NoNewline
+Write-Host "Bops.Lib! " -ForegroundColor Yellow -NoNewline
+Write-Host "[M] " -ForegroundColor Magenta -NoNewline
+Write-Host $MyInvocation.MyCommand.Path -ForegroundColor Cyan -NoNewline
+Write-Host "]" -ForegroundColor Green
+
 class ProjectPaths {
-    [string]$Root
+    # Project Configuration Constants -----------------------------------------------
+    static [string] $MainFolderName = '.main'
+    static [string] $ReadmeFolderName = '.readme'
+    static [string] $FilesFolderName = 'Files'
+    static [string] $OutputFolderName = 'Output'
+    static [string] $MainScriptName = '.main.ps1'
+    static [string] $StartupScriptName = '.startup.ps1'
+    static [string] $ReadmeFileName = 'README.md'
+    static [string] $ModulesFolderName = 'modules'
+    static [string] $ClassModulesFolderName = 'Classes'
+    static [string] $FunctionModulesFolderName = 'Functions'
+    static [string] $VariableModulesFolderName = 'Variables'
+    static [string] $LoaderScriptName = '.loader.ps1'
+    static [string] $SettingsJsonName = 'Settings.json'
+    static [string] $SettingsClassName = 'Settings.ps1'
+    static [string] $ProjectTemplateName = 'Project.Template'
+    
+    # Backing Fields for Getters ----------------------------------------------------
+    hidden [FileSystemInfo] $_root # Initialized in Constructor
 
+    hidden [FileSystemInfo] $_projectRoot
+    hidden [FileSystemInfo] $_mainFolder
+    hidden [FileSystemInfo] $_readmeFolder
+    hidden [FileSystemInfo] $_filesFolder
+    hidden [FileSystemInfo] $_outputFolder
+    hidden [FileSystemInfo] $_mainScript
+    hidden [FileSystemInfo] $_startupScript
+    hidden [FileSystemInfo] $_modulesFolder
+    hidden [FileSystemInfo] $_functionModulesFolder
+    hidden [FileSystemInfo] $_classModulesFolder
+    hidden [FileSystemInfo] $_variableModulesFolder
+    hidden [FileSystemInfo] $_loaderScript
+    hidden [FileSystemInfo] $_settingsJson
+    hidden [FileSystemInfo] $_settingsClass
+    hidden [FileSystemInfo] $_projectTemplateFolder
+
+    hidden [Logger] $Log
+
+    # Constructor *******************************************************************
     ProjectPaths([string]$projectRoot) {
-        $this.Root = $projectRoot
-    }
+        $this.Log = [Logger]::new()
+        $this.Log.Start("Project Paths")
 
-    static [string] $MainFolder = '.main'
-    static [string] $ModulesFolder = 'modules'
-    static [string] $StartupScript = '.startup.ps1'
-    static [string] $LoaderScript = '.loader.ps1'
-    static [string] $SettingsJson = 'Settings.json'
-    static [string] $MainScript = '.main.ps1'
+        $this._root = Get-Item -Path $projectRoot
 
-    [string] GetModulesPath() {
-        return $this.GetProjectPath([ProjectPaths]::ModulesFolder)
-    }
+        $this | Add-Member -Name ProjectRoot -MemberType ScriptProperty -TypeName 'FileSystemInfo' -Value {
+            try {
 
-    [string] GetLoaderScriptPath() {
-        return $this.GetProjectPath([ProjectPaths]::LoaderScript)
-    }
-
-    [string] GetSettingsJsonPath() {
-        return $this.GetProjectPath([ProjectPaths]::SettingsJson)
-    }
-
-    hidden [string] GetProjectPath([string]$Path) {
-        return Join-Path $this.GetMainFolderPath() $Path
-    }
-
-    [string] GetMainFolderPath() {
-        return Join-Path $this.Root ([ProjectPaths]::MainFolder)
-    }
-
-    [string] GetMainScriptPath() {
-        return Join-Path $this.Root ([ProjectPaths]::MainScript)
-    }
-
-    [string] GetStartupScriptPath() {
-        return Join-Path $this.Root ([ProjectPaths]::StartupScript)
-    }
-
-    [string] GetModuleFolderPath([string]$ModuleName) {
-        return Join-Path ($this.GetModulesPath()) $ModuleName
-    }
-
-    [string] GetModuleFilePath([string]$ModuleName) {
-        $folder = $this.GetModuleFolderPath($ModuleName)
-        return Join-Path $folder "$ModuleName.psm1"
-    }
-
-    [string] CreateModuleFile([string]$ModuleName, [string]$Content) {
-        $folder = $this.GetModuleFolderPath($ModuleName)
-        $file = $this.GetModuleFilePath($ModuleName)
-
-        if (-not (Test-Path $folder)) {
-            New-Item -ItemType Directory -Path $folder -Force | Out-Null
+                $this.Log.Enter("ProjectPaths.GETTER: ProjectRoot")
+                $result = $this._root
+                $this.Log.KeyValue("Value", $result)
+                $this.Log.Leave()
+                return $result
+            }
+            catch {
+                $this.Log.Error("GETTER: ProjectRoot", $_)
+            }
         }
 
-        $Content | Set-Content -Path $file -Encoding UTF8
-        return $file
+        $this | Add-Member -Name MainFolder -MemberType ScriptProperty -TypeName 'FileSystemInfo' -Value {
+            try {
+
+                $this.Log.Enter("ProjectPaths.GETTER: MainFolder")
+                $result = $this.GetProjectItem([ProjectPaths]::MainFolderName)
+                $this.Log.KeyValue("Value", $result)
+                $this.Log.Leave()
+                return $result
+            }
+            catch {
+                $this.Log.Error("GETTER: MainFolder", $_)
+            }
+        }
+
+        $this | Add-Member -Name ReadmeFolder -MemberType ScriptProperty -TypeName 'FileSystemInfo' -Value {
+            try {
+
+                $this.Log.Enter("ProjectPaths.GETTER: ReadmeFolder")
+                $result = $this.GetProjectItem([ProjectPaths]::ReadmeFolderName)
+                $this.Log.KeyValue("Value", $result)
+                $this.Log.Leave()
+                return $result
+            }
+            catch {
+                $this.Log.Error("GETTER: ReadmeFolder", $_)
+            }
+        }
+
+        $this | Add-Member -Name FilesFolder -MemberType ScriptProperty -TypeName 'FileSystemInfo' -Value {
+            try {
+
+                $this.Log.Enter("ProjectPaths.GETTER: FilesFolder")
+                $result = $this.GetProjectItem([ProjectPaths]::FilesFolderName)
+                $this.Log.KeyValue("Value", $result)
+                $this.Log.Leave()
+                return $result
+            }
+            catch {
+                $this.Log.Error("GETTER: FilesFolder", $_)
+            }
+        }
+
+        $this | Add-Member -Name OutputFolder -MemberType ScriptProperty -TypeName 'FileSystemInfo' -Value {
+            try {
+
+                $this.Log.Enter("ProjectPaths.GETTER: OutputFolder")
+                $result = $this.GetProjectItem([ProjectPaths]::OutputFolderName)
+                $this.Log.KeyValue("Value", $result)
+                $this.Log.Leave()
+                return $result
+            }
+            catch {
+                $this.Log.Error("GETTER: OutputFolder", $_)
+            }
+        }
+
+        $this | Add-Member -Name MainScript -MemberType ScriptProperty -TypeName 'FileSystemInfo' -Value {
+            try {
+
+                $this.Log.Enter("ProjectPaths.GETTER: MainScript")
+                $result = $this.GetProjectItem([ProjectPaths]::MainScriptName)
+                $this.Log.KeyValue("Value", $result)
+                $this.Log.Leave()
+                return $result
+            }
+            catch {
+                $this.Log.Error("GETTER: MainScript", $_)
+            }
+        }
+
+        $this | Add-Member -Name StartupScript -MemberType ScriptProperty -TypeName 'FileSystemInfo' -Value {
+            try {
+
+                $this.Log.Enter("ProjectPaths.GETTER: StartupScript")
+                $result = $this.GetProjectItem([ProjectPaths]::StartupScriptName)
+                $this.Log.KeyValue("Value", $result)
+                $this.Log.Leave()
+                return $result
+            }
+            catch {
+                $this.Log.Error("GETTER: StartupScript", $_)
+            }
+        }
+
+        $this | Add-Member -Name ReadmeFile -MemberType ScriptProperty -TypeName 'FileSystemInfo' -Value {
+            try {
+
+                $this.Log.Enter("ProjectPaths.GETTER: ReadmeFile")
+                $result = $this.GetProjectItem([ProjectPaths]::ReadmeFileName)
+                $this.Log.KeyValue("Value", $result)
+                $this.Log.Leave()
+                return $result
+            }
+            catch {
+                $this.Log.Error("GETTER: ReadmeFile", $_)
+            }
+        }
+
+        $this | Add-Member -Name ModulesFolder -MemberType ScriptProperty -TypeName 'FileSystemInfo' -Value {
+            try {
+
+                $this.Log.Enter("ProjectPaths.GETTER: ModulesFolder")
+                $result = $this.GetMainFolderItem([ProjectPaths]::ModulesFolderName)
+                $this.Log.KeyValue("Value", $result)
+                $this.Log.Leave()
+                return $result
+            }
+            catch {
+                $this.Log.Error("GETTER: ModulesFolder", $_)
+            }
+        }
+
+        $this | Add-Member -Name FunctionModulesFolder -MemberType ScriptProperty -TypeName 'FileSystemInfo' -Value {
+            try {
+
+                $this.Log.Enter("ProjectPaths.GETTER: FunctionModulesFolder")
+                $result = $this.GetModuleFolder([ProjectPaths]::ModulesFolderName)
+                $this.Log.KeyValue("Value", $result)
+                $this.Log.Leave()
+                return $result
+            }
+            catch {
+                $this.Log.Error("GETTER: FunctionModulesFolder", $_)
+            }
+        }
+
+        $this | Add-Member -Name ClassModulesFolder -MemberType ScriptProperty -TypeName 'FileSystemInfo' -Value {
+            try {
+
+                $this.Log.Enter("ProjectPaths.GETTER: ClassModulesFolder")
+                $result = $this.GetModuleFolder([ProjectPaths]::ModulesFolderName)
+                $this.Log.KeyValue("Value", $result)
+                $this.Log.Leave()
+                return $result
+            }
+            catch {
+                $this.Log.Error("GETTER: ClassModulesFolder", $_)
+            }
+        }
+
+        $this | Add-Member -Name VariableModulesFolder -MemberType ScriptProperty -TypeName 'FileSystemInfo' -Value {
+            try {
+
+                $this.Log.Enter("ProjectPaths.GETTER: VariableModulesFolder")
+                $result = $this.GetModuleFolder([ProjectPaths]::ModulesFolderName)
+                $this.Log.KeyValue("Value", $result)
+                $this.Log.Leave()
+                return $result
+            }
+            catch {
+                $this.Log.Error("GETTER: VariableModulesFolder", $_)
+            }
+        }
+
+        $this | Add-Member -Name LoaderScript -MemberType ScriptProperty -TypeName 'FileSystemInfo' -Value {
+            try {
+
+                $this.Log.Enter("ProjectPaths.GETTER: LoaderScript")
+                $result = $this.GetMainFolderItem([ProjectPaths]::LoaderScriptName)
+                $this.Log.KeyValue("Value", $result)
+                $this.Log.Leave()
+                return $result
+            }
+            catch {
+                $this.Log.Error("GETTER: LoaderScript", $_)
+            }
+        }
+
+        $this | Add-Member -Name SettingsJson -MemberType ScriptProperty -TypeName 'FileSystemInfo' -Value {
+            try {
+
+                $this.Log.Enter("ProjectPaths.GETTER: SettingsJson")
+                $result = $this.GetMainFolderItem([ProjectPaths]::SettingsJsonName)
+                $this.Log.KeyValue("Value", $result)
+                $this.Log.Leave()
+                return $result
+            }
+            catch {
+                $this.Log.Error("GETTER: SettingsJson", $_)
+            }
+        }
+
+        $this | Add-Member -Name SettingsClass -MemberType ScriptProperty -TypeName 'FileSystemInfo' -Value {
+            try {
+
+                $this.Log.Enter("ProjectPaths.GETTER: SettingsClass")
+                $result = $this.GetMainFolderItem([ProjectPaths]::SettingsClassName)
+                $this.Log.KeyValue("Value", $result)
+                $this.Log.Leave()
+                return $result
+            }
+            catch {
+                $this.Log.Error("GETTER: SettingsClass", $_)
+            }
+        }
     }
 
-    [string] GetSettingsClassPath() {
-        return $this.GetProjectPath('Settings.ps1')
+    # Properties ====================================================================
+
+    # [FileSystemInfo] get_ProjectRoot() {
+    #     return $this._root
+    # }
+
+    #region ● Project Root > (.main, .readme, Files, Output, .main.ps1, .startup.ps1)
+    # [FileSystemInfo] get_MainFolder() {
+    #     return $this.GetProjectItem([ProjectPaths]::MainFolderName)
+    # }
+
+    # [FileSystemInfo] get_ReadmeFolder() {
+    #     return $this.GetProjectItem([ProjectPaths]::ReadmeFolderName)
+    # }
+
+    # [FileSystemInfo] get_FilesFolder() {
+    #     return $this.GetProjectItem([ProjectPaths]::FilesFolderName)
+    # }
+
+    # [FileSystemInfo] get_OutputFolder() {
+    #     return $this.GetProjectItem([ProjectPaths]::OutputFolderName)
+    # }
+
+    # [FileSystemInfo] get_MainScript() {
+    #     return $this.GetProjectItem([ProjectPaths]::MainScriptName)
+    # }
+
+    # [FileSystemInfo] get_StartupScript() {
+    #     return $this.GetProjectItem([ProjectPaths]::StartupScriptName)
+    # }
+
+    # [FileSystemInfo] get_ReadmeFile() {
+    #     return $this.GetProjectItem([ProjectPaths]::ReadmeFileName)
+    # }
+    #endregion
+
+    #region ● Main > Modules --------------------------------------------------------
+    # [FileSystemInfo] get_ModulesFolder() {
+    #     return $this.GetMainFolderItem([ProjectPaths]::ModulesFolderName)
+    # }
+
+    # [FileSystemInfo] get_FunctionModulesFolder() {
+    #     return $this.GetModuleFolder([ProjectPaths]::ModulesFolderName)
+    # }
+
+    # [FileSystemInfo] get_ClassModulesFolder() {
+    #     return $this.GetModuleFolder([ProjectPaths]::ModulesFolderName)
+    # }
+
+    # [FileSystemInfo] get_VariableModulesFolder() {
+    #     return $this.GetModuleFolder([ProjectPaths]::ModulesFolderName)
+    # }
+    #endregion
+
+    #region ● Main > Files (.loader.ps1, Settings.json, Settings.ps1) ---------------
+    # [FileSystemInfo] get_LoaderScript() {
+    #     return $this.GetMainFolderItem([ProjectPaths]::LoaderScriptName)
+    # }
+
+    # [FileSystemInfo] get_SettingsJson() {
+    #     return $this.GetMainFolderItem([ProjectPaths]::SettingsJsonName)
+    # }
+
+    # [FileSystemInfo] get_SettingsClass() {
+    #     return $this.GetMainFolderItem([ProjectPaths]::SettingsClassName)
+    # }
+    #endregion
+
+    #region ● Property Helpers ------------------------------------------------------
+    hidden [FileSystemInfo] GetProjectItem([string] $ItemName) {
+        try {
+
+            $this.Log.Enter("METHOD: GetProjectItem")
+            $result = Get-Item (Join-Path $this.ProjectRoot $ItemName)
+            $this.Log.Leave()
+            return $result
+        }
+        catch {
+            $this.Log.Error("METHOD:  GetProjectItem", $_)
+            throw
+        }
     }
+
+    hidden [FileSystemInfo] GetMainFolderItem([string] $ItemName) {
+        try {
+
+            $this.Log.Enter("METHOD: GetMainFolderItem")
+            $result = Get-Item (Join-Path $this.MainFolder $ItemName)
+            $this.Log.Leave()
+            return $result
+        }
+        catch {
+            $this.Log.Error("METHOD:  GetMainFolderItem", $_)
+            throw
+        }
+    }
+
+    hidden [FileSystemInfo] GetModuleFolder([string] $FolderName) {
+        try {
+
+            $this.Log.Enter("METHOD: GetModuleFolder")
+            $result = Get-Item (Join-Path $this.ModulesFolder $FolderName)
+            $this.Log.Leave()
+            return $result
+        }
+        catch {
+            $this.Log.Error("METHOD:  GetModuleFolder", $_)
+            throw
+        }
+    }
+
+    #region ● Create New Modules 
+    [FileSystemInfo] NewFunctionModule([string]$ModuleName, [string]$Content) {
+        $this.Log.Enter("METHOD: NewFunctionModule")
+        $result = $this.GetFunctionModuleFilePath($ModuleName)
+
+        $Content | Set-Content -Path $result -Encoding UTF8
+        $this.Log.Leave()
+        return $result
+    }
+
+    [FileSystemInfo] GetFunctionModuleFilePath([string]$ModuleName) {
+        try {
+
+            $this.Log.Enter("METHOD: GetFunctionModuleFilePath")
+            $result = Get-Item (Join-Path $this.FunctionModulesFolder "$ModuleName.psm1")
+            $this.Log.Leave()
+            return $result
+        }
+        catch {
+            $this.Log.Error("METHOD: GetFunctionModuleFilePath", $_)
+            throw
+        }
+    }
+
+    [FileSystemInfo] NewClassModule([string]$ModuleName, [string]$Content) {
+        $this.Log.Enter("METHOD: NewClassModule")
+        $result = $this.GetClassModuleFilePath($ModuleName)
+
+        $Content | Set-Content -Path $result -Encoding UTF8
+        $this.Log.Leave()
+        return $result
+    }
+
+    [FileSystemInfo] GetClassModuleFilePath([string]$ModuleName) {
+        try {
+
+            $this.Log.Enter("METHOD: GetClassModuleFilePath")
+            $result = Get-Item (Join-Path $this.ClassModulesFolder "$ModuleName.psm1")
+            $this.Log.Leave()
+            return $result
+        }
+        catch {
+            $this.Log.Error("METHOD: GetClassModuleFilePath", $_)
+            throw
+        }
+    }
+    #endregion
 }
+
+# This is a module scoped variable which stores the parent directory path of this file
+$projectTemplateName = [ProjectPaths]::ProjectTemplateName
+$scriptRoot = $PSScriptRoot
+
+Write-Host
+Write-Host "------------------------------------------------------------------------"
+Write-Host "Bops.Lib! [M]: Bops.Lib.Project.psm1"
+Write-Host "------------------------------------------------------------------------"
+Write-Host "         `$projectTemplateName = $projectTemplateName"
+Write-Host "                  `$scriptRoot = $scriptRoot"
+$script:ProjectTemplateFolder = Get-Item (Join-Path -Path $scriptRoot -ChildPath $projectTemplateName)
+Write-Host "`$script:ProjectTemplateFolder = $($script:ProjectTemplateFolder)"
+Write-Host "========================================================================"
+Write-Host
 
 class ProjectSettings {
     [string]$Root
@@ -80,7 +452,7 @@ class ProjectSettings {
 
     [object] Get() {
         # Write-Host "    --> ProjectSettings.Get()"
-        $jsonPath = (New-Object ProjectPaths $this.Root).GetSettingsJsonPath()
+        $jsonPath = (New-Object ProjectPaths $this.Root).SettingsJson
 
         # Write-Host "        !!! ProjectSettings.Get() `$jsonPath = '$jsonPath'"
         $username = $env:USERNAME
@@ -139,6 +511,7 @@ class ProjectSettings {
         $userSettings = $jsonObject.$username.Settings
 
         $settingsObject = [Activator]::CreateInstance($this.Type)
+
         foreach ($propertyName in $settingsObject.PSObject.Properties.Name) {
             if ($userSettings.PSObject.Properties.Match($propertyName)) {
                 $settingsObject.$propertyName = $userSettings.$propertyName
@@ -149,24 +522,22 @@ class ProjectSettings {
     }
 }
 
-function New-ProjectModule {
+function New-FunctionModule {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory)]
-        [string]$Name,
+        [string] $Name,
 
-        [string]$Verb = 'Invoke'
+        [string] $Prefix = $null,
+        [string] $Verb = $null
     )
 
-    $projectRoot = Get-Location
-    $paths = [ProjectPaths]::new($projectRoot)
-
-    $folderName = $Name
-
-    $moduleContent = Get-ModuleContent $Name $Verb
+    $paths = [ProjectPaths]::newName((Get-Location))
+    $moduleName = Get-NameWithPrefix -Name:$Name -Prefix:$Prefix Separator "."
+    $content = Get-FunctionModuleContent -MethodName:$Name -Verb:$Verb
 
     try {
-        $fullPath = $paths.CreateModuleFile($folderName, $moduleContent)
+        $fullPath = $paths.NewFunctionModule($moduleName, $content)
         Write-Host "[✅] Method module created: $fullPath"
     }
     catch {
@@ -174,22 +545,59 @@ function New-ProjectModule {
     }
 }
 
-function New-ProjectClass {
+function Get-FunctionModuleContent {
+    param(
+        [string]$Name,
+        [string]$Verb = $null
+    )
+
+    $functionName = Get-NameWithPrefix -Name:$Name -Prefix:$Verb -Separator '-'
+
+    return @"
+function $functionName {
+    `$Log.Start(`"$functionName`")
+    `$Log.Error(`"NOT IMPLEMENTED`")
+    PrivateMethod
+}
+
+function PrivateMethod {
+    `$Log.Enter(`"PrivateMethod`")
+    `$Log.Error(`"NOT IMPLEMENTED`")
+    `$Log.Note(`"This is a note...`")
+    `$Log.Leave()
+}
+
+Export-ModuleMember -Function '$functionName'
+"@
+}
+
+function Get-NameWithPrefix {
+    param (
+        [string] $Name,
+        [string] $Prefix = $null,
+        [string] $Separator
+    )
+
+    $prefixValue = Get-Suffix -StringToSuffix:$Prefix -Suffix:$Separator
+
+    $result = Remove-WhiteSpace "$prefixValue$Name"
+
+    return $result
+}
+
+function New-ClassModule {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory)]
         [string]$Name,
 
         [Parameter()]
-        [string]$ModulePrefix = ""
+        [string]$Prefix = $null
     )
 
-    $projectRoot = Get-Location
-    $paths = [ProjectPaths]::new($projectRoot)
-
-    $prefix = $ModulePrefix.Trim() -eq "" ? "" : "$ModulePrefix."
-
-    $folderName = "$($prefix)Class.$Name"
+    $paths = [ProjectPaths]::newName((Get-Location))
+    $moduleName = Get-NameWithPrefix -Name:$Name -Prefix:$Prefix -Separator "."
+    $className = Remove-WhiteSpace $Name
 
     $classContent = @"
 <#
@@ -206,16 +614,15 @@ function New-ProjectClass {
 .NOTES
     This function is a wrapper around Get-Process.
 #>
-class $Name {
-    $Name() {
+class $className {
+    $className() {
 
     }
 }
 "@
 
     try {
-        $fullPath = $paths.CreateModuleFile($folderName, $classContent)
-        code "$fullPath"
+        $fullPath = $paths.NewClassModule($moduleName, $classContent)
         Write-Host "[✅] Class module created: $fullPath"
     }
     catch {
@@ -223,143 +630,57 @@ class $Name {
     }
 }
 
-function Get-ModuleContent {
-    param(
-        [string]$MethodName,
-        [string]$Verb
+function Get-Suffix {
+    param (
+        [string] $Text = $null,
+        [string] $Suffix
     )
 
-    return @"
-function $Verb-$MethodName {
-    `$Log.Start(`"$Verb-$MethodName`")
-    `$Log.Error(`"NOT IMPLEMENTED`")
-    Step-OneMethod
+    [string] $result = [string]::IsNullOrEmpty($Text) `
+        ? '' `
+        : (Remove-WhiteSpace "$Text$Suffix")
+    
+    return $result
 }
 
-function Step-OneMethod {
-    `$Log.Enter(`"Step-OneMethod`")
-    `$Log.Error(`"NOT IMPLEMENTED`")
-    `$Log.Note(`"This is a note...`")
-    `$Log.Leave()
-}
+function Remove-WhiteSpace {
+    param (
+        [string] $Text
+    )
 
-Export-ModuleMember -Function $Verb-$MethodName
-"@
+    return $Text -replace '\s', ''
 }
 
 function New-PowerShellProject {
     param(
-        [Parameter(Mandatory)][string]$Name
+        [Parameter(Mandatory)]
+        [string]$Name
     )
 
-    $projectRoot = Join-Path (Get-Location) $Name
-    $paths = [ProjectPaths]::new($projectRoot)
+    Write-Host
+    Write-Host "New-PowerShellProject ($Name)"
 
-    if (Test-Path $projectRoot) {
-        Write-Warning "Project folder already exists: $projectRoot"
+    $new = Join-Path -Path (Get-Location) -ChildPath $Name
+
+
+    Write-Host "    `$new = $new"
+
+    if (Test-Path $new) {
+        Write-Warning "Project folder already exists: $new"
         return
     }
 
-    New-Item -ItemType Directory -Path $paths.GetModulesPath() -Force | Out-Null
+    New-Item -Path $new -ItemType Directory -Force | Out-Null
 
-    Publish-Main -Paths $paths
-    Publish-Startup -Paths $paths
-    Publish-Loader -Paths $paths
-    Publish-SettingsClass -Paths $paths
+    $source = $script:ProjectTemplateFolder
 
-    Write-Host "✅ PowerShell project '$Name' created at: $projectRoot"
+    Write-Host "    `$source = $source"
+
+    Copy-Item -Path (Join-Path $source.FullName '*') -Destination $new -Recurse -Force
+
+    Write-Host "✅ PowerShell project '$Name' created at: $new"
 }
 
-function Publish-Main {
-    param([ProjectPaths]$Paths)
-
-    @'
-using module Bops.Lib.Project
-
-param (
-    [switch]$Refresh
-)
-
-# Dot-Source the Program Script to Access Invoke-Startup
-. ".\$([ProjectPaths]::StartupScript)"
-
-Invoke-Startup -ProjectRoot $PSScriptRoot -Refresh:$Refresh
-
-function Main {
-    # Call Project Module Methods
-}
-
-Main
-'@ | Set-Content -Path $Paths.GetMainScriptPath() -Encoding UTF8
-}
-
-function Publish-Startup {
-    param([ProjectPaths]$Paths)
-
-    @'
-function Invoke-Startup {
-    param(
-        [Parameter(Mandatory)][string]$ProjectRoot,
-        [switch]$Refresh
-    )
-
-    $Global:ProjectRoot = $ProjectRoot
-    $Global:ProjectId = (Get-Item $ProjectRoot).FullName.Replace('\', '_')
-    $Global:ProjectPaths = [ProjectPaths]::new($ProjectRoot)
-
-    . "$($Global:ProjectPaths.GetSettingsClassPath())"
-
-    [Settings]$Global:Settings = [ProjectSettings]::new($ProjectRoot, [Settings]).Get()
-
-    . "$($Global:ProjectPaths.GetLoaderScriptPath())"
-
-    Invoke-LoadModules $Refresh
-}
-'@ | Set-Content -Path $Paths.GetStartupScriptPath() -Encoding UTF8
-}
-
-function Publish-Loader {
-    param([ProjectPaths]$Paths)
-
-    @'
-function Invoke-LoadModules {
-    param (
-        [switch]$Refresh
-    )
-
-    if ($Refresh) {
-        if (Get-Variable -Name $Global:ProjectId -Scope Global -ErrorAction SilentlyContinue) {
-            Remove-Variable -Name $Global:ProjectId -Scope Global
-            Write-Host "[🔄] Cleared setup flag: $Global:ProjectId"
-        }
-    }
-
-    if (-not (Get-Variable -Name $Global:ProjectId -Scope Global -ErrorAction SilentlyContinue)) {
-        Set-Variable -Name $Global:ProjectId -Value $true -Scope Global
-
-        Import-ProjectModules
-
-        Write-Host "[✔] Project setup loaded: $Global:ProjectRoot"
-    }
-    else {
-        Write-Host "[ℹ️] Project already initialized: $Global:ProjectRoot"
-    }
-}
-'@ | Set-Content -Path $Paths.GetLoaderScriptPath() -Encoding UTF8
-}
-
-function Publish-SettingsClass {
-    param([ProjectPaths]$Paths)
-
-    @'
-class Settings {
-    [string]$String
-    [Int64]$Integer
-    [string[]]$StringArray
-    [DateTime]$DateTime
-}
-'@ | Set-Content -Path $Paths.GetSettingsClassPath() -Encoding UTF8
-}
 
 function New-CsTypeModule {
     param (
@@ -440,13 +761,12 @@ function New-CsTypeModule {
     }
 }
 
-
 Export-ModuleMember -Function `
-    New-ProjectModule, `
-    Import-ProjectModules, `
-    New-PowerShellProject, `
-    New-CsTypeModule, `
-    New-ProjectClass
+    'New-FunctionModule', `
+    'New-ClassModule', `
+    'New-PowerShellProject', `
+    'New-CsTypeModule'
+ 
 
 
 

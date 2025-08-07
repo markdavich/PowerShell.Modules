@@ -2,6 +2,12 @@ using namespace System.IO
 using namespace System.Collections.Generic
 using module Bop.A.Tracker
 
+Write-Host "<[" -ForegroundColor Green -NoNewline
+Write-Host "Bops.Lib! " -ForegroundColor Yellow -NoNewline
+Write-Host "[M] " -ForegroundColor Magenta -NoNewline
+Write-Host $MyInvocation.MyCommand.Path -ForegroundColor Cyan -NoNewline
+Write-Host "]" -ForegroundColor Green
+
 class FileSystemTracker : AbstractTracker {
     hidden [AbstractTracker]$base = [AbstractTracker]$this
 

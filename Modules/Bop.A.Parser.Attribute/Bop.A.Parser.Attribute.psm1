@@ -1,6 +1,12 @@
 using module Bop.A.Parser
 using module Bop.A.Attribute
 
+Write-Host "<[" -ForegroundColor Green -NoNewline
+Write-Host "Bops.Lib! " -ForegroundColor Yellow -NoNewline
+Write-Host "[M] " -ForegroundColor Magenta -NoNewline
+Write-Host $MyInvocation.MyCommand.Path -ForegroundColor Cyan -NoNewline
+Write-Host "]" -ForegroundColor Green
+
 class AbstractAttributeParser : AbstractParser {
     hidden [hashtable]$_pairs
 

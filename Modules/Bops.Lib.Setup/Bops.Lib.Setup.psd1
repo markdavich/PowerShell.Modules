@@ -43,7 +43,11 @@
     # ProcessorArchitecture = ''
 
     # Modules that must be imported into the global environment prior to importing this module
-    # RequiredModules = @()
+    RequiredModules   = @(
+        'Bop.U.Json',
+        'User.Common',
+        'Bops.Lib.Setup.Classes.Command'
+    )
 
     # Assemblies that must be loaded prior to importing this module
     # RequiredAssemblies = @()

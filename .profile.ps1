@@ -4,6 +4,25 @@ using module User.Common
 using module Bops.Lib.Setup.Classes.Command
 using module Bops.Lib.Setup
 
+
+Write-Host "<[" -ForegroundColor Green -NoNewline
+Write-Host "Bops.Lib! " -ForegroundColor Yellow -NoNewline
+Write-Host "[P] " -ForegroundColor Blue -NoNewline
+Write-Host $MyInvocation.MyCommand.Path -ForegroundColor Cyan -NoNewline
+Write-Host "]" -ForegroundColor Green
+
+Write-Host
+Write-Host "------------------------------------------------------------------------"
+Write-Host "*** Bops Lib Profile"
+Write-Host "------------------------------------------------------------------------"
+Write-Host "HOME       : '$($HOME)'"
+Write-Host "USERPROFILE: '$($env:USERPROFILE)'"
+Write-Host "ONEDRIVE   : '$($env:OneDrive)'"
+Write-Host "------------------------------------------------------------------------"
+Write-Host
+
+
+
 Write-Host
 Write-Host "╭──────────────────────────────╮" -ForegroundColor Blue
 Write-Host "│ " -ForegroundColor Blue -NoNewline;

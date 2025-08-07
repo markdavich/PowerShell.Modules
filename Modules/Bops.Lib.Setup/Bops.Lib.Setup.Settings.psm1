@@ -2,6 +2,12 @@ using module Bop.U.Json
 using module Bops.Lib.Setup.Classes.Command
 using module Bops.Lib.Setup.Classes.Profile
 
+Write-Host "<[" -ForegroundColor Green -NoNewline
+Write-Host "Bops.Lib! " -ForegroundColor Yellow -NoNewline
+Write-Host "[M] " -ForegroundColor Magenta -NoNewline
+Write-Host $MyInvocation.MyCommand.Path -ForegroundColor Cyan -NoNewline
+Write-Host "]" -ForegroundColor Green
+
 $modulePath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $jsonPath = Join-Path $modulePath 'Bops.Lib.Setup.json'
 
@@ -86,16 +92,16 @@ $defaultSettings = @{
 
 function Save-UserSettings {
     param (
-        [Profile]$profile,
-        [string]$username = $env:USERNAME
+        [string] $ProfileName,
+        [string] $UserName = $env:USERNAME
     )
 
-    Write-Host "Bops.Lib.Setup.Settings: Save-UserSettings for user '$username'" -ForegroundColor Cyan
+    Write-Host "Bops.Lib.Setup.Settings: Save-UserSettings for user '$UserName'" -ForegroundColor Cyan
 
-    Initialize-UserProfile -username $username
+    Initialize-UserProfile -username $UserName
 
     $json = Get-Json -path $jsonPath
-    $json.profiles[$username] = $profile
+    $json.profiles[$UserName] = $ProfileName
 
     # Save the updated JSON
     Save-Json -json $json -path $jsonPath
@@ -213,13 +219,12 @@ function Initialize-DefaultProfile {
 }
 
 function main {
-    # Write-Host "Bops.Lib.Setup.Settings: main" -ForegroundColor Cyan
-
     Initialize-DefaultProfile
     Initialize-UserProfile
 }
 
 main
 
-Export-ModuleMember -Function Get-UserSettings
-
+Export-ModuleMember -Function `
+    'Save-UserSettings', `
+    'Get-UserSettings'
