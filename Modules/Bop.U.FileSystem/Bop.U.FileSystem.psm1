@@ -1,4 +1,5 @@
 using namespace System.IO
+using namespace User.U.Logger
 
 Write-Host "<[" -ForegroundColor Green -NoNewline
 Write-Host "Bops.Lib! " -ForegroundColor Yellow -NoNewline
@@ -24,4 +25,29 @@ function Find-TextInFile {
     )
 
     return Select-String -Path $Path -Pattern $TextToFind -Quiet
+}
+
+function Get-CompanionName {
+    param (
+        [string] $FileString,
+        [string] $CompanionExtension
+    )
+
+    $result = [Path]::ChangeExtension($FileString, $CompanionExtension)
+    return $result
+}
+
+function Get-CompanionFile {
+    param (
+        [FileInfo] $File,
+        [string] $CompanionExtension
+    )
+
+    $companion = [Path]::ChangeExtension($File.FullName, $CompanionExtension)
+
+    if (Test-Path $companion) {
+        return Get-Item -Path $companion
+    }
+
+    throw [FileNotFoundException] "No '$CompanionExtension' Companion for $($File.FullName)"
 }

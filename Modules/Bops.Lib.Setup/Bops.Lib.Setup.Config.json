@@ -1,0 +1,4 @@
+{
+    "vbsFileName": "launch.location.vbs",
+    "vbsDefaultContent": "CreateObject(\"Wscript.Shell\").run \"C:\\\""
+}

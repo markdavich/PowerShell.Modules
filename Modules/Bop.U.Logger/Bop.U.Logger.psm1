@@ -9,24 +9,56 @@ Write-Host $MyInvocation.MyCommand.Path -ForegroundColor Cyan -NoNewline
 Write-Host "]" -ForegroundColor Green
 
 class Logger {
-    [ConsoleColor] $StartColor = [ConsoleColor]::Green
-    [ConsoleColor] $EnterColor = [ConsoleColor]::Cyan
-    [ConsoleColor] $NoteColor = [ConsoleColor]::Blue
-    [ConsoleColor] $ErrorColor = [ConsoleColor]::Red
-    [ConsoleColor] $WarningColor = [ConsoleColor]::Yellow
-    [ConsoleColor] $LineColor = [ConsoleColor]::White
+    hidden [ConsoleColor] $_defaultStartColor = [ConsoleColor]::Green
+    hidden [ConsoleColor] $_defaultEnterColor = [ConsoleColor]::Cyan
+    hidden [ConsoleColor] $_defaultNoteColor = [ConsoleColor]::Blue
+    hidden [ConsoleColor] $_defaultErrorColor = [ConsoleColor]::Red
+    hidden [ConsoleColor] $_defaultWarningColor = [ConsoleColor]::Yellow
+    hidden [ConsoleColor] $_defaultLineColor = [ConsoleColor]::White
+    hidden [ConsoleColor] $_defaultKeyColor = [ConsoleColor]::Yellow
+    hidden [ConsoleColor] $_defaultKeyValueSeparatorColor = [ConsoleColor]::Magenta
+    hidden [ConsoleColor] $_defaultValueColor = [ConsoleColor]::Cyan
+    hidden [ConsoleColor] $_defaultBulletColor = [ConsoleColor]::Gray
+    hidden [ConsoleColor] $_defaultBulletTextColor = [ConsoleColor]::DarkYellow
+
+    [ConsoleColor] $StartColor
+    [ConsoleColor] $EnterColor
+    [ConsoleColor] $NoteColor
+    [ConsoleColor] $ErrorColor
+    [ConsoleColor] $WarningColor
+    [ConsoleColor] $LineColor
 
     [string] $KeyValueSeparator = ':'
-    [ConsoleColor] $KeyColor = [ConsoleColor]::Yellow
-    [ConsoleColor] $KeyValueSeparatorColor = [ConsoleColor]::Magenta
-    [ConsoleColor] $ValueColor = [ConsoleColor]::Cyan
+    [ConsoleColor] $KeyColor
+    [ConsoleColor] $KeyValueSeparatorColor
+    [ConsoleColor] $ValueColor
 
     [string] $BulletSymbol = "●"
-    [ConsoleColor] $BulletColor = [ConsoleColor]::Gray
-    [ConsoleColor] $BulletTextColor = [ConsoleColor]::DarkYellow
+    [ConsoleColor] $BulletColor
+    [ConsoleColor] $BulletTextColor
 
     hidden [Int64] $IndentCount = 0
     hidden [string]$IndentString = '   '
+
+    Logger() {
+        $this.ResetDefaults()
+    }
+
+    [void] ResetDefaults() {
+        $this.GetType().GetProperties() |
+        Where-Object {
+            $_.Name.StartsWith('_default') -and $_.PropertyType -eq [ConsoleColor]
+        } |
+        ForEach-Object {
+            $defaultProp = $_
+            $targetName = $_.Name.Substring(8)  # Remove "_default"
+            $targetProp = $this.GetType().GetProperty($targetName)
+            
+            if ($targetProp -and $targetProp.CanWrite) {
+                $targetProp.SetValue($this, $defaultProp.GetValue($this))
+            }
+        }
+    }
 
     [void] Start([string] $Message) {
         $this.Start($Message, $this.StartColor)
@@ -179,6 +211,90 @@ class Logger {
         $this.BeginLine($this.BulletSymbol.PadRight($this.IndentString.Length), $this.BulletColor)
         $this.EndLine($Value, $this.BulletTextColor)
         $this.DecreaseIndent()
+    }
+
+    [void] PrettyPrint([object] $Object, [string] $Name = $null) {
+        if ($null -eq $Object) {
+            if ($null -ne $Name) {
+                $this.KeyValue("`"$Name`"", "null")
+            }
+            else {
+                $this.Note("null", $this.ValueColor)
+            }
+            return
+        }
+
+        $isArray = $Object -is [System.Collections.IEnumerable] -and -not ($Object -is [string])
+        $isDict = $Object -is [System.Collections.IDictionary]
+        $isPrimitive = Test-IsPrimitive $Object
+        $isCustomObj = -not $isPrimitive -and -not $isArray -and -not $isDict -and $Object.PSObject.Properties.Count -gt 0
+
+        # Print opening line
+        if (-not [string]::IsNullOrEmpty($Name)) {
+            if ($isArray) {
+                $this.ValueColor = [ConsoleColor]::White
+                $this.KeyValue("`"$Name`"", "[")
+                $this.ResetDefaults()
+            }
+            elseif ($isDict -or $isCustomObj) {
+                $this.ValueColor = [ConsoleColor]::White
+                $this.KeyValue("`"$Name`"", "{")
+                $this.ResetDefaults()
+            }
+            elseif ($isPrimitive) {
+                $prettyValue = if ($Object -is [string]) { "`"$Object`"" } else { $Object }
+                $this.KeyValue("`"$Name`"", $prettyValue)
+                return
+            }
+            else {
+                $this.KeyValue("`"$Name`"", $Object)
+                return
+            }
+        }
+        else {
+            if ($isArray) {
+                $this.Note("[", [ConsoleColor]::White)
+            }
+            elseif ($isDict -or $isCustomObj) {
+                $this.Note("{", [ConsoleColor]::White)
+            }
+            elseif ($isPrimitive) {
+                $prettyValue = if ($Object -is [string]) { "`"$Object`"" } else { $Object }
+                $this.Note($prettyValue, $this.ValueColor)
+                return
+            }
+            else {
+                $this.Note("$Object", $this.ValueColor)
+                return
+            }
+        }
+
+        $this.IncreaseIndent()
+
+        if ($isDict) {
+            foreach ($key in $Object.Keys) {
+                $this.PrettyPrint($Object[$key], $key)
+            }
+        }
+        elseif ($isArray) {
+            foreach ($item in $Object) {
+                $this.PrettyPrint($item, $null)
+            }
+        }
+        elseif ($isCustomObj) {
+            foreach ($prop in $Object.PSObject.Properties) {
+                $this.PrettyPrint($prop.Value, $prop.Name)
+            }
+        }
+
+        $this.DecreaseIndent()
+
+        if ($isArray) {
+            $this.Note("]", [ConsoleColor]::White)
+        }
+        elseif ($isDict -or $isCustomObj) {
+            $this.Note("}", [ConsoleColor]::White)
+        }
     }
 }
 

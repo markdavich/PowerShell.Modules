@@ -1,4 +1,11 @@
+using namespace System.IO
+
 using module Bop.U.Json
+using module Bop.U.Parser.Json
+using module Bop.U.Variable
+using module Bop.U.Variable.Logger
+using module Bop.U.FileSystem
+using module '.\Bops.Lib.Setup.Config.psm1'
 
 Write-Host "<[" -ForegroundColor Green -NoNewline
 Write-Host "Bops.Lib! " -ForegroundColor Yellow -NoNewline
@@ -6,25 +13,45 @@ Write-Host "[M] " -ForegroundColor Magenta -NoNewline
 Write-Host $MyInvocation.MyCommand.Path -ForegroundColor Cyan -NoNewline
 Write-Host "]" -ForegroundColor Green
 
-$modulePath = Split-Path -Parent $MyInvocation.MyCommand.Path
-$jsonPath = Join-Path $modulePath 'Bops.Lib.Setup.json'
-$vbsPath = Join-Path $modulePath 'launch.location.vbs'
-$regPath = Join-Path $modulePath 'launch.location.reg'
-$defaultLocation = "C:\"
+# ╭───────────────╮
+# │ Configuration │
+# ╰───────────────╯
+# Constants
+
+$V1 = [Variable]::new('VOne', 'V-1', $ExecutionContext.SessionState)
+$V2 = [Variable]::new('VTwo', "$VOne-V-2", $ExecutionContext.SessionState)
+
+$VarExplorerRegistryKey = (Add-Local 'ExplorerRegistryKey' 'HKCU:\SOFTWARE\Classes\CLSID\{52205fd8-5dfb-447d-801a-d0b52f2e83e1}')
+$VarExplorerCommandRegistryKey = (Add-Local 'ExplorerCommandRegistryKey' "$ExplorerRegistryKey\shell\opennewwindow\command")
+$VarModulePath = (Add-Local 'ModulePath' $MyInvocation.MyCommand.Path)
+$VarJsonConfigFile = (Add-Local 'JsonConfigFile' (Get-CompanionName -FileString $ModulePath -CompanionExtension 'Config.json'))
+$VarConfig = (Add-Local 'Config' [JsonParser]::new($JsonConfigFile, [Config]))
+$VarJsonPath = (Add-Local 'JsonPath' (Get-CompanionName -FileString $ModulePath -CompanionExtension 'json'))
+$VarVbsPath = (Add-Local 'VbsPath' (Join-Path [System.IO.Path]::GetDirectoryName($ModulePath) $Config.vbsFileName))
 
 
-Import-Module -Path "$PSScriptRoot\Bops.Lib.Setup.Settings.psm1"
+# $configuration = @(
+#     (AddVariable 'ExplorerRegistryKey', 'HKCU:\SOFTWARE\Classes\CLSID\{52205fd8-5dfb-447d-801a-d0b52f2e83e1}'),
+#     (AddVariable 'ExplorerCommandRegistryKey', "$ExplorerRegistryKey\shell\opennewwindow\command"),
+#     (AddVariable 'ModulePath', $MyInvocation.MyCommand.Path),
+#     (AddVariable 'JsonConfigFile', (Get-CompanionName -FileString $ModulePath -CompanionExtension 'Config.json')),
+#     (AddVariable 'Config', [JsonParser]::new($JsonConfigFile, [Config])),
+#     (AddVariable 'JsonPath', (Get-CompanionName -FileString $ModulePath -CompanionExtension 'json')),
+#     (AddVariable 'VbsPath', (Join-Path [System.IO.Path]::GetDirectoryName($ModulePath) $Config.vbsFileName)),
+# )
+
+[VariableLogger]::Print("Bops.Lib.Setup Configuration Variables", $configuration, [System.ConsoleColor]::Yellow)
+
+# $modulePath = Split-Path -Parent $MyInvocation.MyCommand.Path
+# $jsonPath = Join-Path $modulePath 'Bops.Lib.Setup.json'
+# $vbsPath = Join-Path $modulePath 'launch.location.vbs'
+
+
+# Import-Module -Path "$PSScriptRoot\Bops.Lib.Setup.Settings.psm1"
 
 function Get-ExplorerLocation {
-    # Write-Host "Bops.Lib.Setup: Get-ExplorerLocation" -ForegroundColor Green -BackgroundColor Yellow -NoNewline; Write-Host "" -ForegroundColor White -BackgroundColor Black
-    # Write-Host "    Retrieving Explorer location from JSON..."
-    
     $settings = Get-UserSettings
-
     $result = $settings.locations.explorer
-
-    # Write-Host "    Current Explorer location: $result"
-
     return $result
 }
 
@@ -32,26 +59,13 @@ function Set-ExplorerLocation {
     param (
         [string] $Location
     )
-
-    Write-Host
-    Write-Host "Set-ExplorerLocation(Location: '$Location')"
-
+    throw [System.NotImplementedException] "Set-ExplorerLocation not fully implemented"
     $settings = Get-UserSettings
-
-    Write-Host "    `$settings = $settings"
-
-    $settings.profiles[$env:USERNAME].locations.explorer = $Location
-
-    Write-Host "    Calling: 'Save-UserSettings'"
-
-    # This line FAILS with:
-    #   Save-UserSettings: The term 'Save-UserSettings' is not recognized as a name of a
-    #   cmdlet, function, script file, or executable program. Check the spelling of the  
-    #   name, or if a path was included, verify that the path is correct and try again."
+    $settings.locations.explorer = $Location
     Save-UserSettings $settings $env:USERNAME
 }
 
-function Update-VbsLocation {
+function Update-VbsWithNewLocation {
     param (
         [string] $Location
     )
@@ -82,7 +96,7 @@ function Initialize-Explorer {
         return
     }
 
-    Update-VbsLocation $location
+    Update-VbsWithNewLocation $location
 
     # Add or update registry entry
     $regKey = "HKCU:\SOFTWARE\Classes\CLSID\{52205fd8-5dfb-447d-801a-d0b52f2e83e1}\shell\opennewwindow\command"
@@ -103,9 +117,6 @@ function Reset-ExplorerLocation {
         Remove-Item -Path $regKey -Recurse -Force
         Write-Host "Registry entry removed."
     }
-    # Optionally remove .json and .vbs
-    if (Test-Path $jsonPath) { Remove-Item $jsonPath -Force }
-    if (Test-Path $vbsPath) { Remove-Item $vbsPath -Force }
     Write-Host "Explorer location reset."
 }
 

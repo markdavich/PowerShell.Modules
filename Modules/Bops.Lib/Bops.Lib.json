@@ -1,18 +1,10 @@
 {
     "SymbolicLinkFolder": "C:\\",
+    "SymbolicLinkName": ".lib!",
     "InstallFolder": "C:\\Code\\Repos",
     "Name": ".bops",
     "Suffix": ".lib!",
-    "ProfileName": ".profile.ps1",
-    "SomeObject": {
-        "SomeString": "this is a string!",
-        "SomeInt": 23,
-        "NestedObject": {
-            "SomeStringArray": [
-                "one",
-                "two",
-                "three"
-            ]
-        }
-    }
+    "FullName": ".bops.lib!",
+    "ProfileFileName": ".profile.ps1",
+    "ProfileName": ".bops.lib! Profile"
 }

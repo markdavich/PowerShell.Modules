@@ -5,9 +5,11 @@ Write-Host $MyInvocation.MyCommand.Path -ForegroundColor Cyan -NoNewline
 Write-Host "]" -ForegroundColor Green
 
 function Get-Json {
-    param($path)
+    param(
+        [string] $Path
+    )
 
-    $result = Get-Content $path -Raw | ConvertFrom-Json
+    $result = Get-Content $Path -Raw | ConvertFrom-Json -AsHashtable
     return $result
 }
 

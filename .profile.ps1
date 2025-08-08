@@ -5,23 +5,11 @@ using module Bops.Lib.Setup.Classes.Command
 using module Bops.Lib.Setup
 
 
-Write-Host "<[" -ForegroundColor Green -NoNewline
-Write-Host "Bops.Lib! " -ForegroundColor Yellow -NoNewline
-Write-Host "[P] " -ForegroundColor Blue -NoNewline
-Write-Host $MyInvocation.MyCommand.Path -ForegroundColor Cyan -NoNewline
-Write-Host "]" -ForegroundColor Green
-
-Write-Host
-Write-Host "------------------------------------------------------------------------"
-Write-Host "*** Bops Lib Profile"
-Write-Host "------------------------------------------------------------------------"
-Write-Host "HOME       : '$($HOME)'"
-Write-Host "USERPROFILE: '$($env:USERPROFILE)'"
-Write-Host "ONEDRIVE   : '$($env:OneDrive)'"
-Write-Host "------------------------------------------------------------------------"
-Write-Host
-
-
+# Write-Host "<[" -ForegroundColor Green -NoNewline
+# Write-Host "Bops.Lib! " -ForegroundColor Yellow -NoNewline
+# Write-Host "[P] " -ForegroundColor Blue -NoNewline
+# Write-Host $MyInvocation.MyCommand.Path -ForegroundColor Cyan -NoNewline
+# Write-Host "]" -ForegroundColor Green
 
 Write-Host
 Write-Host "╭──────────────────────────────╮" -ForegroundColor Blue
@@ -35,19 +23,11 @@ Write-Host $PSScriptRoot -ForegroundColor DarkCyan -NoNewline;
 Write-Host "\.profile.ps1" -ForegroundColor Cyan;
 Write-Host
 
-
-# Import-Module User.Setup -Force .\Microsoft.PowerShell_profile.ps1-Global
-
-# Clear-Host
 Write-Host
 
 function Get-MajorPSVersion {
     $ver = $PSVersionTable.PSVersion
     $major = $ver.Major
-
-    # Write-Host "      PowerShell Version: $ver" -ForegroundColor Yellow
-    # Write-Host "PowerShell Major Version: $major" -ForegroundColor Cyan
-
     return $major
 }
 
@@ -62,9 +42,6 @@ function Get-FullPSVersion {
 }
 
 function Get-PSVersionString {
-    # $ver = $PSVersionTable.PSVersion
-    # $verString = "(v $($ver.Major).$($ver.Minor))"
-    
     $verString = "(v $(Get-FullPSVersion))"
 
     if ((Get-MajorPSVersion) -eq "5") {
@@ -217,6 +194,4 @@ function main {
 }
 
 main
-
-
 

@@ -1,0 +1,12 @@
+{
+    "Name": "Alice",
+    "Age": 30,
+    "Tags": [
+        "dev",
+        "ops"
+    ],
+    "Profile": {
+        "Bio": "Engineer",
+        "Location": "Remote"
+    }
+}
