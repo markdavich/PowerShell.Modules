@@ -1,5 +1,6 @@
 using module Bop.U.Json
 using module Bop.U.Types
+using module Bop.C.Types.PropInfo
 
 class JsonParser {
     hidden [hashtable] $_json
@@ -24,7 +25,10 @@ class JsonParser {
                 $value = $Source[$key]
 
                 # Get the matching property from the destination type
-                $prop = $Destination.GetType().GetProperty($key)
+                # $prop = $Destination.GetType().GetProperty($key)
+
+                $prop = [PropInfo]::GetPropertyInfo($Destination, $key)
+
                 if ($null -eq $prop -or -not $prop.CanWrite) { continue }
 
                 # Get the expected destination type
@@ -88,21 +92,4 @@ class JsonParser {
         $result = Convert-ToType -Value $this._instance -Type $this._type
         return $result
     }
-
-
-
-    # hidden [void] Parse([object] $Source, [object] $Destination) {
-    #     <#
-    #         loop properties of source
-    #             $name <-- source.property.name
-    #             $value <-- source.property.value
-
-    #             if $value is array --> Parse($value, $Destination.$name)
-    #             if $value is object --> Parse($value, $Destination.$name)
-    #             if $value is "some kind of collection or container" --> Parse($value, $Destination.$name)
-
-    #             else...
-    #                 $Destination.$name = $value
-    #     #>
-    # }
 }

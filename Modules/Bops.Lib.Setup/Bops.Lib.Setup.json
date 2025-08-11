@@ -1,8 +1,15 @@
 ﻿{
   "profiles": {
     "default": {
+      "locations": {
+        "explorer": "C:\\Code\\Repos",
+        "powershell": "C:\\Code\\Repos"
+      },
       "installs": {
         "vsCode": {
+          "extensions": [
+            "yzhang.markdown-all-in-one"
+          ],
           "install": "Microsoft.VisualStudioCode",
           "settings.json": {
             "content": {
@@ -19,74 +26,67 @@
               ]
             },
             "file": "C:\\Users\\mark.davich\\AppData\\Roaming\\Code\\User\\settings.json"
-          },
-          "extensions": [
-            "yzhang.markdown-all-in-one"
-          ]
+          }
         }
       },
       "commands": [
         {
-          "icon": "📜",
-          "name": "Open-Profile",
+          "alias": "op",
           "description": "Open the PowerShell profile in the default editor.",
           "params": [],
-          "alias": "op"
+          "icon": "📜",
+          "name": "Open-Profile"
         },
         {
-          "icon": "🔄",
-          "name": "Load-Profile",
+          "alias": "lp",
           "description": "Reload the PowerShell profile.",
           "params": [],
-          "alias": "lp"
+          "icon": "🔄",
+          "name": "Load-Profile"
         },
         {
-          "icon": "🪄",
-          "name": "Format-Json",
+          "alias": "",
           "description": "Format JSON strings with standard indentation.",
           "params": [
             "json"
           ],
-          "alias": ""
+          "icon": "🪄",
+          "name": "Format-Json"
         },
         {
-          "icon": "💾",
-          "name": "Save-Json",
+          "alias": "",
           "description": "Save JSON to a file with proper formatting.",
           "params": [
             "json",
             "path"
           ],
-          "alias": ""
+          "icon": "💾",
+          "name": "Save-Json"
         },
         {
-          "icon": "🚀",
-          "name": "Set-ExplorerLocation",
+          "alias": "se",
           "description": "Change the current Explorer location.",
           "params": [
             "path"
           ],
-          "alias": "se"
+          "icon": "🚀",
+          "name": "Set-ExplorerLocation"
         },
         {
-          "icon": "🧑‍🚀",
-          "name": "Reset-ExplorerLocation",
+          "alias": "re",
           "description": "Reset the Explorer location to the default.",
           "params": [],
-          "alias": "re"
+          "icon": "🧑‍🚀",
+          "name": "Reset-ExplorerLocation"
         },
         {
-          "icon": "📝",
-          "name": "Open-UserSetupJson",
+          "alias": "ou",
           "description": "Open the User Setup JSON file.",
           "params": [],
-          "alias": "ou"
+          "icon": "📝",
+          "name": "Open-UserSetupJson"
         }
-      ],
-      "locations": {
-        "powershell": "C:\\Code\\Repos",
-        "explorer": "C:\\Code\\Repos"
-      }
+      ]
     },
     "Mark.Davich": {
       "locations": {

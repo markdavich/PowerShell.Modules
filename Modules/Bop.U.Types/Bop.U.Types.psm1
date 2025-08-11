@@ -1,3 +1,6 @@
+using namespace System.Reflection
+using module Bop.C.Types.PropInfo
+
 function Convert-ToType {
     [CmdletBinding()]
     param (
@@ -71,6 +74,42 @@ function Test-IsPrimitive {
         $type -eq [datetime] -or
         $type.IsEnum
     )
+}
+
+
+function Get-PropertyValue {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [object]$Object,
+
+        [Parameter(Mandatory)]
+        [string]$PropertyName
+    )
+
+    [PropInfo] $info = [PropInfo]::new($Object, $PropertyName)
+
+    $result = $info.Value
+
+    return $result
+}
+
+
+function Get-Property {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [object]$Object,
+
+        [Parameter(Mandatory)]
+        [string]$PropertyName
+    )
+
+    [PropInfo] $info = [PropInfo]::new($Object, $PropertyName)
+
+    $result = $info.PropertyInfo
+
+    return $result
 }
 
 
