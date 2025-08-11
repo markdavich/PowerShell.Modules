@@ -1,19 +1,68 @@
 ﻿{
   "profiles": {
     "default": {
-      "locations": {
-        "explorer": "C:\\Code\\Repos",
-        "powershell": "C:\\Code\\Repos"
-      },
+      "commands": [
+        {
+          "params": [],
+          "name": "Open-Profile",
+          "alias": "op",
+          "icon": "📜",
+          "description": "Open the PowerShell profile in the default editor."
+        },
+        {
+          "params": [],
+          "name": "Load-Profile",
+          "alias": "lp",
+          "icon": "🔄",
+          "description": "Reload the PowerShell profile."
+        },
+        {
+          "params": [
+            "json"
+          ],
+          "name": "Format-Json",
+          "alias": "",
+          "icon": "🪄",
+          "description": "Format JSON strings with standard indentation."
+        },
+        {
+          "params": [
+            "json",
+            "path"
+          ],
+          "name": "Save-Json",
+          "alias": "",
+          "icon": "💾",
+          "description": "Save JSON to a file with proper formatting."
+        },
+        {
+          "params": [
+            "path"
+          ],
+          "name": "Set-ExplorerLocation",
+          "alias": "se",
+          "icon": "🚀",
+          "description": "Change the current Explorer location."
+        },
+        {
+          "params": [],
+          "name": "Reset-ExplorerLocation",
+          "alias": "re",
+          "icon": "🧑‍🚀",
+          "description": "Reset the Explorer location to the default."
+        },
+        {
+          "params": [],
+          "name": "Open-UserSetupJson",
+          "alias": "ou",
+          "icon": "📝",
+          "description": "Open the User Setup JSON file."
+        }
+      ],
       "installs": {
         "vsCode": {
-          "extensions": [
-            "yzhang.markdown-all-in-one"
-          ],
-          "install": "Microsoft.VisualStudioCode",
           "settings.json": {
             "content": {
-              "security.workspace.trust.untrustedFiles": "open",
               "editor.rulers": [
                 {
                   "column": 80,
@@ -23,70 +72,21 @@
                   "column": 85,
                   "color": "#ff000050"
                 }
-              ]
+              ],
+              "security.workspace.trust.untrustedFiles": "open"
             },
             "file": "C:\\Users\\mark.davich\\AppData\\Roaming\\Code\\User\\settings.json"
-          }
+          },
+          "install": "Microsoft.VisualStudioCode",
+          "extensions": [
+            "yzhang.markdown-all-in-one"
+          ]
         }
       },
-      "commands": [
-        {
-          "alias": "op",
-          "description": "Open the PowerShell profile in the default editor.",
-          "params": [],
-          "icon": "📜",
-          "name": "Open-Profile"
-        },
-        {
-          "alias": "lp",
-          "description": "Reload the PowerShell profile.",
-          "params": [],
-          "icon": "🔄",
-          "name": "Load-Profile"
-        },
-        {
-          "alias": "",
-          "description": "Format JSON strings with standard indentation.",
-          "params": [
-            "json"
-          ],
-          "icon": "🪄",
-          "name": "Format-Json"
-        },
-        {
-          "alias": "",
-          "description": "Save JSON to a file with proper formatting.",
-          "params": [
-            "json",
-            "path"
-          ],
-          "icon": "💾",
-          "name": "Save-Json"
-        },
-        {
-          "alias": "se",
-          "description": "Change the current Explorer location.",
-          "params": [
-            "path"
-          ],
-          "icon": "🚀",
-          "name": "Set-ExplorerLocation"
-        },
-        {
-          "alias": "re",
-          "description": "Reset the Explorer location to the default.",
-          "params": [],
-          "icon": "🧑‍🚀",
-          "name": "Reset-ExplorerLocation"
-        },
-        {
-          "alias": "ou",
-          "description": "Open the User Setup JSON file.",
-          "params": [],
-          "icon": "📝",
-          "name": "Open-UserSetupJson"
-        }
-      ]
+      "locations": {
+        "powershell": "C:\\Code\\Repos",
+        "explorer": "C:\\Code\\Repos"
+      }
     },
     "Mark.Davich": {
       "locations": {
