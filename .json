@@ -1,6 +1,20 @@
 {
     "SymbolicLink": "C:\\.lib!",
     "Bops.suffix": ".lib!",
+    "Bops.modules.path": "C:\\.lib!\\Modules",
     "Bops.name": ".bops",
-    "Bops.install": "C:\\Code\\Repos\\.bops.lib!"
+    "Bops.install.path": "C:\\Code\\Repos\\.bops.lib!",
+    "Bops.uninstaller.destination": "C:\\.lib!.uninstall.ps1",
+    "Bops.uninstaller.source": ".uninstall.ps1",
+    "Bops.installer.source": ".install.ps1",
+    "Terminal": {
+        "settings": {
+            "path": {
+                "powershell": "$env:LOCALAPPDATA\\Packages\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\LocalState\\settings.json",
+                "absolute": "C:\\Users\\mark.davich\\AppData\\Local\\Packages\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\LocalState\\settings.json",
+                "env": "%LOCALAPPDATA%\\Packages\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\LocalState\\settings.json"
+            },
+            "startingDirectory": "profiles.defaults.startingDirectory"
+        }
+    }
 }

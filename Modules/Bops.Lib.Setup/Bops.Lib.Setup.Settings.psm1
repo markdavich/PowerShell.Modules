@@ -77,7 +77,7 @@ $defaultSettings = @{
                     install         = "Microsoft.VisualStudioCode"
                     extensions      = @("yzhang.markdown-all-in-one")
                     "settings.json" = @{
-                        file    = "$($env:APPDATA)\Code\User\settings.json"
+                        file    = "$env:APPDATA\Code\User\settings.json"
                         content = @{
                             "security.workspace.trust.untrustedFiles" = "open"
                             "editor.rulers"                           = @(
@@ -85,6 +85,11 @@ $defaultSettings = @{
                                 @{ column = 85; color = "#ff000050" }
                             )
                         }
+                    }
+                },
+                terminal = @{
+                    "settings.json" = @{
+                        path = "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json"
                     }
                 }
             }

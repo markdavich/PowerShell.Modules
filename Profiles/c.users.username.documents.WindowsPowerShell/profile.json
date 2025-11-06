@@ -1,0 +1,16 @@
+{
+    "version": {
+        "5": {
+            "name": "Windows PowerShell",
+            "exe": "powershell.exe"
+        },
+        "7": {
+            "name": "PowerShell",
+            "exe": "pwsh.exe"
+        }
+    },
+    "backup": {
+        "git": "$($env:HOMEPATH)\\source\\davich.pc",
+        "path": "$($env:HOMEPATH)\\source\\davich.pc\\.setup.and.data\\setup\\powershell"
+    }
+}
