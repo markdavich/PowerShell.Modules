@@ -14,13 +14,18 @@ $Logger.Enter("$TestPath")
 
 function Test {
     try {
-        $setup = Join-Path -Path $ModuleFolder -ChildPath "$ModuleName.psm1"
-        Import-Module -FullyQualifiedName $setup
+        # $setup = Join-Path -Path $ModuleFolder -ChildPath "$ModuleName.psm1"
+        # Import-Module -FullyQualifiedName $setup
+        Test-ExplorerLocation
     }
     catch {
         $Logger.Error("$ModuleName Test Failed", $_)
         exit
     }
+}
+
+function Test-ExplorerLocation {
+    Set-ExplorerLocation "C:\Code\Repos\IDJC"
 }
 
 Test

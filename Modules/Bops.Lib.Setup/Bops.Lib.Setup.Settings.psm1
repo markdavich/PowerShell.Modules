@@ -86,10 +86,15 @@ $defaultSettings = @{
                             )
                         }
                     }
-                },
+                }
                 terminal = @{
-                    "settings.json" = @{
-                        path = "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json"
+                    settings = @{
+                        path = @{
+                            powershell = "$env:LOCALAPPDATA\\Packages\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\LocalState\\settings.json"
+                            absolute = "C:\\Users\\mark.davich\\AppData\\Local\\Packages\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\LocalState\\settings.json"
+                            env = "%LOCALAPPDATA%\\Packages\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\LocalState\\settings.json"
+                        }
+                        startingDirectory = "profiles.defaults.startingDirectory"
                     }
                 }
             }

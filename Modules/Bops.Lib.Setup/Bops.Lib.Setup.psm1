@@ -57,7 +57,23 @@ function Set-ExplorerLocation {
     $settings = Get-UserSettings
     $settings.locations.explorer = $Location
     Save-UserSettings $settings $env:USERNAME
+    Set-TerminalStartupDirectory $Location
     Update-VbsWithNewLocation $Location
+}
+
+function Set-TerminalStartupDirectory {
+    param  (
+        $Location
+    )
+    $settings = Get-UserSettings
+    $startingDirectory = $settings.installs.terminal.settings.startingDirectory
+    $terminalJsonPath = Resolve-Path $settings.installs.terminal.settings.path.powershell
+
+    $terminalJson = Get-Json $terminalJsonPath
+
+    $terminalJson[$startingDirectory] = $Location
+
+    Save-Json $terminalJson $terminalJsonPath
 }
 
 function Update-VbsWithNewLocation {

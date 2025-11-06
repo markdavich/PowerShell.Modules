@@ -3,94 +3,104 @@
     "default": {
       "commands": [
         {
-          "icon": "📜",
           "alias": "op",
-          "name": "Open-Profile",
           "description": "Open the PowerShell profile in the default editor.",
-          "params": []
+          "params": [],
+          "icon": "📜",
+          "name": "Open-Profile"
         },
         {
-          "icon": "🔄",
           "alias": "lp",
-          "name": "Load-Profile",
           "description": "Reload the PowerShell profile.",
-          "params": []
+          "params": [],
+          "icon": "🔄",
+          "name": "Load-Profile"
         },
         {
-          "icon": "🪄",
           "alias": "",
-          "name": "Format-Json",
           "description": "Format JSON strings with standard indentation.",
           "params": [
             "json"
-          ]
+          ],
+          "icon": "🪄",
+          "name": "Format-Json"
         },
         {
-          "icon": "💾",
           "alias": "",
-          "name": "Save-Json",
           "description": "Save JSON to a file with proper formatting.",
           "params": [
             "json",
             "path"
-          ]
+          ],
+          "icon": "💾",
+          "name": "Save-Json"
         },
         {
-          "icon": "🚀",
           "alias": "se",
-          "name": "Set-ExplorerLocation",
           "description": "Change the current Explorer location.",
           "params": [
             "path"
-          ]
+          ],
+          "icon": "🚀",
+          "name": "Set-ExplorerLocation"
         },
         {
-          "icon": "🧑‍🚀",
           "alias": "re",
-          "name": "Reset-ExplorerLocation",
           "description": "Reset the Explorer location to the default.",
-          "params": []
+          "params": [],
+          "icon": "🧑‍🚀",
+          "name": "Reset-ExplorerLocation"
         },
         {
-          "icon": "📝",
           "alias": "ou",
-          "name": "Open-UserSetupJson",
           "description": "Open the User Setup JSON file.",
-          "params": []
+          "params": [],
+          "icon": "📝",
+          "name": "Open-UserSetupJson"
         }
       ],
       "locations": {
-        "powershell": "C:\\Code\\Repos",
-        "explorer": "C:\\Code\\Repos"
+        "explorer": "C:\\Code\\Repos",
+        "powershell": "C:\\Code\\Repos"
       },
       "installs": {
         "vsCode": {
           "install": "Microsoft.VisualStudioCode",
           "settings.json": {
-            "file": "C:\\Users\\mark.davich\\AppData\\Roaming\\Code\\User\\settings.json",
             "content": {
+              "security.workspace.trust.untrustedFiles": "open",
               "editor.rulers": [
                 {
-                  "column": 80,
-                  "color": "#00ff6a50"
+                  "color": "#00ff6a50",
+                  "column": 80
                 },
                 {
-                  "column": 85,
-                  "color": "#ff000050"
+                  "color": "#ff000050",
+                  "column": 85
                 }
-              ],
-              "security.workspace.trust.untrustedFiles": "open"
-            }
+              ]
+            },
+            "file": "C:\\Users\\mark.davich\\AppData\\Roaming\\Code\\User\\settings.json"
           },
           "extensions": [
             "yzhang.markdown-all-in-one"
           ]
+        },
+        "terminal": {
+          "settings": {
+            "path": {
+              "powershell": "C:\\Users\\mark.davich\\AppData\\Local\\\\Packages\\\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\\\LocalState\\\\settings.json",
+              "env": "%LOCALAPPDATA%\\\\Packages\\\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\\\LocalState\\\\settings.json",
+              "absolute": "C:\\\\Users\\\\mark.davich\\\\AppData\\\\Local\\\\Packages\\\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\\\LocalState\\\\settings.json"
+            },
+            "startingDirectory": "profiles.defaults.startingDirectory"
+          }
         }
       }
     },
     "Mark.Davich": {
       "locations": {
-        "explorer": "C:\\Funk\\E\\Town",
+        "explorer": "C:\\Code\\Repos\\IDJC",
         "powershell": "C:\\Code\\Repos"
       },
       "commands": [
