@@ -182,7 +182,8 @@ function Initialize-Profile {
 function Set-Aliases {
     Set-Alias op Open-Profile -Scope Global
     Set-Alias lp Initialize-Profile -Scope Global
-    Set-Alias ce Set-ExplorerLocation -Scope Global
+    Set-Alias ss Set-StartupLocations -Scope Global
+    Set-Alias se Set-ExplorerLocation -Scope Global
     Set-Alias re Reset-ExplorerLocation -Scope Global
     Set-Alias ou Open-UserSetupJson -Scope Global
 }

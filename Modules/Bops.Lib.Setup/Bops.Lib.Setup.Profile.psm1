@@ -8,11 +8,13 @@ Write-Host "]" -ForegroundColor Green
 
 class Profile {
     $locations
+    $settingsFiles
     [Command[]]$commands
     $installs
 
-    Profile($locations, [Command[]]$commands, $installs) {
+    Profile($locations, $settingsFiles, [Command[]]$commands, $installs) {
         $this.locations = $locations
+        $this.settingsFiles = $settingsFiles
         $this.commands = $commands
         $this.installs = $installs
     }

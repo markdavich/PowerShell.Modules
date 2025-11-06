@@ -37,9 +37,69 @@ function Get-ExplorerLocation {
     return $result
 }
 
-function Set-ExplorerLocation {
+function Set-StartupLocations {
+    [CmdletBinding()]
     param (
-        [string] $Location
+        [string] $Location = (Get-Location).Path
+    )
+
+    Set-ExplorerLocation $Location
+    Set-TerminalStartupDirectory $Location
+    Set-VisualStudioProjectsFolder $Location
+}
+
+function Set-VisualStudioProjectsFolder {
+    [CmdletBinding()]
+    param (
+        [string] $Location = (Get-Location).Path
+    )
+
+    $setting = Get-UserSettings
+    $setting.locations.visualStudio = $Location
+
+    # Build the full path to the CurrentSettings.vssettings file
+    $settingsPath = Resolve-Path $setting.settingsFiles.visualStudio.file
+
+    # Verify the file exists
+    if (-not (Test-Path $settingsPath)) {
+        Write-Error "Settings file not found at $settingsPath"
+        return
+    }
+
+    # Backup the current settings file
+    $backupPath = "$settingsPath.bak_$(Get-Date -Format 'yyyyMMdd_HHmmss')"
+    Copy-Item $settingsPath $backupPath -Force
+    Write-Host "Backup created at: $backupPath" -ForegroundColor Yellow
+
+    # Load the XML
+    [xml]$xml = Get-Content -Path $settingsPath -Raw
+
+    # Locate the ProjectsLocation property
+    $projectLocationNode = $xml.SelectSingleNode("//PropertyValue[@name='ProjectsLocation']")
+
+    if ($null -eq $projectLocationNode) {
+        Write-Error "Could not find 'ProjectsLocation' node in the settings file."
+        return
+    }
+
+    # Update the value
+    $projectLocationNode.InnerText = $Locations
+    Write-Host "Updated ProjectsLocation to: $Locations" -ForegroundColor Green
+
+    # Save changes
+    $xml.Save($settingsPath)
+    Write-Host "Settings saved to: $settingsPath" -ForegroundColor Cyan
+
+    # Optional: confirmation read-back
+    $updated = (Select-String -Path $settingsPath -Pattern "ProjectsLocation").Line.Trim()
+    Write-Host "Verification line:" -ForegroundColor Gray
+    Write-Host $updated
+}
+
+function Set-ExplorerLocation {
+    [CmdletBinding()]
+    param (
+        [string] $Location = (Get-Location).Path
     )
     
     if (-not (Test-Path $Location)) {
@@ -49,29 +109,28 @@ function Set-ExplorerLocation {
         Write-Host
         Write-Host "Please pick a different location"
         Write-Host
-
         return
     }
-
 
     $settings = Get-UserSettings
     $settings.locations.explorer = $Location
     Save-UserSettings $settings $env:USERNAME
-    Set-TerminalStartupDirectory $Location
     Update-VbsWithNewLocation $Location
 }
 
 function Set-TerminalStartupDirectory {
-    param  (
-        $Location
+    [CmdletBinding()]
+    param (
+        [string] $Location = (Get-Location).Path
     )
+
     $settings = Get-UserSettings
     $startingDirectory = $settings.installs.terminal.settings.startingDirectory
     $terminalJsonPath = Resolve-Path $settings.installs.terminal.settings.path.powershell
 
     $terminalJson = Get-Json $terminalJsonPath
 
-    $terminalJson[$startingDirectory] = $Location
+    Set-JsonValue -hash $terminalJson -path $startingDirectory -value $Location
 
     Save-Json $terminalJson $terminalJsonPath
 }

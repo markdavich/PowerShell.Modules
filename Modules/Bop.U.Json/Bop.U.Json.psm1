@@ -70,4 +70,24 @@ function Save-Json(
     $json | ConvertTo-Json -Depth 23 | Out-File $path -Encoding utf8BOM
 }
 
+function Set-JsonValue {
+    param(
+        [hashtable]$hash,
+        [string]$path,
+        $value
+    )
+
+    $parts = $path -split '\.'
+    $last  = $parts[-1]
+    $target = $hash
+    foreach ($part in $parts[0..($parts.Length-2)]) {
+        if (-not $target.ContainsKey($part)) {
+            $target[$part] = @{}
+        }
+        $target = $target[$part]
+    }
+    $target[$last] = $value
+}
+
+
 Export-ModuleMember -Function *

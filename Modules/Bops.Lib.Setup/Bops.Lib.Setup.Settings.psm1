@@ -17,11 +17,33 @@ $Logger = [Logger]::new()
 $defaultSettings = @{
     profiles = @{
         default = @{
-            locations = @{
-                explorer   = "C:\Code\Repos"
-                powershell = "C:\Code\Repos"
+            locations     = @{
+                explorer     = "C:\Code\Repos"
+                visualStudio = "C:\Code\Repos"
+                terminal     = "C:\Code\Repos"
+                vsCode       = "C:\Code\Repos"
             }
-            commands  = @(
+            settingsFiles = @{
+                visualStudio = @{
+                    file       = "$env:LOCALAPPDATA\Microsoft\VisualStudio\17.0_b2d1ddb7\settings\CurrentSettings.vssettings"
+                    properties = @{
+                        projectsLocation = "PropertyValue[@name='ProjectsLocation']"
+                    }
+                }
+                terminal     = @{
+                    file       = "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json"
+                    properties = @{
+                        startingDirectory = "profiles.defaults.startingDirectory"
+                    }
+                }
+                vsCode       = @{
+                    file       = "$env:APPDATA\Code\User\settings.json"
+                    properties = @{
+                        startingDirectory = "files.defaultWorkspace"
+                    }
+                }
+            }
+            commands      = @(
                 @{
                     name        = "Open-Profile"
                     alias       = "op"
@@ -51,6 +73,13 @@ $defaultSettings = @{
                     icon        = "💾"
                 },
                 @{
+                    name        = "Set-StartupLocations"
+                    alias       = "ss"
+                    description = "Set startup locations for Explorer, Terminal, and Visual Studio."
+                    params      = @("path")
+                    icon        = "🚀"
+                },
+                @{
                     name        = "Set-ExplorerLocation"
                     alias       = "se"
                     description = "Change the current Explorer location."
@@ -72,8 +101,8 @@ $defaultSettings = @{
                     icon        = "📝"
                 }
             )
-            installs  = @{
-                vsCode = @{
+            installs      = @{
+                vsCode   = @{
                     install         = "Microsoft.VisualStudioCode"
                     extensions      = @("yzhang.markdown-all-in-one")
                     "settings.json" = @{
@@ -89,10 +118,10 @@ $defaultSettings = @{
                 }
                 terminal = @{
                     settings = @{
-                        path = @{
-                            powershell = "$env:LOCALAPPDATA\\Packages\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\LocalState\\settings.json"
-                            absolute = "C:\\Users\\mark.davich\\AppData\\Local\\Packages\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\LocalState\\settings.json"
-                            env = "%LOCALAPPDATA%\\Packages\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\LocalState\\settings.json"
+                        path              = @{
+                            powershell = "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json"
+                            absolute   = "C:\Users\mark.davich\AppData\Local\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json"
+                            env        = "%LOCALAPPDATA%\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json"
                         }
                         startingDirectory = "profiles.defaults.startingDirectory"
                     }
@@ -151,6 +180,7 @@ function Get-UserSettings {
         # Create and return a Profile object
         [Profile]$result = [Profile]::new(
             $profileData.locations,
+            $profileData.settingsFiles,
             $commands,
             $profileData.installs
         )
@@ -169,19 +199,29 @@ function Initialize-UserProfile {
     )
 
     try {
-        $json = Get-Json -path $JsonPath
-    
-        if ($json.profiles.PSObject.Properties.Name -contains $username) {
-            return;
+        $json = Get-Json -Path $JsonPath
+        if (-not $json) { throw "Get-Json returned `$null for '$JsonPath'." }
+
+        # Ensure 'profiles' container exists and is a hashtable
+        if (-not $json.ContainsKey('profiles') -or $null -eq $json['profiles']) {
+            $json['profiles'] = @{}
         }
-    
-        # Clone the default profile for the new user
-        $json.profiles | Add-Member `
-            -MemberType NoteProperty `
-            -Name $username `
-            -Value $defaultSettings.profiles.default
-    
-        # Save the updated JSON
+
+        $profiles = [hashtable]$json['profiles']
+
+        # Bail if already present
+        if ($profiles.ContainsKey($username)) { return }
+
+        # Deep clone the default so users don't share the same reference
+        $default = $defaultSettings.profiles.default
+        if ($null -eq $default) { throw "Missing `$defaultSettings.profiles.default." }
+
+        $clone = ($default | ConvertTo-Json -Depth 100) | ConvertFrom-Json -AsHashtable
+
+        # Add the user profile
+        $profiles[$username] = $clone
+
+        # Persist
         Save-Json -json $json -path $JsonPath
     }
     catch {
