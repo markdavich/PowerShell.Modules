@@ -16,7 +16,7 @@ function Test {
     try {
         # $setup = Join-Path -Path $ModuleFolder -ChildPath "$ModuleName.psm1"
         # Import-Module -FullyQualifiedName $setup
-        Test-ExplorerLocation
+        Test-StartupLocations
     }
     catch {
         $Logger.Error("$ModuleName Test Failed", $_)
@@ -24,11 +24,12 @@ function Test {
     }
 }
 
-function Test-ExplorerLocation {
-    Set-ExplorerLocation "C:\Code\Repos\IDJC"
+function Test-StartupLocations {
+    Set-StartupLocations "C:\Code\Repos\MED"
 }
 
 Test
 
 $Logger.Blank()
 $Logger.Note("$ModuleName Test Passed", [System.ConsoleColor]::Green)
+

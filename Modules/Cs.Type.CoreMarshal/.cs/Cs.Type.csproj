@@ -16,7 +16,7 @@
 
         <Root Namespace> "Cs.Type"
             Same as the .csproj name and assembly name, used to reference the
-            imported .dll class via: [Cs.Type.ClassName]::new() 
+            imported .dll class via: [Cs.Type.CoreMarshal]::new() 
 
         <Output Path> - "..\"
             The output will be one directory up, which is the root of the
@@ -32,13 +32,13 @@
             This keeps the module folder clean
         =====================================================================-->
         <Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
-        <TargetFramework>net9.0</TargetFramework>
         <AssemblyName>Cs.Type</AssemblyName>
         <RootNamespace>Cs.Type</RootNamespace>
         <OutputType>Library</OutputType>
         <OutputPath>..\</OutputPath>
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
         <DebugType>none</DebugType>
+        <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>

@@ -1,73 +1,6 @@
 ﻿{
   "profiles": {
     "default": {
-      "commands": [
-        {
-          "alias": "op",
-          "params": [],
-          "icon": "📜",
-          "name": "Open-Profile",
-          "description": "Open the PowerShell profile in the default editor."
-        },
-        {
-          "alias": "lp",
-          "params": [],
-          "icon": "🔄",
-          "name": "Load-Profile",
-          "description": "Reload the PowerShell profile."
-        },
-        {
-          "alias": "",
-          "params": [
-            "json"
-          ],
-          "icon": "🪄",
-          "name": "Format-Json",
-          "description": "Format JSON strings with standard indentation."
-        },
-        {
-          "alias": "",
-          "params": [
-            "json",
-            "path"
-          ],
-          "icon": "💾",
-          "name": "Save-Json",
-          "description": "Save JSON to a file with proper formatting."
-        },
-        {
-          "alias": "ss",
-          "params": [
-            "path"
-          ],
-          "icon": "🚀",
-          "name": "Set-StartupLocations",
-          "description": "Set startup locations for Explorer, Terminal, and Visual Studio."
-        },
-        {
-          "alias": "se",
-          "params": [
-            "path"
-          ],
-          "icon": "🚀",
-          "name": "Set-ExplorerLocation",
-          "description": "Change the current Explorer location."
-        },
-        {
-          "alias": "re",
-          "params": [],
-          "icon": "🧑‍🚀",
-          "name": "Reset-ExplorerLocation",
-          "description": "Reset the Explorer location to the default."
-        },
-        {
-          "alias": "ou",
-          "params": [],
-          "icon": "📝",
-          "name": "Open-UserSetupJson",
-          "description": "Open the User Setup JSON file."
-        }
-      ],
       "settingsFiles": {
         "vsCode": {
           "file": "C:\\Users\\mark.davich\\AppData\\Roaming\\Code\\User\\settings.json",
@@ -88,28 +21,76 @@
           }
         }
       },
-      "locations": {
-        "explorer": "C:\\Code\\Repos",
-        "vsCode": "C:\\Code\\Repos",
-        "terminal": "C:\\Code\\Repos",
-        "visualStudio": "C:\\Code\\Repos"
-      },
-      "installs": {
-        "terminal": {
-          "settings": {
-            "path": {
-              "powershell": "C:\\Users\\mark.davich\\AppData\\Local\\Packages\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\LocalState\\settings.json",
-              "absolute": "C:\\Users\\mark.davich\\AppData\\Local\\Packages\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\LocalState\\settings.json",
-              "env": "%LOCALAPPDATA%\\Packages\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\LocalState\\settings.json"
-            },
-            "startingDirectory": "profiles.defaults.startingDirectory"
-          }
+      "commands": [
+        {
+          "description": "Open the PowerShell profile in the default editor.",
+          "params": [],
+          "name": "Open-Profile",
+          "alias": "op",
+          "icon": "📜"
         },
+        {
+          "description": "Reload the PowerShell profile.",
+          "params": [],
+          "name": "Load-Profile",
+          "alias": "lp",
+          "icon": "🔄"
+        },
+        {
+          "description": "Format JSON strings with standard indentation.",
+          "params": [
+            "json"
+          ],
+          "name": "Format-Json",
+          "alias": "",
+          "icon": "🪄"
+        },
+        {
+          "description": "Save JSON to a file with proper formatting.",
+          "params": [
+            "json",
+            "path"
+          ],
+          "name": "Save-Json",
+          "alias": "",
+          "icon": "💾"
+        },
+        {
+          "description": "Set startup locations for Explorer, Terminal, and Visual Studio.",
+          "params": [
+            "path"
+          ],
+          "name": "Set-StartupLocations",
+          "alias": "ss",
+          "icon": "🚀"
+        },
+        {
+          "description": "Change the current Explorer location.",
+          "params": [
+            "path"
+          ],
+          "name": "Set-ExplorerLocation",
+          "alias": "se",
+          "icon": "🚀"
+        },
+        {
+          "description": "Reset the Explorer location to the default.",
+          "params": [],
+          "name": "Reset-ExplorerLocation",
+          "alias": "re",
+          "icon": "🧑‍🚀"
+        },
+        {
+          "description": "Open the User Setup JSON file.",
+          "params": [],
+          "name": "Open-UserSetupJson",
+          "alias": "ou",
+          "icon": "📝"
+        }
+      ],
+      "installs": {
         "vsCode": {
           "install": "Microsoft.VisualStudioCode",
-          "extensions": [
-            "yzhang.markdown-all-in-one"
-          ],
           "settings.json": {
             "file": "C:\\Users\\mark.davich\\AppData\\Roaming\\Code\\User\\settings.json",
             "content": {
@@ -125,14 +106,33 @@
                 }
               ]
             }
+          },
+          "extensions": [
+            "yzhang.markdown-all-in-one"
+          ]
+        },
+        "terminal": {
+          "settings": {
+            "startingDirectory": "profiles.defaults.startingDirectory",
+            "path": {
+              "absolute": "C:\\Users\\mark.davich\\AppData\\Local\\Packages\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\LocalState\\settings.json",
+              "powershell": "C:\\Users\\mark.davich\\AppData\\Local\\Packages\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\LocalState\\settings.json",
+              "env": "%LOCALAPPDATA%\\Packages\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\LocalState\\settings.json"
+            }
           }
         }
+      },
+      "locations": {
+        "explorer": "C:\\Code\\Repos",
+        "vsCode": "C:\\Code\\Repos",
+        "terminal": "C:\\Code\\Repos",
+        "visualStudio": "C:\\Code\\Repos"
       }
     },
     "Mark.Davich": {
       "locations": {
         "vsCode": "C:\\Code\\Repos",
-        "explorer": "C:\\Code\\Repos\\.bops.lib!",
+        "explorer": "C:\\Code\\Repos\\MED",
         "visualStudio": "C:\\Code\\Repos",
         "terminal": "C:\\Code\\Repos"
       },

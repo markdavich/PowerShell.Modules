@@ -1,0 +1,9 @@
+C:\Code\Repos\.bops.lib!\Modules\Cs.Type.CoreMarshal\.cs\obj\Debug\net9.0\Cs.Type.GeneratedMSBuildEditorConfig.editorconfig
+C:\Code\Repos\.bops.lib!\Modules\Cs.Type.CoreMarshal\.cs\obj\Debug\net9.0\Cs.Type.AssemblyInfoInputs.cache
+C:\Code\Repos\.bops.lib!\Modules\Cs.Type.CoreMarshal\.cs\obj\Debug\net9.0\Cs.Type.AssemblyInfo.cs
+C:\Code\Repos\.bops.lib!\Modules\Cs.Type.CoreMarshal\.cs\obj\Debug\net9.0\Cs.Type.csproj.CoreCompileInputs.cache
+C:\Code\Repos\.bops.lib!\Modules\Cs.Type.CoreMarshal\net9.0\Cs.Type.deps.json
+C:\Code\Repos\.bops.lib!\Modules\Cs.Type.CoreMarshal\net9.0\Cs.Type.dll
+C:\Code\Repos\.bops.lib!\Modules\Cs.Type.CoreMarshal\.cs\obj\Debug\net9.0\Cs.Type.dll
+C:\Code\Repos\.bops.lib!\Modules\Cs.Type.CoreMarshal\.cs\obj\Debug\net9.0\refint\Cs.Type.dll
+C:\Code\Repos\.bops.lib!\Modules\Cs.Type.CoreMarshal\.cs\obj\Debug\net9.0\ref\Cs.Type.dll
