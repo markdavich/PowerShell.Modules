@@ -7,15 +7,23 @@ $ModulePath = "C:\.lib!\Modules"
 # Create symbolic link using Admin PowerShell
 # New-Item -ItemType SymbolicLink -Path "C:\.lib!" -Target "C:\Code\Repos\.bops.lib!"
 
+<#
+    Profiles
+        Copy all the PowerShell 7 profiles in
+            .\Profiles\c.users.username.documents.PowerShell
+        to the locations (Path) listed in .json: Profiles.PowerShell7.Hosts
+
+#>
+
 # Copy .\Profiles\...\*profile.ps1 to correct locations
 # Copy .uninstall.ps1 to C:\.lib!.uninstall.ps1
 # Add bops to the path
 <#
 #>
 $EnvironmentVariables = [PSCustomObject]@{
-    System = "Machine",
-    User = "User",
-    Process = "Process",
+    System = "Machine"
+    User = "User"
+    Process = "Process"
     PSModulePath = "PSModulePath"
 }
 

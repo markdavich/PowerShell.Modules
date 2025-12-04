@@ -2,7 +2,12 @@ using namespace System.IO
 using module Bop.U.Parser.Json
 using module Bop.U.Logger
 
-Clear-Host
+# !!! Clear-Host
+
+Write-Host "> ? ? ?" -ForegroundColor Yellow
+Write-Host $MyInvocation.MyCommand.Path -ForegroundColor DarkGray
+Write-Host "Called " -ForegroundColor DarkMagenta -NoNewline
+Write-Host "> ? ? ?" -ForegroundColor Yellow
 
 [Logger] $Logger = [Logger]::new()
 

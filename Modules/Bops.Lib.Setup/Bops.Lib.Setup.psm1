@@ -1,5 +1,6 @@
 using namespace System.IO
 
+using module Bop.U.Logger
 using module Bop.U.Json
 using module Bop.U.Parser.Json
 using module Bop.U.Variable
@@ -30,7 +31,9 @@ $configuration = @(
     (Add-Local 'VbsDefaultContent' (Join-Path ([System.IO.Path]::GetDirectoryName($ModulePath)) $Config.VbsDefaultContent))
 )
 
-[VariableLogger]::Print("Bops.Lib.Setup Configuration Variables", $configuration, [System.ConsoleColor]::Cyan)
+# Write-Host
+# [VariableLogger]::Print("Bops.Lib.Setup Configuration Variables", $configuration, [System.ConsoleColor]::Cyan)
+# Write-Host
 
 function Get-ExplorerLocation {
     $settings = Get-UserSettings
@@ -206,8 +209,6 @@ function Sync-VisualStudioSettings {
     }
 }
 
-
-
 function Get-VsDte {
     [CmdletBinding()]
     param(
@@ -332,17 +333,6 @@ function Initialize-Explorer {
 
     Update-VbsWithNewLocation $location
 
-    # # Add or update registry entry
-    # $regKey = "HKCU:\SOFTWARE\Classes\CLSID\{52205fd8-5dfb-447d-801a-d0b52f2e83e1}\shell\opennewwindow\command"
-
-    # if (-not (Test-Path $regKey)) {
-    #     New-Item -Path $regKey -Force | Out-Null
-    # }
-
-    # Set-ItemProperty -Path $regKey -Name '(default)' -Value "wscript.exe `"$vbsPath`""
-    # Set-ItemProperty -Path $regKey -Name 'DelegateExecute' -Value ""
-    # Write-Host "Explorer launch location initialized."
-
     # Add or update registry entry
     if (-not (Test-Path $ExplorerCommandRegistryKey)) {
         New-Item -Path $ExplorerCommandRegistryKey -Force | Out-Null
@@ -350,8 +340,6 @@ function Initialize-Explorer {
 
     Set-ItemProperty -Path $ExplorerCommandRegistryKey -Name '(default)' -Value "wscript.exe `"$vbsPath`""
     Set-ItemProperty -Path $ExplorerCommandRegistryKey -Name 'DelegateExecute' -Value ""
-
-    Write-Host "Explorer launch location initialized."
 }
 
 function Reset-ExplorerLocation {
@@ -373,10 +361,44 @@ function Reset-ExplorerLocation {
     Write-Host "Explorer location reset."
 }
 
-function Open-UserSetupJson {
+function Write-RunningProfileHeader
+{
+    param (
+        [string]$Name,
+        [string]$Path
+    )
+
+    [Logger]$log = [Logger]::new()
+
+    $line = "─" * ($Name.Length + 2)
+
     Write-Host
-    Write-Host "Bops.Lib.Setup.json is located at" -ForegroundColor Cyan -NoNewline; Write-Host ": " -ForegroundColor Magenta -NoNewline; Write-Host -ForegroundColor Yellow $SettingsJsonPath
-    code $SettingsJsonPath
+    Write-Host "╭" -ForegroundColor Blue -NoNewline
+    Write-Host $line -ForegroundColor Blue -NoNewline
+    Write-Host "╮" -ForegroundColor Blue
+
+    Write-Host "│ " -ForegroundColor Blue -NoNewline;
+    Write-Host  $Name -ForegroundColor Magenta -NoNewline;
+    Write-Host " │" -ForegroundColor Blue
+
+    Write-Host "╰" -ForegroundColor Blue -NoNewline
+    Write-Host $line -ForegroundColor Blue -NoNewline
+    Write-Host "╯" -ForegroundColor Blue
+
+    Write-Host " Running Profile" -ForegroundColor Yellow -NoNewline;
+    Write-Host ": " -ForegroundColor Magenta
+
+    $profileName = [Path]::GetFileName($Path)
+    $root = [Path]::GetDirectoryName($Path)
+
+    $profileDirLink = "`e]8;;$root`e\$root`e]8;;`e\"
+    $profileLink    = "`e]8;;$Path`e\$profileName`e]8;;`e\"
+    
+    $log.ListTextColor = [System.ConsoleColor]::Cyan
+    $log.ListItem("📜", $profileLink)
+    $log.ListTextColor = [System.ConsoleColor]::DarkCyan
+    $log.ListItem("📁", $profileDirLink)
+
 }
 
 Export-ModuleMember -Function *

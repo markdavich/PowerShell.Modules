@@ -15,7 +15,7 @@ function Split-StringAtWordBoundary {
 
     while ($remainingString.Length -gt 0) {
         if ($remainingString.Length -le $MaxLength) {
-            $result += $remainingString
+            $result += $remainingString 
             $remainingString = ""
         }
         else {

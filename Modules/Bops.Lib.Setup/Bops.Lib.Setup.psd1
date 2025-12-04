@@ -63,8 +63,6 @@
 
     # Modules to import as nested modules of the module specified in RootModule/ModuleToProcess
     NestedModules     = @(
-        '.\Bops.Lib.Setup.Classes.Command.psm1',
-        '.\Bops.Lib.Setup.Classes.Profile.psm1',
         '.\Bops.Lib.Setup.Settings.psm1',
         '.\Bops.Lib.Setup.Config.psm1'
     )

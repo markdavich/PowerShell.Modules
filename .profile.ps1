@@ -4,26 +4,52 @@ using module User.Common
 using module Bops.Lib.Setup.Classes.Command
 using module Bops.Lib.Setup
 
-
-# Write-Host "<[" -ForegroundColor Green -NoNewline
-# Write-Host "Bops.Lib! " -ForegroundColor Yellow -NoNewline
-# Write-Host "[P] " -ForegroundColor Blue -NoNewline
-# Write-Host $MyInvocation.MyCommand.Path -ForegroundColor Cyan -NoNewline
-# Write-Host "]" -ForegroundColor Green
+Write-RunningProfileHeader "Bops.Lib! PowerShell Profile" $MyInvocation.MyCommand.Path
 
 Write-Host
-Write-Host "╭──────────────────────────────╮" -ForegroundColor Blue
-Write-Host "│ " -ForegroundColor Blue -NoNewline;
-Write-Host    "Bops.Lib! PowerShell Profile" -ForegroundColor Magenta -NoNewline;
-Write-Host " │" -ForegroundColor Blue
-Write-Host "╰──────────────────────────────╯" -ForegroundColor Blue
-Write-Host "Running" -ForegroundColor Yellow -NoNewline;
-Write-Host ": " -ForegroundColor Magenta -NoNewline;
-Write-Host $PSScriptRoot -ForegroundColor DarkCyan -NoNewline;
-Write-Host "\.profile.ps1" -ForegroundColor Cyan;
-Write-Host
 
-Write-Host
+function Get-CommandInfo {
+    $commands = (Get-UserSettings).commands | ForEach-Object { `
+            [PSCustomObject] @{ `
+                Icon    = $_.Icon
+            Alias       = $_.Alias
+            Name        = $_.Name
+            Params      = $_.Params
+            Description = $_.Description
+
+            AliasLength = $_.Alias.Length
+            Length      = $_.Params.Count -gt 0 `
+                ? $_.Name.Length `
+                + 2 `
+                + ($_.Params | Measure-Object -Property Length -Sum).Sum `
+                + ($_.Params.Count - 1) * 2 `
+                : $_.Name.Length 
+        }
+    }
+
+    $result = [PSCustomObject]@{
+        Commands = $commands
+        MaxLength = ($commands | Measure-Object -Property Length -Maximum).Maximum
+        MaxAliasLength = ($commands | Measure-Object -Property AliasLength -Maximum).Maximum
+        MaxLineLength = 0
+    }
+
+    $result.MaxLineLength = 5 `
+        + $result.MaxLength `
+        + 2 `
+        + $result.MaxAliasLength `
+        + 4 `
+        + (
+            $commands |
+                ForEach-Object { $_.Description.Length } |
+                Measure-Object -Maximum |
+                Select-Object -Expand Maximum
+        )
+
+    return $result
+}
+
+$CommandInfo = Get-CommandInfo
 
 function Get-MajorPSVersion {
     $ver = $PSVersionTable.PSVersion
@@ -113,55 +139,39 @@ function Write-ProfileCommands {
 
     [Console]::OutputEncoding = [System.Text.UTF8Encoding]::UTF8
 
-    $commands = (Get-UserSettings).commands | ForEach-Object { `
-            [PSCustomObject] @{ `
-                Icon    = $_.Icon
-            Alias       = $_.Alias
-            Name        = $_.Name
-            Params      = $_.Params
-            Description = $_.Description
-
-            AliasLength = $_.Alias.Length
-            Length      = $_.Params.Count -gt 0 `
-                ? $_.Name.Length `
-                + 2 `
-                + ($_.Params | Measure-Object -Property Length -Sum).Sum `
-                + ($_.Params.Count - 1) * 2 `
-                : $_.Name.Length 
-        }
-    }
-
-    $maxLength = ($commands | Measure-Object -Property Length -Maximum).Maximum
-    $maxAliasLength = ($commands | Measure-Object -Property AliasLength -Maximum).Maximum
-
-    $commands | ForEach-Object {
+    $CommandInfo.Commands | ForEach-Object {
         Write-Host "  $($_.Icon) " -NoNewline;
 
         Write-Host $_.Name -ForegroundColor DarkYellow -NoNewline;
         
         Write-Parameters -params $_.Params;
-        Write-Host (" " * ($maxLength - $_.Length)) -NoNewline;
-        Write-Alias -alias $_.Alias -length $maxAliasLength;
+        Write-Host (" " * ($CommandInfo.MaxLength - $_.Length)) -NoNewline;
+        Write-Alias -alias $_.Alias -length $CommandInfo.MaxAliasLength;
         Write-Host "► " -ForegroundColor Cyan -NoNewline;
         Write-Host $($_.Description) -ForegroundColor Green;
     }
 }
 
+
+
 function Write-Heading {
     $explorerLocation = Get-ExplorerLocation
 
+    Write-Host ("░" * $CommandInfo.MaxLineLength)
     Write-Host "$(Get-PSVersionString)"
-    Write-Host "-------------------------------------------------------------------------------"
+    Write-Host ("═" * $CommandInfo.MaxLineLength) -ForegroundColor DarkGray
     Write-Host "             .exe : $(Get-Exe)"
-    Write-Host "          Profile : $Profile"
+    # Write-Host "          Profile : $Profile"
     Write-Host "Explorer Location " -ForegroundColor Cyan -NoNewline
     Write-Host ": " -ForegroundColor Magenta -NoNewline  
     Write-Host -ForegroundColor Yellow $explorerLocation
-    Write-Host "-------------------------------------------------------------------------------"
-    Write-Host "Commands" -NoNewline;
+    Write-Host ("━" * $CommandInfo.MaxLineLength) -ForegroundColor DarkGray
+    Write-Host "     Commands" -NoNewline;
+    Write-Host (" " * ($CommandInfo.MaxLength - "Commands".Length)) -NoNewline
     Write-Host " [" -ForegroundColor DarkGreen -NoNewline;
     Write-Host "Alias" -ForegroundColor Yellow -NoNewline;
     Write-Host "]" -ForegroundColor DarkGreen;
+    Write-Host ("┄" * $CommandInfo.MaxLineLength) -ForegroundColor DarkGray
     Write-ProfileCommands
     Write-Host ""
 }
@@ -175,6 +185,7 @@ function Open-Profile {
 }
 
 function Initialize-Profile {
+    Clear-Host
     Update-Modules
     . $Profile
 }
@@ -185,7 +196,7 @@ function Set-Aliases {
     Set-Alias ss Set-StartupLocations -Scope Global
     Set-Alias se Set-ExplorerLocation -Scope Global
     Set-Alias re Reset-ExplorerLocation -Scope Global
-    Set-Alias ou Open-UserSetupJson -Scope Global
+    Set-Alias ou Open-UserSettings -Scope Global
 }
 
 function main {

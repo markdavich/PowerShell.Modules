@@ -1,0 +1,262 @@
+﻿{
+  "profiles": {
+    "default": {
+      "installs": {
+        "terminal": {
+          "settings": {
+            "startingDirectory": "profiles.defaults.startingDirectory",
+            "path": {
+              "env": "%LOCALAPPDATA%\\Packages\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\LocalState\\settings.json",
+              "powershell": "C:\\Users\\mark.davich\\AppData\\Local\\Packages\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\LocalState\\settings.json",
+              "absolute": "C:\\Users\\mark.davich\\AppData\\Local\\Packages\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\LocalState\\settings.json"
+            }
+          }
+        },
+        "vsCode": {
+          "settings.json": {
+            "file": "C:\\Users\\mark.davich\\AppData\\Roaming\\Code\\User\\settings.json",
+            "content": {
+              "security.workspace.trust.untrustedFiles": "open",
+              "editor.rulers": [
+                {
+                  "color": "#00ff6a50",
+                  "column": 80
+                },
+                {
+                  "color": "#ff000050",
+                  "column": 85
+                }
+              ]
+            }
+          },
+          "extensions": [
+            "yzhang.markdown-all-in-one"
+          ],
+          "install": "Microsoft.VisualStudioCode"
+        }
+      },
+      "commands": [
+        {
+          "alias": "op",
+          "params": [],
+          "icon": "📜",
+          "description": "Open the PowerShell profile in the default editor.",
+          "name": "Open-Profile"
+        },
+        {
+          "alias": "lp",
+          "params": [],
+          "icon": "🔄",
+          "description": "Reload the PowerShell profile.",
+          "name": "Initialize-Profile"
+        },
+        {
+          "alias": "",
+          "params": [
+            "json"
+          ],
+          "icon": "🪄",
+          "description": "Format JSON strings with standard indentation.",
+          "name": "Format-Json"
+        },
+        {
+          "alias": "",
+          "params": [
+            "json",
+            "path"
+          ],
+          "icon": "💾",
+          "description": "Save JSON to a file with proper formatting.",
+          "name": "Save-Json"
+        },
+        {
+          "alias": "ss",
+          "params": [
+            "path"
+          ],
+          "icon": "🚀",
+          "description": "Set startup locations for Explorer, Terminal, and Visual Studio.",
+          "name": "Set-StartupLocations"
+        },
+        {
+          "alias": "se",
+          "params": [
+            "path"
+          ],
+          "icon": "🚀",
+          "description": "Change the current Explorer location.",
+          "name": "Set-ExplorerLocation"
+        },
+        {
+          "alias": "re",
+          "params": [],
+          "icon": "🧑‍🚀",
+          "description": "Reset the Explorer location to the default.",
+          "name": "Reset-ExplorerLocation"
+        },
+        {
+          "alias": "ou",
+          "params": [],
+          "icon": "📝",
+          "description": "Open the User Setup JSON file.",
+          "name": "Open-UserSettings"
+        }
+      ],
+      "locations": {
+        "vsCode": "C:\\Code\\Repos",
+        "explorer": "C:\\Code\\Repos",
+        "terminal": "C:\\Code\\Repos",
+        "visualStudio": "C:\\Code\\Repos"
+      },
+      "settingsFiles": {
+        "vsCode": {
+          "file": "C:\\Users\\mark.davich\\AppData\\Roaming\\Code\\User\\settings.json",
+          "properties": {
+            "startingDirectory": "files.defaultWorkspace"
+          }
+        },
+        "terminal": {
+          "file": "C:\\Users\\mark.davich\\AppData\\Local\\Packages\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\LocalState\\settings.json",
+          "properties": {
+            "startingDirectory": "profiles.defaults.startingDirectory"
+          }
+        },
+        "visualStudio": {
+          "file": "C:\\Users\\mark.davich\\AppData\\Local\\Microsoft\\VisualStudio\\17.0_b2d1ddb7\\settings\\CurrentSettings.vssettings",
+          "properties": {
+            "projectsLocation": "PropertyValue[@name='ProjectsLocation']"
+          }
+        }
+      }
+    },
+    "Mark.Davich": {
+      "commands": [
+        {
+          "icon": "📜",
+          "description": "Open the PowerShell profile in the default editor.",
+          "name": "Open-Profile",
+          "params": [],
+          "alias": "op"
+        },
+        {
+          "icon": "🔄",
+          "description": "Reload the PowerShell profile.",
+          "name": "Initialize-Profile",
+          "params": [],
+          "alias": "lp"
+        },
+        {
+          "icon": "🪄",
+          "description": "Format JSON strings with standard indentation.",
+          "name": "Format-Json",
+          "params": [
+            "json"
+          ],
+          "alias": ""
+        },
+        {
+          "icon": "💾",
+          "description": "Save JSON to a file with proper formatting.",
+          "name": "Save-Json",
+          "params": [
+            "json",
+            "path"
+          ],
+          "alias": ""
+        },
+        {
+          "icon": "🚀",
+          "description": "Set startup locations for Explorer, Terminal, and Visual Studio.",
+          "name": "Set-StartupLocations",
+          "params": [
+            "path"
+          ],
+          "alias": "ss"
+        },
+        {
+          "icon": "🚀",
+          "description": "Change the current Explorer location.",
+          "name": "Set-ExplorerLocation",
+          "params": [
+            "path"
+          ],
+          "alias": "se"
+        },
+        {
+          "icon": "🧑‍🚀",
+          "description": "Reset the Explorer location to the default.",
+          "name": "Reset-ExplorerLocation",
+          "params": [],
+          "alias": "re"
+        },
+        {
+          "icon": "📝",
+          "description": "Open the User Setup JSON file.",
+          "name": "Open-UserSettings",
+          "params": [],
+          "alias": "ou"
+        }
+      ],
+      "installs": {
+        "terminal": {
+          "settings": {
+            "path": {
+              "absolute": "C:\\Users\\mark.davich\\AppData\\Local\\Packages\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\LocalState\\settings.json",
+              "powershell": "C:\\Users\\mark.davich\\AppData\\Local\\Packages\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\LocalState\\settings.json",
+              "env": "%LOCALAPPDATA%\\Packages\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\LocalState\\settings.json"
+            },
+            "startingDirectory": "profiles.defaults.startingDirectory"
+          }
+        },
+        "vsCode": {
+          "settings.json": {
+            "content": {
+              "security.workspace.trust.untrustedFiles": "open",
+              "editor.rulers": [
+                {
+                  "color": "#00ff6a50",
+                  "column": 80
+                },
+                {
+                  "color": "#ff000050",
+                  "column": 85
+                }
+              ]
+            },
+            "file": "C:\\Users\\mark.davich\\AppData\\Roaming\\Code\\User\\settings.json"
+          },
+          "install": "Microsoft.VisualStudioCode",
+          "extensions": [
+            "yzhang.markdown-all-in-one"
+          ]
+        }
+      },
+      "settingsFiles": {
+        "vsCode": {
+          "properties": {
+            "startingDirectory": "files.defaultWorkspace"
+          },
+          "file": "C:\\Users\\mark.davich\\AppData\\Roaming\\Code\\User\\settings.json"
+        },
+        "terminal": {
+          "properties": {
+            "startingDirectory": "profiles.defaults.startingDirectory"
+          },
+          "file": "C:\\Users\\mark.davich\\AppData\\Local\\Packages\\Microsoft.WindowsTerminal_8wekyb3d8bbwe\\LocalState\\settings.json"
+        },
+        "visualStudio": {
+          "properties": {
+            "projectsLocation": "PropertyValue[@name='ProjectsLocation']"
+          },
+          "file": "C:\\Users\\mark.davich\\AppData\\Local\\Microsoft\\VisualStudio\\17.0_b2d1ddb7\\settings\\CurrentSettings.vssettings"
+        }
+      },
+      "locations": {
+        "explorer": "C:\\Code\\Repos",
+        "vsCode": "C:\\Code\\Repos",
+        "terminal": "C:\\Code\\Repos",
+        "visualStudio": "C:\\Code\\Repos"
+      }
+    }
+  }
+}

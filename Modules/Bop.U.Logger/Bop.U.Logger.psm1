@@ -18,9 +18,20 @@ class Logger {
     hidden [ConsoleColor] $_defaultKeyColor = [ConsoleColor]::Yellow
     hidden [ConsoleColor] $_defaultKeyValueSeparatorColor = [ConsoleColor]::Magenta
     hidden [ConsoleColor] $_defaultValueColor = [ConsoleColor]::Cyan
-    hidden [ConsoleColor] $_defaultBulletColor = [ConsoleColor]::Gray
+    
+    # Bullet
+    hidden       [string] $_defaultBulletSymbol    = '●'
     hidden [ConsoleColor] $_defaultBulletTextColor = [ConsoleColor]::DarkYellow
+    hidden [ConsoleColor] $_defaultBulletColor     = [ConsoleColor]::Gray
 
+    # List
+    hidden [string] $_defaultListSymbol = '☐'
+    hidden [string] $_defaultListIndent = '   '
+    hidden [string] $_defaultListSeparator = ' '
+    hidden [ConsoleColor] $_defaultListSeparatorColor = [ConsoleColor]::Gray
+    hidden [ConsoleColor] $_defaultListSymbolColor = [ConsoleColor]::Gray
+    hidden [ConsoleColor] $_defaultListTextColor = [ConsoleColor]::DarkYellow
+    
     [ConsoleColor] $StartColor
     [ConsoleColor] $EnterColor
     [ConsoleColor] $NoteColor
@@ -33,25 +44,53 @@ class Logger {
     [ConsoleColor] $KeyValueSeparatorColor
     [ConsoleColor] $ValueColor
 
-    [string] $BulletSymbol = "●"
+    # Bullet
+    [string] $BulletSymbol
     [ConsoleColor] $BulletColor
     [ConsoleColor] $BulletTextColor
+    [string] $BulletIndent
+
+    # List
+    [string] $ListSymbol
+    [string] $ListIndent
+    [string] $ListSeparator
+    [ConsoleColor] $ListSeparatorColor
+    [ConsoleColor] $ListSymbolColor
+    [ConsoleColor] $ListTextColor
+
 
     hidden [Int64] $IndentCount = 0
     hidden [string]$IndentString = '   '
 
     Logger() {
-        $this.ResetDefaults()
+        $this.ResetAllColors()
+        $this.ResetList()
     }
 
-    [void] ResetDefaults() {
-        $this.GetType().GetProperties() |
-        Where-Object {
+    [void] ResetAllColors() {
+        $this.GetType().GetProperties() | Where-Object {
             $_.Name.StartsWith('_default') -and $_.PropertyType -eq [ConsoleColor]
-        } |
-        ForEach-Object {
+        } | ForEach-Object {
             $defaultProp = $_
             $targetName = $_.Name.Substring(8)  # Remove "_default"
+            $targetProp = $this.GetType().GetProperty($targetName)
+            
+            if ($targetProp -and $targetProp.CanWrite) {
+                $targetProp.SetValue($this, $defaultProp.GetValue($this))
+            }
+        }
+    }
+
+    [void] ResetList() {
+        $prefix = "_default"
+        $find = "$($prefix)List"
+        $length = $prefix.Length
+
+        $this.GetType().GetProperties() | Where-Object {
+            $_.Name.StartsWith($find)
+        } | ForEach-Object {
+            $defaultProp = $_
+            $targetName = $_.Name.Substring($length)  # Remove "_default"
             $targetProp = $this.GetType().GetProperty($targetName)
             
             if ($targetProp -and $targetProp.CanWrite) {
@@ -161,7 +200,7 @@ class Logger {
     }
 
     [void] Add([string] $Message, [ConsoleColor] $Color) {
-        Write-Host $Message -ForegroundColor $Color -NoNewline
+        Write-Host "$Message" -ForegroundColor $Color -NoNewline
     }
 
     [void] EndLine([string] $Message) {
@@ -213,6 +252,20 @@ class Logger {
         $this.DecreaseIndent()
     }
 
+    [void] ListItem([string]$Text) {
+        $this.Add($this.ListIndent)
+        $this.Add($this.ListSymbol, $this.ListSymbolColor)
+        $this.Add($this.ListSeparator, $this.ListSeparatorColor)
+        $this.EndLine($Text, $this.ListTextColor)
+    }
+
+    [void] ListItem([string]$Symbol, [string]$Text) {
+        $this.Add($this.ListIndent)
+        $this.Add($Symbol, $this.ListSymbolColor)
+        $this.Add($this.ListSeparator, $this.ListSeparatorColor)
+        $this.EndLine($Text, $this.ListTextColor)
+    }
+
     [void] PrettyPrint([object] $Object, [string] $Name = $null) {
         if ($null -eq $Object) {
             if ($null -ne $Name) {
@@ -234,12 +287,12 @@ class Logger {
             if ($isArray) {
                 $this.ValueColor = [ConsoleColor]::White
                 $this.KeyValue("`"$Name`"", "[")
-                $this.ResetDefaults()
+                $this.ResetAllColors()
             }
             elseif ($isDict -or $isCustomObj) {
                 $this.ValueColor = [ConsoleColor]::White
                 $this.KeyValue("`"$Name`"", "{")
-                $this.ResetDefaults()
+                $this.ResetAllColors()
             }
             elseif ($isPrimitive) {
                 $prettyValue = if ($Object -is [string]) { "`"$Object`"" } else { $Object }

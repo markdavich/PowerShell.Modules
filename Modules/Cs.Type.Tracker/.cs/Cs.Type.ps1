@@ -3,7 +3,12 @@ using namespace System.Collections.Generic
 
 using module Cs.Type.Tracker
 
-Clear-Host
+# !!! Clear-Host
+
+Write-Host "> ? ? ?" -ForegroundColor Yellow
+Write-Host $MyInvocation.MyCommand.Path -ForegroundColor DarkGray
+Write-Host "Called " -ForegroundColor DarkMagenta -NoNewline
+Write-Host "> ? ? ?" -ForegroundColor Yellow
 
 # ╭────────────────────────────────╮
 # │ Possible Constructor Arguments │

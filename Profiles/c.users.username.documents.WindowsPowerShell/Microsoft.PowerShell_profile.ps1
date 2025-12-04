@@ -1,6 +1,4 @@
-﻿
-
-function Get-MajorPSVersion {
+﻿function Get-MajorPSVersion {
     $ver = $PSVersionTable.PSVersion
     $major = $ver.Major
     return $major
@@ -88,7 +86,15 @@ function Write-ProfileCommands {
 }
 
 
-Clear-Host
+# !!! Clear-Host
+
+
+Write-Host "> ? ? ?" -ForegroundColor Yellow
+Write-Host $MyInvocation.MyCommand.Path -ForegroundColor DarkGray
+Write-Host "Called " -ForegroundColor DarkMagenta -NoNewline
+Write-Host "Clear-Host " -ForegroundColor red
+Write-Host "> ? ? ?" -ForegroundColor Yellow
+
 Write-Host "$(Get-PSVersionString)"
 Write-Host "   .exe : $(Get-Exe)"
 Write-Host "Profile : $Profile"

@@ -16,5 +16,52 @@
             },
             "startingDirectory": "profiles.defaults.startingDirectory"
         }
+    },
+    "Profiles": {
+        "PowerShell7": {
+            "Commands": ["$Host.Name", "$PROFILE"],
+            "Hosts": {
+                "ConsoleHost": "$Host.Name",
+                "Default": {
+                    "Name": "ConsoleHost",
+                    "Title": "PowerShell 7 Profile",
+                    "Description": [
+                        "◊ Default PowerShell 7 Profile                        ",
+                        "                                                      ",
+                        "  ● Open PowerShell 7 and run the following commands: ",
+                        "      $Host.Name # Name of host                         ",
+                        "      $PROFILE   # Location of profile                  "
+                    ],
+                    "Path": "%UserProfile%\\Documents\\PowerShell\\Microsoft.PowerShell_profile.ps1" 
+                },
+                "Visual Studio Code Host": {
+                    "Name": "Visual Studio Code Host",
+                    "Title": "VS Code PowerShell 7 Profile (PowerShell Extension)",
+                    "Description": [
+                        "◊ Default profile when running VS Code PowerShell Extension ",
+                        "                                                      ",
+                        "  ● Open PowerShell Extension in VS Code (CTRL + `)   ",
+                        "    and run the following commands: ",
+                        "      $Host.Name # Name of host                         ",
+                        "      $PROFILE   # Location of profile                  "
+                    ],
+                    "Path": "%UserProfile%\\Documents\\PowerShell\\Microsoft.VSCode_profile.ps1" 
+                },
+                "VisualStudioHost": {
+                    "Name": "Unknown",
+                    "Title": "Visual Studio PowerShell 7 Profile",
+                    "Description": [
+                        "◊ Default profile in Visual Studio ",
+                        "                                                      ",
+                        "  ● Open PowerShell Extension in Visual Studio (CTRL + `)   ",
+                        "    and run the following commands: ",
+                        "      $Host.Name # Name of host                         ",
+                        "      $PROFILE   # Location of profile                  "
+                    ],
+                    "Path": "%UserProfile%\\Documents\\PowerShell\\Microsoft.VisualStudio_profile.ps1" 
+                }
+            },
+            "Bops.Lib": "C:\\.lib!\\profile.ps1"
+        }
     }
 }

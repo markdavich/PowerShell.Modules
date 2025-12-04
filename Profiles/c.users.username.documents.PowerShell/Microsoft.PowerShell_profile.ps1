@@ -1,3 +1,4 @@
+using module Bops.Lib.Setup
 using module Bop.U.Logger
 
 [CmdletBinding(SupportsShouldProcess = $true)]
@@ -7,28 +8,11 @@ param (
 )
 
 if ($Fresh) {
-    Clear-Host
+    # !!! Clear-Host
 }
 
-# Write-Host "<[" -ForegroundColor Green -NoNewline
-# Write-Host "Bops.Lib! " -ForegroundColor Yellow -NoNewline
-# Write-Host "[P] " -ForegroundColor Blue -NoNewline
-# Write-Host $MyInvocation.MyCommand.Path -ForegroundColor Cyan -NoNewline
-# Write-Host "]" -ForegroundColor Green
+Write-RunningProfileHeader "PowerShell 7 Profile" $MyInvocation.MyCommand.Path
 
-Write-Host
-Write-Host "╭──────────────────────╮" -ForegroundColor Blue
-Write-Host "│ " -ForegroundColor Blue -NoNewline;
-Write-Host    "PowerShell Profile 7" -ForegroundColor Magenta -NoNewline;
-Write-Host " │" -ForegroundColor Blue
-Write-Host "╰──────────────────────╯" -ForegroundColor Blue
-Write-Host "Running" -ForegroundColor Yellow -NoNewline;
-Write-Host ": " -ForegroundColor Magenta -NoNewline;
-Write-Host "Microsoft." -ForegroundColor DarkCyan -NoNewline;
-Write-Host "PowerShell" -ForegroundColor Cyan -NoNewline;
-Write-Host "_profile.ps1" -ForegroundColor DarkCyan;
-
-# . (Join-Path -Path $PSScriptRoot -ChildPath 'Microsoft.PowerShell_profile.ps1')
 
 # 📂 1. Define your custom module path
 $CustomModules = "C:\.lib!\Modules"
@@ -39,7 +23,6 @@ if (-not ($env:PSModulePath -split ';' | Where-Object { $_ -eq $CustomModules })
 }
 
 $libSymlink = "C:\.lib!"
-#$libSymlink = "C:\.lib!\.profile.ps1"
 
 $target = (Get-Item $libSymlink).Target
 
@@ -60,5 +43,10 @@ try {
 }
 catch {
     $logger.Error("Error Loading '$($libProfile.Name)'", $_)
+}
+
+function prompt {
+    $location = Get-Location
+    "PS $location`n> " # This places the '>' on a new line
 }
 

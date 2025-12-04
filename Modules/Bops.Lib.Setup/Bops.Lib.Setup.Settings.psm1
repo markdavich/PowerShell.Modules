@@ -3,14 +3,15 @@ using module Bops.Lib.Setup.Classes.Command
 using module Bops.Lib.Setup.Classes.Profile
 using module Bop.U.Logger
 
+$ModulePath = $MyInvocation.MyCommand.Path
+
 Write-Host "<[" -ForegroundColor Green -NoNewline
 Write-Host "Bops.Lib! " -ForegroundColor Yellow -NoNewline
 Write-Host "[M] " -ForegroundColor Magenta -NoNewline
-Write-Host $MyInvocation.MyCommand.Path -ForegroundColor Cyan -NoNewline
+Write-Host $ModulePath -ForegroundColor Cyan -NoNewline
 Write-Host "]" -ForegroundColor Green
 
-$ModulePath = Split-Path -Parent $MyInvocation.MyCommand.Path
-$JsonPath = Join-Path $ModulePath 'Bops.Lib.Setup.json'
+$JsonPath = (Get-CompanionName -FileString $ModulePath -CompanionExtension 'json')
 $Logger = [Logger]::new()
 
 # Default JSON structure
@@ -52,25 +53,11 @@ $defaultSettings = @{
                     icon        = "📜"
                 },
                 @{
-                    name        = "Load-Profile"
+                    name        = "Initialize-Profile"
                     alias       = "lp"
                     description = "Reload the PowerShell profile."
                     params      = @()
                     icon        = "🔄"
-                },
-                @{
-                    name        = "Format-Json"
-                    alias       = ""
-                    description = "Format JSON strings with standard indentation."
-                    params      = @("json")
-                    icon        = "🪄"
-                },
-                @{
-                    name        = "Save-Json"
-                    alias       = ""
-                    description = "Save JSON to a file with proper formatting."
-                    params      = @("json", "path")
-                    icon        = "💾"
                 },
                 @{
                     name        = "Set-StartupLocations"
@@ -94,7 +81,7 @@ $defaultSettings = @{
                     icon        = "🧑‍🚀"
                 },
                 @{
-                    name        = "Open-UserSetupJson"
+                    name        = "Open-UserSettings"
                     alias       = "ou"
                     description = "Open the User Setup JSON file."
                     params      = @()
@@ -252,6 +239,12 @@ function Initialize-DefaultProfile {
     }
 }
 
+function Open-UserSettings {
+    Write-Host
+    Write-Host "User Settings" -ForegroundColor Cyan -NoNewline; Write-Host ": " -ForegroundColor Magenta -NoNewline; Write-Host -ForegroundColor Yellow $JsonPath
+    code $JsonPath
+}
+
 function main {
     Initialize-DefaultProfile
     Initialize-UserProfile
@@ -261,4 +254,5 @@ main
 
 Export-ModuleMember -Function `
     'Save-UserSettings', `
-    'Get-UserSettings'
+    'Get-UserSettings',
+    'Open-UserSettings'
