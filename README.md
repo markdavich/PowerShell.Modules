@@ -2,7 +2,7 @@
 
 ## Profiles
 
-1. All default profiles move to `.\Profiles\Users\[UserName]` (**A**)
+1. All default (user) profiles move to `.\Profiles\Users\[UserName]` (**A**)
 2. All default profiles are replaced with a corresponding profile  
    found here: `.\Profiles\c.users.username.documents.PowerShell` (**B**)
 3. Each **B** calls `.profile` (**C**), **C** calls **A**
