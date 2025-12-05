@@ -1,3 +1,16 @@
+# Bops Lib!
+
+## Profiles
+
+1. All default profiles move to `.\Profiles\Users\[UserName]` (**A**)
+2. All default profiles are replaced with a corresponding profile  
+   found here: `.\Profiles\c.users.username.documents.PowerShell` (**B**)
+3. Each **B** calls `.profile` (**C**), **C** calls **A**
+
+> All **B** level profiles should call the default PowerShell 7 User Profile:  
+>   `Microsoft.PowerShell_profile.ps1`
+
+
 
 ## Settings
 ### Visual Studio

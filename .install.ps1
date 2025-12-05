@@ -1,17 +1,21 @@
 $ModulePath = "C:\.lib!\Modules"
-
-# Clone Repo in C:\Code\Repos\
-
-# Rename repo folder to .bops.lib!
-
-# Create symbolic link using Admin PowerShell
-# New-Item -ItemType SymbolicLink -Path "C:\.lib!" -Target "C:\Code\Repos\.bops.lib!"
-
 <#
-    Profiles
-        Copy all the PowerShell 7 profiles in
-            .\Profiles\c.users.username.documents.PowerShell
-        to the locations (Path) listed in .json: Profiles.PowerShell7.Hosts
+
+Clone Repo in C:\Code\Repos\
+Rename repo folder to .bops.lib!
+
+Create symbolic link using Admin PowerShell
+    New-Item -ItemType SymbolicLink -Path "C:\.lib!" -Target "C:\Code\Repos\.bops.lib!"
+
+Profiles
+    Move all the profiles from
+        .json: Profiles.PowerShell7.Hosts
+    to
+        .\Profiles\Users\[UserName]
+
+    Copy all the PowerShell 7 profiles in
+        .\Profiles\c.users.username.documents.PowerShell
+    to the locations (Path) listed in .json: Profiles.PowerShell7.Hosts
 
 #>
 
